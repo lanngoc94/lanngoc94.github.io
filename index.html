@@ -1,0 +1,603 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Lan Ngoc Mau, Data Analyst in London: SQL, Python and Power BI portfolio with five end-to-end analytics case studies.">
+<title>Lan Ngoc Mau — Data Analyst</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    --paper:#F6F5F0;
+    --paper-raised:#FFFFFF;
+    --ink:#171B18;
+    --ink-soft:#4B534C;
+    --line:#DAD9CF;
+    --accent:#2E6B5C;
+    --accent-soft:#E4EEE9;
+    --warm:#B9762F;
+    --warm-soft:#F3E6D4;
+    --shadow: 0 1px 2px rgba(23,27,24,0.06), 0 8px 24px rgba(23,27,24,0.05);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#12160F;
+      --paper-raised:#191E17;
+      --ink:#EDEFE9;
+      --ink-soft:#A9B2A5;
+      --line:#2C3229;
+      --accent:#6FBBA3;
+      --accent-soft:#1D2C25;
+      --warm:#E4A25C;
+      --warm-soft:#2C2417;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 8px 24px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#12160F;
+    --paper-raised:#191E17;
+    --ink:#EDEFE9;
+    --ink-soft:#A9B2A5;
+    --line:#2C3229;
+    --accent:#6FBBA3;
+    --accent-soft:#1D2C25;
+    --warm:#E4A25C;
+    --warm-soft:#2C2417;
+    --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 8px 24px rgba(0,0,0,0.35);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:
+      repeating-linear-gradient(to bottom, transparent 0 39px, var(--line) 39px 40px),
+      var(--paper);
+    background-attachment:local;
+    color:var(--ink);
+    font-family:'IBM Plex Sans', system-ui, sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--accent-soft); color:var(--ink);}
+
+  .wrap{max-width:760px; margin:0 auto; padding:64px 28px 96px;}
+
+  h1,h2,h3{font-family:'Fraunces', serif; font-weight:600; letter-spacing:-0.01em; text-wrap:balance; margin:0;}
+
+  /* ---------- header ---------- */
+  header{margin-bottom:56px;}
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace; font-size:12.5px; letter-spacing:0.09em;
+    text-transform:uppercase; color:var(--accent); margin:0 0 14px;
+  }
+  h1{font-size:clamp(2.4rem, 5vw, 3.1rem); line-height:1.05;}
+  .role{
+    font-family:'IBM Plex Mono', monospace; font-size:14px; color:var(--ink-soft);
+    margin-top:10px;
+  }
+  .pitch{margin-top:22px; font-size:17px; color:var(--ink-soft);}
+
+  .contact-line{
+    display:flex; flex-wrap:wrap; gap:16px; margin-top:20px;
+    font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--ink-soft);
+  }
+  .contact-line a{color:var(--accent); text-decoration:none; border-bottom:1px solid var(--accent-soft);}
+  .contact-line a:hover{border-bottom-color:var(--accent);}
+
+  .ruler{
+    display:flex; align-items:flex-end; gap:0; height:14px; margin:40px 0 0;
+    border-bottom:1px solid var(--line);
+  }
+  .ruler span{flex:1; border-left:1px solid var(--line); height:6px;}
+  .ruler span:nth-child(4n+1){height:12px; border-left-color:var(--ink-soft);}
+
+  html{scroll-behavior:smooth;}
+  /* ---------- KPI strip ---------- */
+  .kpis{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:28px;}
+  .kpi{background:var(--paper-raised); border:1px solid var(--line); border-radius:10px; padding:14px 14px 12px; box-shadow:var(--shadow);}
+  .kpi-val{font-family:'Fraunces', serif; font-weight:600; font-size:1.7rem; line-height:1.1; color:var(--accent); font-variant-numeric:tabular-nums;}
+  .kpi-lbl{font-family:'IBM Plex Mono', monospace; font-size:11.5px; letter-spacing:0.03em; color:var(--ink-soft); margin-top:6px; line-height:1.4;}
+  @media (max-width:600px){ .kpis{grid-template-columns:repeat(2,1fr);} }
+
+  /* ---------- jump menu ---------- */
+  .jump{position:sticky; top:0; z-index:20; margin:0 -28px; padding:10px 28px; background:color-mix(in srgb, var(--paper) 88%, transparent); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); border-bottom:1px solid var(--line); display:flex; gap:6px; overflow-x:auto; scrollbar-width:none;}
+  .jump::-webkit-scrollbar{display:none;}
+  .jump a{font-family:'IBM Plex Mono', monospace; font-size:12.5px; color:var(--ink-soft); text-decoration:none; padding:5px 10px; border-radius:6px; white-space:nowrap;}
+  .jump a:hover{color:var(--accent); background:var(--accent-soft);}
+  .sec-head{scroll-margin-top:72px;}
+  @media (max-width:480px){ .jump{margin:0 -18px; padding:10px 18px;} }
+
+  /* ---------- insight-first takeaway ---------- */
+  .takeaway{margin:14px 0 4px; padding:12px 16px; border-left:3px solid var(--accent); background:var(--accent-soft); border-radius:0 8px 8px 0; font-size:15px; color:var(--ink); line-height:1.55;}
+  .takeaway .tk-label{display:block; font-family:'IBM Plex Mono', monospace; font-size:11px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:var(--accent); margin-bottom:4px;}
+
+  /* ---------- live dashboard slot ---------- */
+  .live-embed{margin-top:18px; border:1px solid var(--line); border-radius:10px; overflow:hidden; background:var(--paper);}
+  .live-embed-head{display:flex; justify-content:space-between; align-items:center; gap:10px; padding:10px 14px; border-bottom:1px solid var(--line); font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--ink-soft);}
+  .live-dot{display:inline-block; width:7px; height:7px; border-radius:50%; background:#3BA55C; margin-right:7px; vertical-align:middle;}
+  .live-embed iframe{display:block; width:100%; aspect-ratio:16/10; border:0;}
+  .live-embed-head a{color:var(--accent); text-decoration:none;}
+
+  /* ---------- section shell ---------- */
+  section{margin-top:64px;}
+  .sec-head{display:flex; align-items:baseline; gap:12px; margin-bottom:22px;}
+  .sec-num{font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--warm);}
+  h2{font-size:1.5rem;}
+
+  p{margin:0 0 14px; color:var(--ink);}
+  .lede{color:var(--ink-soft);}
+
+  /* ---------- skills ---------- */
+  .skill-group{margin-bottom:20px;}
+  .skill-group h3{
+    font-family:'IBM Plex Mono', monospace; font-weight:600; font-size:12.5px;
+    letter-spacing:0.06em; text-transform:uppercase; color:var(--ink-soft); margin-bottom:10px;
+  }
+  .tags{display:flex; flex-wrap:wrap; gap:8px;}
+  .tag{
+    font-family:'IBM Plex Mono', monospace; font-size:13px; padding:5px 10px;
+    border:1px solid var(--line); border-radius:5px; background:var(--paper-raised);
+    color:var(--ink);
+  }
+
+  /* ---------- projects ---------- */
+  .project{
+    background:var(--paper-raised); border:1px solid var(--line); border-radius:10px;
+    padding:26px 26px 24px; margin-bottom:20px; box-shadow:var(--shadow);
+  }
+  .project-head{display:flex; justify-content:space-between; align-items:baseline; gap:16px; flex-wrap:wrap;}
+  .fig-group{display:flex; align-items:baseline; gap:10px;}
+  .fig{font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--ink-soft);}
+  .grade{
+    font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--warm);
+    border:1px solid var(--warm-soft); background:var(--warm-soft); border-radius:4px; padding:2px 7px;
+  }
+  .proj-num{color:var(--warm); margin-right:2px;}
+  .project h3{font-family:'Fraunces', serif; font-size:1.22rem; font-weight:600; margin-top:2px;}
+  .project .desc{margin-top:10px; color:var(--ink-soft); font-size:15px;}
+  .stack{display:flex; flex-wrap:wrap; gap:7px; margin-top:16px;}
+  .case-block{margin-top:14px;}
+  .case-block:first-of-type{margin-top:10px;}
+  .case-block .desc{margin:0;}
+  .case-label{
+    font-family:'IBM Plex Mono', monospace; font-weight:600; font-size:11.5px;
+    letter-spacing:0.05em; text-transform:uppercase; color:var(--warm); margin:0 0 6px;
+  }
+  .case-list{margin:0; padding-left:18px;}
+  .case-list li{margin-bottom:6px; font-size:14.5px; color:var(--ink-soft);}
+  .case-list li::marker{color:var(--accent);}
+  .case-list.sub-list{margin-top:6px;}
+  .case-list.sub-list li{margin-bottom:4px;}
+  .case-list li b{color:var(--ink); font-weight:600;}
+  .dashboard-shot{margin:18px 0 0; padding:0;}
+  .dashboard-shot img{
+    width:100%; display:block; border-radius:8px; border:1px solid var(--line);
+    box-shadow:var(--shadow);
+  }
+  .dashboard-shot figcaption{
+    margin-top:9px; font-family:'IBM Plex Mono', monospace; font-size:11.5px;
+    color:var(--ink-soft); line-height:1.5;
+  }
+  .cert-shot{max-width:560px;}
+  .cert-shot img{background:#fff;}
+  .dashboard-shot figcaption em{color:var(--accent); font-style:normal;}
+  .segment-table{
+    width:100%; border-collapse:collapse; margin-top:16px; font-size:13.5px;
+    background:var(--paper-raised); border:1px solid var(--line); border-radius:8px; overflow:hidden;
+  }
+  .segment-table th, .segment-table td{
+    padding:9px 12px; text-align:left; border-bottom:1px solid var(--line);
+  }
+  .segment-table th{
+    font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:0.04em; text-transform:uppercase;
+    color:var(--ink-soft); background:var(--paper); font-weight:600;
+  }
+  .segment-table td:first-child{font-weight:600; color:var(--accent); white-space:nowrap;}
+  .segment-table td:nth-child(2){font-family:'IBM Plex Mono', monospace; font-variant-numeric:tabular-nums;}
+  .segment-table tr:last-child td{border-bottom:none;}
+  .code-block{margin-top:18px;}
+  .code-label{
+    font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--ink-soft);
+    margin:0 0 8px;
+  }
+  .code-block pre{
+    margin:0; padding:16px 18px; background:var(--paper); border:1px solid var(--line);
+    border-radius:8px; overflow-x:auto;
+  }
+  details.full-script{margin-top:14px;}
+  details.full-script summary{
+    cursor:pointer; list-style:none; user-select:none;
+    font-family:'IBM Plex Mono', monospace; font-size:12.5px; font-weight:600;
+    color:var(--accent); padding:9px 14px; border:1px solid var(--line); border-radius:7px;
+    background:var(--accent-soft); display:inline-flex; align-items:center; gap:8px;
+  }
+  details.full-script summary::-webkit-details-marker{display:none;}
+  details.full-script summary::before{content:"▸"; font-size:11px; transition:transform 0.15s ease;}
+  details.full-script[open] summary::before{transform:rotate(90deg);}
+  details.full-script[open] summary{border-radius:7px 7px 0 0; margin-bottom:0;}
+  details.full-script pre{
+    margin:0; padding:16px 18px; background:var(--paper); border:1px solid var(--line); border-top:none;
+    border-radius:0 0 7px 7px; overflow:auto; max-height:520px;
+  }
+  details.full-script code{
+    font-family:'IBM Plex Mono', monospace; font-size:11.5px; line-height:1.6; color:var(--ink);
+    white-space:pre;
+  }
+  .code-block code{
+    font-family:'IBM Plex Mono', monospace; font-size:12.5px; line-height:1.65; color:var(--ink);
+    white-space:pre;
+  }
+  .stack span{
+    font-family:'IBM Plex Mono', monospace; font-size:12px; padding:3px 8px;
+    border-radius:4px; background:var(--accent-soft); color:var(--accent);
+  }
+
+  /* ---------- about ---------- */
+  .about-grid{display:grid; grid-template-columns:1fr; gap:18px;}
+  .note{
+    border-left:3px solid var(--warm); background:var(--warm-soft); border-radius:0 8px 8px 0;
+    padding:14px 18px; font-size:14.5px; color:var(--ink-soft);
+  }
+  .note b{color:var(--ink); font-weight:600;}
+
+  /* ---------- experience & education ---------- */
+  .entry{margin-bottom:26px;}
+  .entry:last-child{margin-bottom:0;}
+  .entry-head{display:flex; justify-content:space-between; align-items:baseline; gap:16px; flex-wrap:wrap;}
+  .entry-head h3{font-family:'Fraunces', serif; font-size:1.1rem; font-weight:600;}
+  .entry-org{font-size:14px; color:var(--ink-soft); margin-top:2px;}
+  .entry-date{font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--ink-soft); white-space:nowrap;}
+  .entry ul{margin:12px 0 0; padding-left:18px;}
+  .entry li{margin-bottom:8px; font-size:14.5px; color:var(--ink-soft);}
+  .entry li b{color:var(--ink); font-weight:600;}
+  .entry li::marker{color:var(--accent);}
+
+  /* ---------- contact ---------- */
+  .contact-card{
+    background:var(--paper-raised); border:1px solid var(--line); border-radius:10px;
+    padding:26px; display:flex; flex-direction:column; gap:14px; box-shadow:var(--shadow);
+  }
+  .contact-row{display:flex; align-items:center; gap:12px; flex-wrap:wrap;}
+  .contact-label{font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--ink-soft); width:110px; flex-shrink:0;}
+  a.mail{color:var(--accent); text-decoration:none; font-weight:500; border-bottom:1px solid var(--accent-soft);}
+  a.mail:hover{border-bottom-color:var(--accent);}
+  .placeholder{
+    font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--ink-soft);
+    border:1px dashed var(--line); border-radius:6px; padding:5px 10px; background:transparent;
+  }
+
+  footer{margin-top:64px; padding-top:24px; border-top:1px solid var(--line);
+    font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--ink-soft);
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;}
+
+  /* ---------- justified body text ---------- */
+  .pitch, .lede, .desc, .note, .case-list li, .entry li{
+    text-align:justify; text-justify:inter-word; hyphens:auto; -webkit-hyphens:auto;
+  }
+
+  @media (max-width:480px){
+    .wrap{padding:44px 18px 72px;}
+    .contact-label{width:auto;}
+    .entry-date{white-space:normal;}
+  }
+
+  [hidden]{display:none!important}
+  /* ---------- hero actions ---------- */
+  .cta-row{display:flex; flex-wrap:wrap; gap:10px; margin-top:22px;}
+  .btn{display:inline-flex; align-items:center; gap:6px; font-family:'IBM Plex Mono', monospace; font-size:13px; font-weight:600; padding:9px 14px; border-radius:7px; text-decoration:none; border:1px solid var(--accent); color:var(--accent); background:var(--paper-raised);}
+  .btn:hover{background:var(--accent-soft);}
+  .btn.primary{background:var(--accent); color:var(--paper-raised);}
+  .btn.primary:hover{filter:brightness(1.08); background:var(--accent);}
+  .pitch{text-align:left;}
+  @media (max-width:520px){ .desc, .lede, .note, .case-list li, .entry li{text-align:left;} }
+  .rtw{color:var(--accent); font-weight:600;}
+  /* ---------- project cards ---------- */
+  .cards{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .card{display:flex; flex-direction:column; background:var(--paper-raised); border:1px solid var(--line); border-radius:10px; overflow:hidden; box-shadow:var(--shadow); text-decoration:none; color:inherit; transition:transform .15s ease, border-color .15s ease;}
+  .card:hover{transform:translateY(-2px); border-color:var(--accent);}
+  .card.wide{grid-column:1 / -1;}
+  .card-thumb{aspect-ratio:16/9; overflow:hidden; border-bottom:1px solid var(--line); background:var(--paper);}
+  .card-thumb img{width:100%; height:100%; object-fit:cover; object-position:top left; display:block;}
+  .card-body{padding:16px 18px 18px; display:flex; flex-direction:column; gap:10px; flex:1;}
+  .card-kicker{font-family:'IBM Plex Mono', monospace; font-size:11.5px; letter-spacing:0.05em; text-transform:uppercase; color:var(--warm);}
+  .card h3{font-family:'Fraunces', serif; font-size:1.12rem; line-height:1.25;}
+  .card p{margin:0; font-size:14.5px; color:var(--ink-soft); line-height:1.5;}
+  .card .stack{margin-top:auto; padding-top:4px;}
+  .card-link{font-family:'IBM Plex Mono', monospace; font-size:12.5px; font-weight:600; color:var(--accent);}
+  @media (max-width:640px){ .cards{grid-template-columns:1fr;} }
+  /* ---------- case study pages ---------- */
+  .crumbs{display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; font-family:'IBM Plex Mono', monospace; font-size:12.5px; margin-bottom:28px;}
+  .crumbs a{color:var(--accent); text-decoration:none;}
+  .case-hero h1{font-size:clamp(1.8rem, 4.5vw, 2.4rem); line-height:1.1; margin-top:6px;}
+  .case-hero .stack{margin-top:14px;}
+  .case-page{margin-top:22px;}
+  .case-kpis{margin:18px 0 16px;}
+  .case-kpis .kpi-val{font-size:1.35rem;}
+  .pager{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:40px;}
+  .pager a{display:block; padding:14px 16px; border:1px solid var(--line); border-radius:9px; background:var(--paper-raised); text-decoration:none; color:var(--ink);}
+  .pager a:hover{border-color:var(--accent);}
+  .pager small{display:block; font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--ink-soft); margin-bottom:3px;}
+  .pager .next{text-align:right; grid-column:2;}
+  @media (max-width:520px){ .pager{grid-template-columns:1fr;} .pager .next{grid-column:1;} }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">Portfolio · Data Analytics</p>
+    <h1>Lan Ngoc Mau</h1>
+    <p class="role">Data Analyst — SQL · Python · Power BI · R · Excel</p>
+    <p class="pitch">I turn messy, multi-source data into clear dashboards and recommendations people can act on. LSE Data Analytics Career Accelerator graduate (86%, Distinction) and Microsoft-certified in Power BI, with 4+ years keeping business-critical records accurate at the Marine Stewardship Council.</p>
+    <div class="contact-line">
+      <span>London, UK</span><span class="rtw">Eligible to work in the UK</span>
+    </div>
+    <div class="cta-row">
+      <a class="btn primary" href="#projects">View projects</a>
+      <a class="btn" href="Lan_Ngoc_Mau_CV.pdf" target="_blank" rel="noopener">Download CV (PDF)</a>
+      <a class="btn" href="mailto:lanngok@gmail.com">Email me</a>
+      <a class="btn" href="https://www.linkedin.com/in/lan-ngoc-mau-a2000316b/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+    </div>
+    <div class="kpis">
+      <div class="kpi"><div class="kpi-val">86%</div><div class="kpi-lbl">LSE Data Analytics, Distinction</div></div>
+      <div class="kpi"><div class="kpi-val">5</div><div class="kpi-lbl">end-to-end analytics projects</div></div>
+      <div class="kpi"><div class="kpi-val">Power BI</div><div class="kpi-lbl">Microsoft Data Analyst certificate</div></div>
+      <div class="kpi"><div class="kpi-val">4+</div><div class="kpi-lbl">years in data operations</div></div>
+    </div>
+    <div class="ruler">
+      <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+  </header>
+
+    <nav class="jump" aria-label="Jump to section">
+    <a href="#projects">Projects</a><a href="#about">About</a><a href="#skills">Skills</a><a href="#experience">Experience</a><a href="#certifications">Certifications</a><a href="#education">Education</a><a href="#contact">Contact</a>
+  </nav>
+
+  <section>
+    <div class="sec-head" id="projects"><span class="sec-num">01</span><h2>Analytics Projects</h2></div>
+    <p class="lede">Five end-to-end projects, each taken from a business question to a recommendation. Open a card for the full case study, dashboards and code.</p>
+    <div class="cards">
+      <a class="card wide" href="msf.html">
+        <div class="card-thumb"><img src="img/fig08.png" alt="Executive summary view across the full extended dataset — total spend, CO2 emissions, distance, and agency-fee-cap KPIs alongside trip volume, route-level emissions, journey-type comparisons, and exchange-cost analysis." loading="lazy"></div>
+        <div class="card-body">
+          <span class="card-kicker">Employer group project · LSE course 4 · 89%</span>
+          <h3>Travel Operations &amp; Carbon/Cost Tracking — MSF Group Project</h3>
+          <p>Bringing €18.64M of travel spend and 21.37K tonnes of CO2 into one view revealed quick wins: switching a single layover on the Kinshasa–Kigali route alone would cut about 41 tonnes, with no policy change needed.</p>
+          <div class="stack"><span>SQL</span><span>Python</span><span>Power BI</span><span>Data Modelling</span></div>
+          <span class="card-link">Read the case study →</span>
+        </div>
+      </a>
+      <a class="card" href="retail-sales.html">
+        <div class="card-thumb"><img src="sales_dashboard.png" alt="Power BI Sales Performance Dashboard: KPI cards for total sales, transactions, average sales per store and per transaction with year-on-year change; monthly sales by store; sales growth by store and by product category; transaction volume versus average spend by store and by category; and a product category share matrix by store." loading="lazy"></div>
+        <div class="card-body">
+          <span class="card-kicker">Power BI dashboard · independent project</span>
+          <h3>Retail Sales Performance Dashboard — Multi-Store Retailer</h3>
+          <p>Sales grew 7.7% year on year, led by City of London (+23.6%). Home makes up about half of every store's sales, and Womenswear fell 33% even though its customers spend the most per transaction (£256), so it is worth recovering rather than dropping.</p>
+          <div class="stack"><span>Power Query</span><span>DAX</span><span>Power BI</span></div>
+          <span class="card-link">Read the case study →</span>
+        </div>
+      </a>
+      <a class="card" href="2market.html">
+        <div class="card-thumb"><img src="img/2market-dashboard.png" alt="2Market Customer and Marketing Channels Analysis Power BI dashboard: headline KPI cards (largest customer base, highest ROI age group, highest spending income bracket, category and channel), spend by income bracket and education, spend by product category, customers by age group and marital status, in-store versus online purchases by age, lead conversion and website visits by marketing channel, and customers and spend by country." loading="lazy"></div>
+        <div class="card-body">
+          <span class="card-kicker">Marketing &amp; customer analytics · LSE course 1 · 86%</span>
+          <h3>Customer Behaviour &amp; Market Segmentation — 2Market</h3>
+          <p>Spain holds 49% of the $1.26M spend, and Alcohol and Meat make up 78% of it. The best return lies in Twitter and Email campaigns aimed at middle-income customers aged 45+, not in spreading budget across smaller markets.</p>
+          <div class="stack"><span>SQL</span><span>Excel</span><span>Power BI</span><span>DAX</span></div>
+          <span class="card-link">Read the case study →</span>
+        </div>
+      </a>
+      <a class="card" href="nhs.html">
+        <div class="card-thumb"><img src="img/fig02.png" alt="Dumbbell chart comparing average daily appointments in November 2021 versus April 2022 across the top 10 NHS ICBs by volume, with NHS BOB ICB (E54000044) showing the steepest decline at -23.4%" loading="lazy"></div>
+        <div class="card-body">
+          <span class="card-kicker">Healthcare operations · LSE course 2 · 83%</span>
+          <h3>Healthcare Operations &amp; Capacity Analysis — NHS</h3>
+          <p>BOB ICB's 23.4% drop in appointments was a capacity problem, not falling demand, so it can be fixed by redesigning bookings and closing data-quality gaps rather than hiring more staff.</p>
+          <div class="stack"><span>Python</span><span>pandas</span><span>matplotlib</span><span>TextBlob</span></div>
+          <span class="card-link">Read the case study →</span>
+        </div>
+      </a>
+      <a class="card" href="turtle-games.html">
+        <div class="card-thumb"><img src="img/fig05.png" alt="Scatter plot of predicted versus actual loyalty points from the linear regression model, showing negative predictions at the low end and underestimation at the high end" loading="lazy"></div>
+        <div class="card-body">
+          <span class="card-kicker">Predictive modelling &amp; NLP · LSE course 3 · 84%</span>
+          <h3>Predictive Modelling &amp; Sentiment Analysis — Turtle Games</h3>
+          <p>Customer score and income together explain 83% of loyalty points, and one high-value segment earns about 2.5x the points of everyone else, which makes it the clear focus for loyalty spend.</p>
+          <div class="stack"><span>Python</span><span>R</span><span>scikit-learn</span><span>K-Means</span><span>NLP / VADER / TextBlob</span></div>
+          <span class="card-link">Read the case study →</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head" id="about"><span class="sec-num">02</span><h2>About</h2></div>
+    <div class="about-grid">
+      <p class="lede">For over four years in the Licensing Team at the Marine Stewardship Council (MSC), I've managed database entries, licence issuance, and system workflows. This work has given me hands-on experience of how organisational data is captured and maintained, and a clear sense of why accurate, well-structured data matters for the decisions built on it. Management relies on me for on-time, high-quality delivery, and I've consistently been drawn to the technical side of the work. That curiosity about how operational data turns into business decisions is what drew me to analytics.</p>
+      <p class="lede">To build on that, I completed the LSE Data Analytics Career Accelerator and the Microsoft Power BI Data Analyst Professional Certificate, adding Python, R, SQL and Power BI to my toolkit. I'm now looking to bring this mix of hands-on data operations experience and analytics training to a data insights role, turning stakeholder questions into clear, actionable insights.</p>
+      <div class="note">LSE Data Analytics Career Accelerator — <b>completed September 2026 with a final grade of 86% (Distinction)</b>, four end-to-end analytics projects across market segmentation, healthcare operations, predictive modelling, travel distance analysis and carbon reduction.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head" id="skills"><span class="sec-num">03</span><h2>Skills</h2></div>
+
+    <div class="skill-group">
+      <h3>Languages &amp; Querying</h3>
+      <div class="tags">
+        <span class="tag">Python</span><span class="tag">R</span><span class="tag">SQL</span>
+      </div>
+    </div>
+
+    <div class="skill-group">
+      <h3>BI &amp; Visualisation</h3>
+      <div class="tags">
+        <span class="tag">Power BI</span><span class="tag">DAX</span><span class="tag">Power Query</span><span class="tag">Excel</span>
+        <span class="tag">matplotlib</span><span class="tag">seaborn</span><span class="tag">ggplot2</span>
+      </div>
+    </div>
+
+    <div class="skill-group">
+      <h3>Analysis, ML &amp; NLP</h3>
+      <div class="tags">
+        <span class="tag">pandas</span><span class="tag">scikit-learn</span><span class="tag">Multiple Regression</span>
+        <span class="tag">Decision Trees</span><span class="tag">K-Means Segmentation</span>
+        <span class="tag">Sentiment Analysis (VADER)</span>
+      </div>
+    </div>
+
+    <div class="skill-group">
+      <h3>Operations</h3>
+      <div class="tags">
+        <span class="tag">Database &amp; Records Management</span><span class="tag">Data Validation</span>
+        <span class="tag">Stakeholder Engagement</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head" id="experience"><span class="sec-num">04</span><h2>Professional Experience</h2></div>
+
+    <div class="entry">
+      <div class="entry-head">
+        <div>
+          <h3>Label Licensing Officer</h3>
+          <p class="entry-org">Marine Stewardship Council International — London, UK</p>
+        </div>
+        <span class="entry-date">Jan 2022 – Present</span>
+      </div>
+      <ul>
+        <li>Maintain the accuracy of around <b>300 product records a month</b> (above 97% accuracy) in MSC's primary CRM database, supporting organisational reporting.</li>
+        <li>Validate nearly <b>1,000 partner turnover declarations a year</b>, ensuring correct and timely invoicing worth <b>£2M</b>.</li>
+        <li>Test new features in the CRM system (Microsoft Dynamics 365), identifying <b>10 logic bugs and anomalies</b> before deployment.</li>
+        <li>Act as key account contact for nearly <b>200 licensees</b> and internal stakeholders, translating complex compliance queries into clear, accessible guidance.</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="entry-head">
+        <div>
+          <h3>Business Development Executive</h3>
+          <p class="entry-org">BKG Vietnam JSC — Hanoi, Vietnam</p>
+        </div>
+        <span class="entry-date">Mar 2017 – Aug 2019</span>
+      </div>
+      <ul>
+        <li>Communicated daily with <b>20–30 international clients</b>, partners and cross-functional teams to deliver end-to-end cross-border supply chains, managing key accounts worth up to <b>$2M</b>.</li>
+        <li>Served as the primary point of contact between customers and manufacturing/technical teams, maintaining accurate records to strengthen customer satisfaction.</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="entry-head">
+        <div>
+          <h3>Customer Services Executive</h3>
+          <p class="entry-org">DH Logistics Co., Ltd — Hanoi, Vietnam</p>
+        </div>
+        <span class="entry-date">Mar 2016 – Feb 2017</span>
+      </div>
+      <ul>
+        <li>Coordinated shipment logistics (route, carrier, rate and delivery timing), kept customers updated on status, and analysed carrier performance to produce service-quality reports.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head" id="certifications"><span class="sec-num">05</span><h2>Certifications</h2></div>
+
+    <div class="entry">
+      <div class="entry-head">
+        <div>
+          <h3>Microsoft Power BI Data Analyst Professional Certificate</h3>
+          <p class="entry-org">Microsoft, via Coursera — 8-course programme</p>
+        </div>
+        <span class="entry-date">Completed Oct 2026</span>
+      </div>
+      <ul>
+        <li>Covered data preparation in Excel, ETL in Power Query, star-schema data modelling, DAX calculations, visualisation and report design, and deploying and maintaining Power BI assets, with a capstone project and PL-300 exam preparation.</li>
+        <li><a class="mail" href="https://coursera.org/verify/professional-cert/ENB1T3O6B0NS" target="_blank" rel="noopener">Verify certificate</a></li>
+      </ul>
+      <figure class="dashboard-shot cert-shot">
+        <a href="https://coursera.org/verify/professional-cert/ENB1T3O6B0NS" target="_blank" rel="noopener"><img src="img/fig10.jpg" alt="Coursera Professional Certificate: Microsoft Power BI Data Analyst, awarded to Lan Ngoc Mau on 5 October 2026" loading="lazy"></a>
+        <figcaption>Microsoft Power BI Data Analyst Professional Certificate — issued 5 Oct 2026. <em>Click to verify on Coursera.</em></figcaption>
+      </figure>
+    </div>
+
+    <div class="entry">
+      <div class="entry-head">
+        <div>
+          <h3>LSE Online Data Analytics Career Accelerator</h3>
+          <p class="entry-org">London School of Economics and Political Science (LSE)</p>
+        </div>
+        <span class="entry-date">Feb 2026 – Sept 2026</span>
+      </div>
+      <ul>
+        <li><b>Final grade: 86% (Distinction)</b></li>
+        <li>Course 1 — Data Analytics for Business (2Market project): 86%</li>
+        <li>Course 2 — Data Analytics using Python (NHS project): 83%</li>
+        <li>Course 3 — Advanced Analytics for Business Impact (Turtle Games project): 84%</li>
+        <li>Course 4 — Employer Project (MSF group project): 89%</li>
+        <li><a class="mail" href="LSE_Transcript_Lan_Ngoc_Mau.pdf" target="_blank" rel="noopener">View grade transcript (PDF)</a></li>
+      </ul>
+      <figure class="dashboard-shot cert-shot">
+        <a href="LSE_Transcript_Lan_Ngoc_Mau.pdf" target="_blank" rel="noopener"><img src="img/fig11.jpg" alt="LSE programme completion letter and grade transcript for Lan Ngoc Mau, final grade 86% (Distinction)"></a>
+        <figcaption>LSE confirmation of programme completion and grade transcript — October 2026. <em>Click to open the PDF.</em></figcaption>
+      </figure>
+    </div>
+
+  </section>
+
+  <section>
+    <div class="sec-head" id="education"><span class="sec-num">06</span><h2>Education</h2></div>
+
+    <div class="entry">
+      <div class="entry-head">
+        <div>
+          <h3>MSc, Global Logistics, Operations and Supply Chain Management</h3>
+          <p class="entry-org">Northumbria University, London Campus — Distinction (74%)</p>
+        </div>
+        <span class="entry-date">Sept 2019 – June 2021</span>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-head">
+        <div>
+          <h3>BA (Hons), International Economics and Business — 2:1</h3>
+          <p class="entry-org">Foreign Trade University, Hanoi, Vietnam</p>
+        </div>
+        <span class="entry-date">Sept 2012 – June 2016</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head" id="contact"><span class="sec-num">07</span><h2>Contact</h2></div>
+    <div class="contact-card">
+      <div class="contact-row">
+        <span class="contact-label">Email</span>
+        <a class="mail" href="mailto:lanngok@gmail.com">lanngok@gmail.com</a>
+      </div>
+      <div class="contact-row">
+        <span class="contact-label">CV</span>
+        <a class="mail" href="Lan_Ngoc_Mau_CV.pdf" target="_blank" rel="noopener">Download CV (PDF)</a>
+      </div>
+      <div class="contact-row">
+        <span class="contact-label">LinkedIn</span>
+        <a class="mail" href="https://www.linkedin.com/in/lan-ngoc-mau-a2000316b/" target="_blank" rel="noopener noreferrer">linkedin.com/in/lan-ngoc-mau-a2000316b</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Lan Ngoc Mau — Data Analytics Portfolio</span>
+    <span>LSE Data Analytics Career Accelerator</span>
+  </footer>
+
+</div>
+
+</body>
+</html>
