@@ -1,0 +1,2952 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Healthcare Operations &amp; Capacity Analysis — NHS | Lan Ngoc Mau</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    --paper:#F6F5F0;
+    --paper-raised:#FFFFFF;
+    --ink:#171B18;
+    --ink-soft:#4B534C;
+    --line:#DAD9CF;
+    --accent:#2E6B5C;
+    --accent-soft:#E4EEE9;
+    --warm:#B9762F;
+    --warm-soft:#F3E6D4;
+    --shadow: 0 1px 2px rgba(23,27,24,0.06), 0 8px 24px rgba(23,27,24,0.05);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#12160F;
+      --paper-raised:#191E17;
+      --ink:#EDEFE9;
+      --ink-soft:#A9B2A5;
+      --line:#2C3229;
+      --accent:#6FBBA3;
+      --accent-soft:#1D2C25;
+      --warm:#E4A25C;
+      --warm-soft:#2C2417;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 8px 24px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#12160F;
+    --paper-raised:#191E17;
+    --ink:#EDEFE9;
+    --ink-soft:#A9B2A5;
+    --line:#2C3229;
+    --accent:#6FBBA3;
+    --accent-soft:#1D2C25;
+    --warm:#E4A25C;
+    --warm-soft:#2C2417;
+    --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 8px 24px rgba(0,0,0,0.35);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:
+      repeating-linear-gradient(to bottom, transparent 0 39px, var(--line) 39px 40px),
+      var(--paper);
+    background-attachment:local;
+    color:var(--ink);
+    font-family:'IBM Plex Sans', system-ui, sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--accent-soft); color:var(--ink);}
+
+  .wrap{max-width:760px; margin:0 auto; padding:64px 28px 96px;}
+
+  h1,h2,h3{font-family:'Fraunces', serif; font-weight:600; letter-spacing:-0.01em; text-wrap:balance; margin:0;}
+
+  /* ---------- header ---------- */
+  header{margin-bottom:56px;}
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace; font-size:12.5px; letter-spacing:0.09em;
+    text-transform:uppercase; color:var(--accent); margin:0 0 14px;
+  }
+  h1{font-size:clamp(2.4rem, 5vw, 3.1rem); line-height:1.05;}
+  .role{
+    font-family:'IBM Plex Mono', monospace; font-size:14px; color:var(--ink-soft);
+    margin-top:10px;
+  }
+  .pitch{margin-top:22px; font-size:17px; color:var(--ink-soft);}
+
+  .contact-line{
+    display:flex; flex-wrap:wrap; gap:16px; margin-top:20px;
+    font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--ink-soft);
+  }
+  .contact-line a{color:var(--accent); text-decoration:none; border-bottom:1px solid var(--accent-soft);}
+  .contact-line a:hover{border-bottom-color:var(--accent);}
+
+  .ruler{
+    display:flex; align-items:flex-end; gap:0; height:14px; margin:40px 0 0;
+    border-bottom:1px solid var(--line);
+  }
+  .ruler span{flex:1; border-left:1px solid var(--line); height:6px;}
+  .ruler span:nth-child(4n+1){height:12px; border-left-color:var(--ink-soft);}
+
+  html{scroll-behavior:smooth;}
+  /* ---------- KPI strip ---------- */
+  .kpis{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:28px;}
+  .kpi{background:var(--paper-raised); border:1px solid var(--line); border-radius:10px; padding:14px 14px 12px; box-shadow:var(--shadow);}
+  .kpi-val{font-family:'Fraunces', serif; font-weight:600; font-size:1.7rem; line-height:1.1; color:var(--accent); font-variant-numeric:tabular-nums;}
+  .kpi-lbl{font-family:'IBM Plex Mono', monospace; font-size:11.5px; letter-spacing:0.03em; color:var(--ink-soft); margin-top:6px; line-height:1.4;}
+  @media (max-width:600px){ .kpis{grid-template-columns:repeat(2,1fr);} }
+
+  /* ---------- jump menu ---------- */
+  .jump{position:sticky; top:0; z-index:20; margin:0 -28px; padding:10px 28px; background:color-mix(in srgb, var(--paper) 88%, transparent); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); border-bottom:1px solid var(--line); display:flex; gap:6px; overflow-x:auto; scrollbar-width:none;}
+  .jump::-webkit-scrollbar{display:none;}
+  .jump a{font-family:'IBM Plex Mono', monospace; font-size:12.5px; color:var(--ink-soft); text-decoration:none; padding:5px 10px; border-radius:6px; white-space:nowrap;}
+  .jump a:hover{color:var(--accent); background:var(--accent-soft);}
+  .sec-head{scroll-margin-top:72px;}
+  @media (max-width:480px){ .jump{margin:0 -18px; padding:10px 18px;} }
+
+  /* ---------- insight-first takeaway ---------- */
+  .takeaway{margin:14px 0 4px; padding:12px 16px; border-left:3px solid var(--accent); background:var(--accent-soft); border-radius:0 8px 8px 0; font-size:15px; color:var(--ink); line-height:1.55;}
+  .takeaway .tk-label{display:block; font-family:'IBM Plex Mono', monospace; font-size:11px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:var(--accent); margin-bottom:4px;}
+
+  /* ---------- live dashboard slot ---------- */
+  .live-embed{margin-top:18px; border:1px solid var(--line); border-radius:10px; overflow:hidden; background:var(--paper);}
+  .live-embed-head{display:flex; justify-content:space-between; align-items:center; gap:10px; padding:10px 14px; border-bottom:1px solid var(--line); font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--ink-soft);}
+  .live-dot{display:inline-block; width:7px; height:7px; border-radius:50%; background:#3BA55C; margin-right:7px; vertical-align:middle;}
+  .live-embed iframe{display:block; width:100%; aspect-ratio:16/10; border:0;}
+  .live-embed-head a{color:var(--accent); text-decoration:none;}
+
+  /* ---------- section shell ---------- */
+  section{margin-top:64px;}
+  .sec-head{display:flex; align-items:baseline; gap:12px; margin-bottom:22px;}
+  .sec-num{font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--warm);}
+  h2{font-size:1.5rem;}
+
+  p{margin:0 0 14px; color:var(--ink);}
+  .lede{color:var(--ink-soft);}
+
+  /* ---------- skills ---------- */
+  .skill-group{margin-bottom:20px;}
+  .skill-group h3{
+    font-family:'IBM Plex Mono', monospace; font-weight:600; font-size:12.5px;
+    letter-spacing:0.06em; text-transform:uppercase; color:var(--ink-soft); margin-bottom:10px;
+  }
+  .tags{display:flex; flex-wrap:wrap; gap:8px;}
+  .tag{
+    font-family:'IBM Plex Mono', monospace; font-size:13px; padding:5px 10px;
+    border:1px solid var(--line); border-radius:5px; background:var(--paper-raised);
+    color:var(--ink);
+  }
+
+  /* ---------- projects ---------- */
+  .project{
+    background:var(--paper-raised); border:1px solid var(--line); border-radius:10px;
+    padding:26px 26px 24px; margin-bottom:20px; box-shadow:var(--shadow);
+  }
+  .project-head{display:flex; justify-content:space-between; align-items:baseline; gap:16px; flex-wrap:wrap;}
+  .fig-group{display:flex; align-items:baseline; gap:10px;}
+  .fig{font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--ink-soft);}
+  .grade{
+    font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--warm);
+    border:1px solid var(--warm-soft); background:var(--warm-soft); border-radius:4px; padding:2px 7px;
+  }
+  .proj-num{color:var(--warm); margin-right:2px;}
+  .project h3{font-family:'Fraunces', serif; font-size:1.22rem; font-weight:600; margin-top:2px;}
+  .project .desc{margin-top:10px; color:var(--ink-soft); font-size:15px;}
+  .stack{display:flex; flex-wrap:wrap; gap:7px; margin-top:16px;}
+  .case-block{margin-top:14px;}
+  .case-block:first-of-type{margin-top:10px;}
+  .case-block .desc{margin:0;}
+  .case-label{
+    font-family:'IBM Plex Mono', monospace; font-weight:600; font-size:11.5px;
+    letter-spacing:0.05em; text-transform:uppercase; color:var(--warm); margin:0 0 6px;
+  }
+  .case-list{margin:0; padding-left:18px;}
+  .case-list li{margin-bottom:6px; font-size:14.5px; color:var(--ink-soft);}
+  .case-list li::marker{color:var(--accent);}
+  .case-list.sub-list{margin-top:6px;}
+  .case-list.sub-list li{margin-bottom:4px;}
+  .case-list li b{color:var(--ink); font-weight:600;}
+  .dashboard-shot{margin:18px 0 0; padding:0;}
+  .dashboard-shot img{
+    width:100%; display:block; border-radius:8px; border:1px solid var(--line);
+    box-shadow:var(--shadow);
+  }
+  .dashboard-shot figcaption{
+    margin-top:9px; font-family:'IBM Plex Mono', monospace; font-size:11.5px;
+    color:var(--ink-soft); line-height:1.5;
+  }
+  .cert-shot{max-width:560px;}
+  .cert-shot img{background:#fff;}
+  .dashboard-shot figcaption em{color:var(--accent); font-style:normal;}
+  .segment-table{
+    width:100%; border-collapse:collapse; margin-top:16px; font-size:13.5px;
+    background:var(--paper-raised); border:1px solid var(--line); border-radius:8px; overflow:hidden;
+  }
+  .segment-table th, .segment-table td{
+    padding:9px 12px; text-align:left; border-bottom:1px solid var(--line);
+  }
+  .segment-table th{
+    font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:0.04em; text-transform:uppercase;
+    color:var(--ink-soft); background:var(--paper); font-weight:600;
+  }
+  .segment-table td:first-child{font-weight:600; color:var(--accent); white-space:nowrap;}
+  .segment-table td:nth-child(2){font-family:'IBM Plex Mono', monospace; font-variant-numeric:tabular-nums;}
+  .segment-table tr:last-child td{border-bottom:none;}
+  .code-block{margin-top:18px;}
+  .code-label{
+    font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--ink-soft);
+    margin:0 0 8px;
+  }
+  .code-block pre{
+    margin:0; padding:16px 18px; background:var(--paper); border:1px solid var(--line);
+    border-radius:8px; overflow-x:auto;
+  }
+  details.full-script{margin-top:14px;}
+  details.full-script summary{
+    cursor:pointer; list-style:none; user-select:none;
+    font-family:'IBM Plex Mono', monospace; font-size:12.5px; font-weight:600;
+    color:var(--accent); padding:9px 14px; border:1px solid var(--line); border-radius:7px;
+    background:var(--accent-soft); display:inline-flex; align-items:center; gap:8px;
+  }
+  details.full-script summary::-webkit-details-marker{display:none;}
+  details.full-script summary::before{content:"▸"; font-size:11px; transition:transform 0.15s ease;}
+  details.full-script[open] summary::before{transform:rotate(90deg);}
+  details.full-script[open] summary{border-radius:7px 7px 0 0; margin-bottom:0;}
+  details.full-script pre{
+    margin:0; padding:16px 18px; background:var(--paper); border:1px solid var(--line); border-top:none;
+    border-radius:0 0 7px 7px; overflow:auto; max-height:520px;
+  }
+  details.full-script code{
+    font-family:'IBM Plex Mono', monospace; font-size:11.5px; line-height:1.6; color:var(--ink);
+    white-space:pre;
+  }
+  .code-block code{
+    font-family:'IBM Plex Mono', monospace; font-size:12.5px; line-height:1.65; color:var(--ink);
+    white-space:pre;
+  }
+  .stack span{
+    font-family:'IBM Plex Mono', monospace; font-size:12px; padding:3px 8px;
+    border-radius:4px; background:var(--accent-soft); color:var(--accent);
+  }
+
+  /* ---------- about ---------- */
+  .about-grid{display:grid; grid-template-columns:1fr; gap:18px;}
+  .note{
+    border-left:3px solid var(--warm); background:var(--warm-soft); border-radius:0 8px 8px 0;
+    padding:14px 18px; font-size:14.5px; color:var(--ink-soft);
+  }
+  .note b{color:var(--ink); font-weight:600;}
+
+  /* ---------- experience & education ---------- */
+  .entry{margin-bottom:26px;}
+  .entry:last-child{margin-bottom:0;}
+  .entry-head{display:flex; justify-content:space-between; align-items:baseline; gap:16px; flex-wrap:wrap;}
+  .entry-head h3{font-family:'Fraunces', serif; font-size:1.1rem; font-weight:600;}
+  .entry-org{font-size:14px; color:var(--ink-soft); margin-top:2px;}
+  .entry-date{font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--ink-soft); white-space:nowrap;}
+  .entry ul{margin:12px 0 0; padding-left:18px;}
+  .entry li{margin-bottom:8px; font-size:14.5px; color:var(--ink-soft);}
+  .entry li b{color:var(--ink); font-weight:600;}
+  .entry li::marker{color:var(--accent);}
+
+  /* ---------- contact ---------- */
+  .contact-card{
+    background:var(--paper-raised); border:1px solid var(--line); border-radius:10px;
+    padding:26px; display:flex; flex-direction:column; gap:14px; box-shadow:var(--shadow);
+  }
+  .contact-row{display:flex; align-items:center; gap:12px; flex-wrap:wrap;}
+  .contact-label{font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--ink-soft); width:110px; flex-shrink:0;}
+  a.mail{color:var(--accent); text-decoration:none; font-weight:500; border-bottom:1px solid var(--accent-soft);}
+  a.mail:hover{border-bottom-color:var(--accent);}
+  .placeholder{
+    font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--ink-soft);
+    border:1px dashed var(--line); border-radius:6px; padding:5px 10px; background:transparent;
+  }
+
+  footer{margin-top:64px; padding-top:24px; border-top:1px solid var(--line);
+    font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--ink-soft);
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;}
+
+  /* ---------- justified body text ---------- */
+  .pitch, .lede, .desc, .note, .case-list li, .entry li{
+    text-align:justify; text-justify:inter-word; hyphens:auto; -webkit-hyphens:auto;
+  }
+
+  @media (max-width:480px){
+    .wrap{padding:44px 18px 72px;}
+    .contact-label{width:auto;}
+    .entry-date{white-space:normal;}
+  }
+
+  [hidden]{display:none!important}
+  /* ---------- hero actions ---------- */
+  .cta-row{display:flex; flex-wrap:wrap; gap:10px; margin-top:22px;}
+  .btn{display:inline-flex; align-items:center; gap:6px; font-family:'IBM Plex Mono', monospace; font-size:13px; font-weight:600; padding:9px 14px; border-radius:7px; text-decoration:none; border:1px solid var(--accent); color:var(--accent); background:var(--paper-raised);}
+  .btn:hover{background:var(--accent-soft);}
+  .btn.primary{background:var(--accent); color:var(--paper-raised);}
+  .btn.primary:hover{filter:brightness(1.08); background:var(--accent);}
+  .pitch{text-align:left;}
+  @media (max-width:520px){ .desc, .lede, .note, .case-list li, .entry li{text-align:left;} }
+  .rtw{color:var(--accent); font-weight:600;}
+  /* ---------- project cards ---------- */
+  .cards{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .card{display:flex; flex-direction:column; background:var(--paper-raised); border:1px solid var(--line); border-radius:10px; overflow:hidden; box-shadow:var(--shadow); text-decoration:none; color:inherit; transition:transform .15s ease, border-color .15s ease;}
+  .card:hover{transform:translateY(-2px); border-color:var(--accent);}
+  .card.wide{grid-column:1 / -1;}
+  .card-thumb{aspect-ratio:16/9; overflow:hidden; border-bottom:1px solid var(--line); background:var(--paper);}
+  .card-thumb img{width:100%; height:100%; object-fit:cover; object-position:top left; display:block;}
+  .card-body{padding:16px 18px 18px; display:flex; flex-direction:column; gap:10px; flex:1;}
+  .card-kicker{font-family:'IBM Plex Mono', monospace; font-size:11.5px; letter-spacing:0.05em; text-transform:uppercase; color:var(--warm);}
+  .card h3{font-family:'Fraunces', serif; font-size:1.12rem; line-height:1.25;}
+  .card p{margin:0; font-size:14.5px; color:var(--ink-soft); line-height:1.5;}
+  .card .stack{margin-top:auto; padding-top:4px;}
+  .card-link{font-family:'IBM Plex Mono', monospace; font-size:12.5px; font-weight:600; color:var(--accent);}
+  @media (max-width:640px){ .cards{grid-template-columns:1fr;} }
+  /* ---------- case study pages ---------- */
+  .crumbs{display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; font-family:'IBM Plex Mono', monospace; font-size:12.5px; margin-bottom:28px;}
+  .crumbs a{color:var(--accent); text-decoration:none;}
+  .case-hero h1{font-size:clamp(1.8rem, 4.5vw, 2.4rem); line-height:1.1; margin-top:6px;}
+  .case-hero .stack{margin-top:14px;}
+  .case-page{margin-top:22px;}
+  .case-kpis{margin:18px 0 16px;}
+  .case-kpis .kpi-val{font-size:1.35rem;}
+  .pager{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:40px;}
+  .pager a{display:block; padding:14px 16px; border:1px solid var(--line); border-radius:9px; background:var(--paper-raised); text-decoration:none; color:var(--ink);}
+  .pager a:hover{border-color:var(--accent);}
+  .pager small{display:block; font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--ink-soft); margin-bottom:3px;}
+  .pager .next{text-align:right; grid-column:2;}
+  @media (max-width:520px){ .pager{grid-template-columns:1fr;} .pager .next{grid-column:1;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb">
+    <a href="index.html#projects">← All projects</a>
+    <span><a href="Lan_Ngoc_Mau_CV.pdf" target="_blank" rel="noopener">CV</a> · <a href="mailto:lanngok@gmail.com">Email</a></span>
+  </nav>
+  <header class="case-hero">
+    <p class="eyebrow">Case study 4 of 5 · Healthcare operations · LSE course 2 · 83%</p>
+    <h1>Healthcare Operations &amp; Capacity Analysis — NHS</h1>
+    <div class="stack"><span>Python</span><span>pandas</span><span>matplotlib</span><span>TextBlob</span></div>
+    <div class="kpis case-kpis"><div class="kpi"><div class="kpi-val">−23.4%</div><div class="kpi-lbl">BOB ICB appointments</div></div><div class="kpi"><div class="kpi-val">22–25%</div><div class="kpi-lbl">fall in GP and practice staff volumes</div></div><div class="kpi"><div class="kpi-val">46%</div><div class="kpi-lbl">same-day share, stable</div></div><div class="kpi"><div class="kpi-val">237</div><div class="kpi-lbl">extra appointments per 1,000 patients to reach the national average</div></div></div>
+    <p class="takeaway"><span class="tk-label">Key takeaway</span>BOB ICB's 23.4% drop in appointments was a capacity problem, not falling demand, so it can be fixed by redesigning bookings and closing data-quality gaps rather than hiring more staff.</p>
+  </header>
+  <article class="project case-page">
+      
+      <div class="case-block">
+        <p class="case-label">Business Context &amp; Problem</p>
+        <p class="desc">Analysed NHS England's national appointment dataset (Aug 2021–Jun 2022) to diagnose why NHS Buckinghamshire, Oxfordshire and Berkshire West (BOB) ICB saw a 23.4% drop in appointments, and whether the answer was more staff or a different way of working.</p>
+      </div>
+      <div class="case-block">
+        <p class="case-label">Technical Execution &amp; Tools Used</p>
+        <ul class="case-list">
+          <li><b>Python (pandas)</b> — data cleaning, aggregation, and benchmarking BOB ICB against the ten highest-volume ICBs and the national average per 1,000 patients.</li>
+          <li><b>matplotlib</b> — benchmark dumbbell chart, staff-type trend lines, and waiting-time mix over time.</li>
+          <li><b>TextBlob</b> — scraped and sentiment-scored healthcare-related tweets to test social media as an early-warning signal.</li>
+        </ul>
+      </div>
+      <div class="case-block">
+        <p class="case-label">Key Business Insights &amp; Impact</p>
+        <ul class="case-list">
+          <li><b>Steepest decline:</b> BOB ICB's 23.4% drop was the largest among the ten highest-volume ICBs — roughly 3 points worse than similarly-sized peers, which mostly fell 16–22% — leaving it 4.6% below the national average of appointments per 1,000 patients.</li>
+          <li><b>Supply, not demand:</b> GP and Other Practice Staff volumes both fell 22–25% between the November peak and April trough, while the split between the two groups barely shifted — pointing to a capacity cut, not a change in patient behaviour.</li>
+          <li><b>Stable booking pattern:</b> same-day appointments held steady at 46% of the total across all ten months, showing the booking system was reactive by design rather than destabilised.</li>
+          <li><b>Social media signal:</b> the tweet sample proved too sparse and largely unrelated to the NHS to serve as a useful early-warning indicator.</li>
+          <li><b>Strategic recommendation:</b> no extra headcount needed — instead, redesign the booking system, close the "Unmapped"/"Inconsistent Mapping" data-quality gap, and deploy automated reminders to reduce non-attendance. BOB ICB would need roughly 237 more appointments per 1,000 patients to close the gap to the national average.</li>
+        </ul>
+      </div>
+      
+      <figure class="dashboard-shot">
+        <img src="img/fig02.png" alt="Dumbbell chart comparing average daily appointments in November 2021 versus April 2022 across the top 10 NHS ICBs by volume, with NHS BOB ICB (E54000044) showing the steepest decline at -23.4%" loading="lazy">
+        <figcaption>Benchmarked against the other 9 highest-volume ICBs: peers dropped 16&ndash;22% over the same period &mdash; BOB ICB (E54000044, bottom) fell furthest at -23.4%.</figcaption>
+      </figure>
+      <figure class="dashboard-shot">
+        <img src="img/fig03.png" alt="Line chart: Total appointments per healthcare professional type (GP, Other Practice Staff, Unknown) from August 2021 to June 2022, showing both GP and Other Practice Staff volumes falling and recovering together" loading="lazy">
+        <figcaption>GP and Other Practice Staff volumes moved together across the whole period — evidence the drop was supply-side, not a shift in which staff type patients were seeing.</figcaption>
+      </figure>
+      <figure class="dashboard-shot">
+        <img src="img/fig04.png" alt="Percentage share of waiting times in NHS BOB ICB, August 2021 to June 2022, broken down by same-day, 1 day, 2-7 days, 8-14 days, 15-21 days, 22-28 days and more than 28 days" loading="lazy">
+        <figcaption>The full waiting-time mix barely moved across the ten months — same-day held around 46&ndash;48% throughout, confirming the appointment shortfall was a volume cut, not a change in how quickly patients were seen.</figcaption>
+      </figure>
+      <div class="code-block">
+        <p class="code-label">Core diagnostic — did the mix of appointments shift, or just the volume?</p>
+        <pre><code>ar_44_hcp_test = ar_44_hcp.groupby(['hcp_type', 'appointment_month'])['count_of_appointments'].sum().reset_index()
+
+ar_44_hcp_test_pivot = (
+    ar_44_hcp_test.pivot(index='hcp_type', columns='appointment_month', values='count_of_appointments')
+    .rename(columns={'2021-11': 'Nov 2021', '2022-04': 'Apr 2022'})
+    .reset_index()
+)
+
+ar_44_hcp_test_pivot['Appointments Drop %'] = (
+    (ar_44_hcp_test_pivot['Nov 2021'] - ar_44_hcp_test_pivot['Apr 2022'])
+    / ar_44_hcp_test_pivot['Nov 2021'] * 100
+).round(2)
+
+share_nov = ar_44_hcp_test_pivot['Nov 2021'] / ar_44_hcp_test_pivot['Nov 2021'].sum() * 100
+share_apr = ar_44_hcp_test_pivot['Apr 2022'] / ar_44_hcp_test_pivot['Apr 2022'].sum() * 100
+ar_44_hcp_test_pivot['Share Shift (pp)'] = share_apr - share_nov
+# -&gt; GP -22.8%, Other Practice Staff -25.2%, but the share barely moved:
+#    both fell together, so this reads as a supply-side cut, not a change in patient mix.</code></pre>
+      </div>
+      <details class="full-script">
+        <summary>View full Python notebook</summary>
+        <pre><code># ### LSE Data Analytics Online Career Accelerator
+# # Course 2: Data Analytics using Python
+
+# ## Assignment: Diagnostic Analysis using Python
+# You’ll be working with real-world data to address a problem faced by the National Health Service (NHS). The analysis will require you to utilise Python to explore the available data, create visualisations to identify trends, and extract meaningful insights to inform decision-making.
+
+# ### A note for students using this template
+# This Jupyter Notebook is a template you can use to complete the Course 2 assignment: Diagnostic Analysis using Python.
+# Keep in mind:
+# - You are **not required** to use this template to complete the assignment.
+# - If you decide to use this template for your assignment, make a copy of the notebook and save it using the assignment naming convention: **LastName_FirstName_DA201_Assignment_Notebook.ipynb**.
+# - The workflow suggested in this template follows the Assignment Activities throughout the course.
+# - Refer to the guidance on the Assignment Activity pages for specific details.
+# - The markup and comments in this template identify the key elements you need to complete before submitting the assignment.
+# - Make this notebook your own by adding your process notes and rationale using markdown, add links, screenshots, or images to support your analysis, refine or clarify the comments, and change the workflow to suit your process.
+# - All elements should be functional and visible in your Notebook.
+# - After completing each Assignment Activity, back up your work to a safe location. This would allow you to revert to a previous state in the case of making a mistake in the code, or deleting a section by mistake. (A simple way of doing this is to save or mail a compressed version at frequent intervals).
+# &gt; ***Markdown*** Remember to change cell types to `Markdown`. You can review [Markdown basics](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax) to find out how to add formatted text, links, and images to your notebook.
+
+# #
+
+# # Assignment activity 1
+
+# ### Plan your approach
+
+# ##### Current Situation
+# - Refine business questions to actionable analytic question
+# - NHS need to expand its infrastructure and resources to match with increasing population capacity -&gt; utilisation trends of each component it its network.
+# ##### Contrast opinions about the utilisation of NHS resources
+# - NHS&#x27;s capacity is not enough to cope with current situation
+# - The current trends in utilisation shows no need to put more effort in making better use of existing infrastructure and resources.
+# ##### The missed appointments needs to be scrutinized and the aim to reducing or eliminating them
+# - Has there beeen adequate staff and capacity in the networks?
+# - What was the actual utilisation of resources?
+
+# #### Questions to guide initial thoughts
+# - The population is increasing -&gt; more people in need of NHS services -&gt; however why more missed appoinments -&gt; doesnt fully reflect the whole situation.
+# - Numbers and appointments and records per month?
+# - Reasons for cancelling appointments: got an appointment way too far from their expected date -&gt; no use to see doctor because they might already recover until the apppoinment?
+# - How many locations are there?
+# - 5 locations with highest number of appointmennts?
+# - How many service settings, context types, national categories, number of appointments?
+# ##### Lead time between calling and getting an appointment: lead time for each category of symptoms
+# ##### What symptoms that people tend to skip appointments/ any similar patterns/group?
+# - Any others reasons that might contribute to this: number of locations/ monthly and seasonal trends based on number of appointments for service settings, context types, national categories?
+# - What can be learnt from intepreting opinions from Twitter? Does they all tell us the same thing? Do customers provide their reason behing missed appointments?
+# - What can top trending hashtag on twitter tell about? will it help the decision making process?
+# - Patterns in people tend to have more appointments than others? Will they cancel more than others
+# - Patterns in people tend to not show up? Were it symptoms/illness categories related or any other factors?
+# - Conversion rate between &quot;Booked&quot; to &quot;Attended/Unknown/DNA&quot;:any patterns???
+# -
+# #### -&gt; Try to gain more insights by looking at patterns
+# #### Recommendations:
+# - How to utilise staff when patients missed appointments? What would nurses/doctors do in case their patients do not show up? Is there anything they can work on?
+
+# # Assignment activity 2
+
+# ### Prepare your workstation
+
+# Import the necessary libraries.
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib as plt
+
+# Optional - Ignore warnings.
+import warnings
+warnings.filterwarnings(&#x27;ignore&#x27;)
+
+# Import and sense-check the actual_duration.csv data set as ad.
+ad = pd.read_csv(&#x27;actual_duration.csv&#x27;)
+
+# View the DataFrame.
+ad
+
+# Determine whether there are missing values.
+ad_na = ad[ad.isna().any(axis=1)]
+
+ad_na
+
+# Confirm whether no misisng values
+
+ad.isna().sum()
+
+# Determine the metadata of the data set.
+type(ad)
+
+# Describe the dataset
+ad.info()
+
+# Change the datatype of appointment_date
+
+ad[&#x27;appointment_date&#x27;] = pd.to_datetime(ad[&#x27;appointment_date&#x27;])
+
+ad.dtypes
+
+# Print the DataFrame
+
+ad
+
+# Rows and columns count
+ad.shape
+
+# Determine the descriptive statistics of the data set.
+ad.describe()
+
+# Import and sense-check the appointments_regional.csv data set as ar.
+ar = pd.read_csv(&#x27;appointments_regional.csv&#x27;)
+
+# View the DataFrame.
+ar
+
+# Determine whether there are missing values.
+ar_na = ar[ar.isna().any(axis=1)]
+
+ar_na
+
+# Confirm whether no missing values
+
+ar.isna().sum()
+
+# Determine the metadata of the data set.
+type(ar)
+
+# Describe the dataset
+ar.info()
+
+# Determine the descriptive statistics of the data set.
+ar.describe()
+
+# Import and sense-check the national_categories.xlsx data set as nc.
+nc = pd.read_excel(&#x27;national_categories.xlsx&#x27;)
+# View the DataFrame.
+nc.head()
+
+# Determine whether there are missing values.
+nc_na = nc[nc.isna().any(axis=1)]
+
+nc_na
+
+# Confirm whether no missing values
+nc.isna().sum()
+
+# Describe the dataset
+
+nc.info()
+
+# Determine the metadata of the data set.
+type(nc)
+
+# Check the dtype
+
+nc.dtypes
+
+# Determine the descriptive statistics of the data set.
+nc.describe()
+
+# ### Explore the data set
+
+# **Question 1:** How many locations are there in the data set?
+
+# Getting columns names
+
+list(ad.columns)
+
+# Determine the number of locations.
+
+ad[&#x27;sub_icb_location_name&#x27;].value_counts()
+
+# Confirm number of locations.
+
+ad[&#x27;sub_icb_location_code&#x27;].value_counts()
+
+# **Question 2:** What are the five locations with the highest number of appointments?
+
+# Creating a new dataframe for easy analysis without changing the original one
+
+ad1 = pd.DataFrame(ad, columns = [&#x27;sub_icb_location_name&#x27;, &#x27;count_of_appointments&#x27;])
+
+ad1
+
+# Determine the top five locations based on record count.
+
+ad1_sorted = ad1.groupby(&#x27;sub_icb_location_name&#x27;)[&#x27;count_of_appointments&#x27;]\
+   .sum()\
+   .sort_values(ascending=False)\
+   .head()
+
+ad1_sorted.head()
+
+# **Question 3:** How many service settings, context types, national categories, and appointment statuses are there?
+
+# Determine the number of service settings
+nc[&#x27;service_setting&#x27;].value_counts()
+
+# Determine the number of context types.
+nc[&#x27;context_type&#x27;].value_counts()
+
+# Determine the number of national categories.
+nc[&#x27;national_category&#x27;].value_counts()
+
+# Determine the number of appointment statuses.
+ar[&#x27;appointment_status&#x27;].value_counts()
+
+# #
+
+# # Assignment activity 3
+
+# ### Continue to explore the data and search for answers to more specific questions posed by the NHS.
+
+# **Question 1:** Between what dates were appointments scheduled?
+
+# View the first five rows of appointment_date for the ad DataFrame to determine the date format.
+ad[&#x27;appointment_date&#x27;].head()
+
+# View the first five rows of appointment_date for the nc DataFrame to determine the date format.
+nc[&#x27;appointment_date&#x27;].head()
+
+# Determine the minimum and maximum dates in the ad DataFrame.
+# Use appropriate docstrings.
+ad[&#x27;appointment_date&#x27;].agg([&#x27;min&#x27;, &#x27;max&#x27;])
+
+# Format the datatype of appointment_date column
+
+nc[&#x27;appointment_date&#x27;]= pd.to_datetime(nc[&#x27;appointment_date&#x27;])
+
+# Determine the minimum and maximum dates in the nc DataFrame.
+# Use appropriate docstrings.
+nc[&#x27;appointment_date&#x27;].agg([&#x27;min&#x27;, &#x27;max&#x27;])
+
+# **Question 2:** Which service setting was the most popular for NHS North West London from 1 January to 1 June 2022?
+
+# Create a subset of the nc DataFrame
+
+nc_subset = nc[nc[&#x27;sub_icb_location_name&#x27;] == &#x27;NHS North West London ICB - W2U3Z&#x27;]
+
+nc_subset
+
+# Specify the date of appointments from 1 January 2022 to 1 June 2022
+
+nc_subset = nc_subset[nc_subset[&#x27;appointment_date&#x27;].between(&#x27;2022-01-01&#x27;, &#x27;2022-06-01&#x27;)]
+
+nc_subset
+
+# For each of these service settings, determine the number of records available for the period and the location. 
+nc_subset[&#x27;service_setting&#x27;].value_counts()
+
+# View the output.
+print(nc_subset[&#x27;service_setting&#x27;].value_counts())
+
+# Count number of appointments with each service setting
+
+nc_subset_appointments1 = nc_subset.groupby(&#x27;service_setting&#x27;)[[&#x27;count_of_appointments&#x27;]]
+
+# View the output
+nc_subset_appointments1.sum().sort_values(by=&#x27;count_of_appointments&#x27;, ascending=False)
+
+# **Question 3:** Which month had the highest number of appointments?
+
+# Number of appointments per month == sum of count_of_appointments by month.
+monthly_appointments = nc[&#x27;count_of_appointments&#x27;].groupby([nc[&#x27;appointment_date&#x27;].dt.year.rename(&#x27;Year&#x27;),
+                                                            nc[&#x27;appointment_date&#x27;].dt.month.rename(&#x27;Month&#x27;)])
+monthly_appointments
+
+# Use the groupby() and sort_values() functions.
+monthly_appointments.sum().sort_values(ascending=False)
+
+# **Question 4:** What was the total number of appoinments per month?
+
+# Total number of records per month.
+total_monthly_appointments = pd.DataFrame(monthly_appointments.sum().sort_values(ascending=False))
+
+total_monthly_appointments
+
+# # Assignment activity 4
+
+# ### Create visualisations and identify possible monthly and seasonal trends in the data.
+
+# Import the necessary libraries.
+import seaborn as sns
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+# Set figure size.
+sns.set(rc={&#x27;figure.figsize&#x27;:(15, 12)})
+
+# Set the plot style as white.
+sns.set_style(&#x27;white&#x27;)
+
+# ### Objective 1
+# Create three visualisations indicating the number of appointments per month for service settings, context types, and national categories.
+
+# Creating a new nc subset to use for analysis without changing the original nc dataset
+
+nc_copy = nc
+
+nc_copy
+
+# Change the datatype of the appointment date to string to allow for easier plotting.
+
+nc_copy[&#x27;appointment_date&#x27;]= pd.to_datetime(nc_copy[&#x27;appointment_date&#x27;]).dt.strftime(&#x27;%Y-%m-%d&#x27;)
+
+print(nc_copy.dtypes)
+
+# Adding new columns as count_millions for appointment counts
+
+nc_copy[&#x27;count_millions&#x27;]= nc_copy[&#x27;count_of_appointments&#x27;]/1_000_000
+
+nc_copy
+
+# Aggregate on service setting and determine the sum of records per month.
+nc_copy.groupby(&#x27;service_setting&#x27;)[[&#x27;count_of_appointments&#x27;]]
+# View output.
+nc_copy.groupby(&#x27;service_setting&#x27;)[[&#x27;count_of_appointments&#x27;]].sum().sort_values(by=&#x27;count_of_appointments&#x27;, ascending=False)
+
+# Aggregate on monthly level and determine the sum of records per month.
+
+nc_copy.groupby([&#x27;appointment_month&#x27;])[[&#x27;count_of_appointments&#x27;]].sum().sort_values(by=&#x27;count_of_appointments&#x27;, ascending=False)
+
+# Aggregate on monthly level and determine the sum of records per month - count by millions
+nc_monthly = nc_copy.groupby([&#x27;appointment_month&#x27;,&#x27;service_setting&#x27;])[[&#x27;count_millions&#x27;]].sum()
+
+nc_monthly
+
+# **Service settings:**
+
+# Plot the appointments over the available date range, and review the service settings for months.
+# Create a lineplot.
+fig, ax = plt.subplots()
+fig.set_size_inches(10,6)
+# Plot data
+
+sns.lineplot(x=&#x27;appointment_month&#x27;, y=&#x27;count_millions&#x27;, hue=&#x27;service_setting&#x27;, data=nc_monthly,
+            errorbar=None, linewidth=2, marker=&#x27;o&#x27;, ax=ax)
+
+# Adding title and labels
+ax.set_title(&#x27;Appointments Over Time by Service Setting&#x27;, fontsize= 20, fontweight=&#x27;bold&#x27;)
+ax.set_xlabel(&#x27;Appointment Month&#x27;, fontsize= 16, fontweight=&#x27;bold&#x27;)
+ax.set_ylabel(&#x27;Count of Appointments (millions)&#x27;,fontsize= 16, fontweight=&#x27;bold&#x27;)
+
+# Adding tick marks
+
+ax.tick_params(axis=&#x27;x&#x27;, which=&#x27;major&#x27;, bottom=True,
+               length=5, width=1.5, rotation=45)
+
+ax.tick_params(axis=&#x27;y&#x27;, which=&#x27;major&#x27;, left=True,
+               length=5, width=1.5)
+
+# Adding legend
+plt.legend(title=&#x27;Service Setting&#x27;, bbox_to_anchor=(1.05, 1),
+          title_fontsize= 14, frameon=True, shadow=True)
+
+# Plot figure
+plt.tight_layout()  
+plt.savefig(&#x27;appointments_by_service_setting.png&#x27;, dpi=300)
+plt.show()
+
+# **Context types:**
+
+# Create a separate data set that can be used in future weeks.
+
+context_monthly= nc_copy.groupby([&#x27;context_type&#x27;,&#x27;appointment_month&#x27;])[[&#x27;count_millions&#x27;]].sum()
+                                
+# View output.
+context_monthly
+
+# Plot the appointments over the available date range, and review the context types for months.
+# Create a lineplot.
+
+fig, ax = plt.subplots()
+fig.set_size_inches(10,6)
+# Plot data
+
+sns.lineplot(x=&#x27;appointment_month&#x27;, y=&#x27;count_millions&#x27;, hue=&#x27;context_type&#x27;, data=context_monthly,
+            errorbar=None, linewidth=2, marker=&#x27;o&#x27;, ax=ax)
+
+# Adding title and labels
+
+ax.set_title(&#x27;Appointments Over Time by Context Type&#x27;, fontsize= 20, fontweight=&#x27;bold&#x27;)
+ax.set_xlabel(&#x27;Appointment Month&#x27;,fontsize= 16, fontweight=&#x27;bold&#x27;)
+ax.set_ylabel(&#x27;Count of Appointments (millions)&#x27;,fontsize= 16, fontweight=&#x27;bold&#x27;)
+
+# Adding tick marks
+
+ax.tick_params(axis=&#x27;x&#x27;, which=&#x27;major&#x27;, bottom=True,
+               length=5, width=1.5, rotation=45)
+
+ax.tick_params(axis=&#x27;y&#x27;, which=&#x27;major&#x27;, left=True,
+               length=5, width=1.5)
+
+# Adding legend
+plt.legend(title=&#x27;Context Type&#x27;, bbox_to_anchor=(1.05, 1),
+          title_fontsize= 14, frameon=True, shadow=True)
+
+# Plot figure
+plt.tight_layout()  
+plt.savefig(&#x27;appointments_by_context_type.png&#x27;, dpi=300)
+plt.show()
+
+# **National categories:**
+
+# Create a separate data set that can be used in future weeks. 
+
+national_categories= nc_copy.groupby([&#x27;appointment_month&#x27;,&#x27;national_category&#x27;])\
+                                    [[&#x27;count_millions&#x27;]]\
+                                    .sum()
+# View output.
+national_categories
+
+# ### Extra steps:
+# - As there are many categories in the national category, plotting them altogether without order would make it hard to follow
+# -&gt; Will create different variable to make arrange legends that can follow the order of each lineplot
+
+# get the last value of each category
+last_values = national_categories.groupby(&#x27;national_category&#x27;)\
+              [&#x27;count_millions&#x27;]\
+                .last().sort_values(ascending=False)
+
+last_values
+
+all_categories = last_values.index.tolist()
+
+all_categories
+
+# Plot the appointments over the available date range, and review the national categories for months.
+# Adding more color options for better visualisation
+import matplotlib.cm as cm
+colors = cm.tab20.colors 
+
+# Create a lineplot.
+fig, ax = plt.subplots()
+fig.set_size_inches(16,10)
+# Plot data
+
+sns.lineplot(x=&#x27;appointment_month&#x27;, y=&#x27;count_millions&#x27;, hue=&#x27;national_category&#x27;,
+             hue_order=all_categories, # control legend order
+             data=national_categories,
+             errorbar=None, 
+             linewidth=2, marker=&#x27;o&#x27;, ax=ax, palette= colors)
+
+# Adding title and labels
+
+ax.set_title(&#x27;National Categories Over Time&#x27;, fontsize= 20, fontweight=&#x27;bold&#x27;)
+ax.set_xlabel(&#x27;Appointment Month&#x27;,fontsize= 16, fontweight=&#x27;bold&#x27;)
+ax.set_ylabel(&#x27;Count of Appointments (millions)&#x27;,fontsize= 16, fontweight=&#x27;bold&#x27;)
+
+# Adding tick marks
+
+ax.tick_params(axis=&#x27;x&#x27;, which=&#x27;major&#x27;, bottom=True,
+               length=5, width=1.5, rotation=45)
+
+ax.tick_params(axis=&#x27;y&#x27;, which=&#x27;major&#x27;, left=True,
+               length=5, width=1.5)
+
+# Adding legend
+plt.legend(bbox_to_anchor=(1.05, 1),
+          title=&#x27;National Category&#x27;, title_fontsize=16,
+           frameon=True, shadow=True)
+
+# Plot figure
+plt.tight_layout()  
+plt.savefig(&#x27;appointments_by_national_category.png&#x27;, dpi=300)
+plt.show()
+
+# #### As the above chart was overcrowded, decided to plot another chart that limits to 5 top categories
+
+# Limited to top 7 National Categories
+
+top7 = last_values.head(7).index.tolist()
+
+top7
+
+# Plot the appointments over the available date range, and review the national categories for months.
+# Create a lineplot.
+fig, ax = plt.subplots()
+fig.set_size_inches(10,6)
+# Plot data
+
+sns.lineplot(x=&#x27;appointment_month&#x27;, y=&#x27;count_millions&#x27;, hue=&#x27;national_category&#x27;,
+             hue_order=top7, # control legend order
+             data=national_categories,
+             errorbar=None, 
+             linewidth=2, marker=&#x27;o&#x27;, ax=ax, palette=&#x27;Set2&#x27;)
+
+# Adding title and labels
+
+ax.set_title(&#x27;Top 7 National Categories Over Time&#x27;, fontsize= 20, fontweight=&#x27;bold&#x27;)
+ax.set_xlabel(&#x27;Appointment Month&#x27;,fontsize= 16, fontweight=&#x27;bold&#x27;)
+ax.set_ylabel(&#x27;Count of Appointments (millions)&#x27;,fontsize= 16, fontweight=&#x27;bold&#x27;)
+
+# Adding tick marks
+
+ax.tick_params(axis=&#x27;x&#x27;, which=&#x27;major&#x27;, bottom=True,
+               length=5, width=1.5, rotation=45)
+
+ax.tick_params(axis=&#x27;y&#x27;, which=&#x27;major&#x27;, left=True,
+               length=5, width=1.5)
+
+# Adding legend
+plt.legend(bbox_to_anchor=(1.05, 1),
+          title=&#x27;National Category&#x27;, title_fontsize=14,
+          frameon=True, shadow=True)
+
+# Plot figure
+plt.tight_layout()  
+plt.savefig(&#x27;appointments_by_top 7_national_category.png&#x27;, dpi=300)
+plt.show()
+
+# Filter the last 11 national categories
+
+last11 = last_values.tail(11).index.tolist()
+
+last11
+
+# Plot the appointments over the available date range, and review the national categories for months.
+# Create a lineplot.
+fig, ax = plt.subplots()
+fig.set_size_inches(16,8)
+# Plot data
+
+sns.lineplot(x=&#x27;appointment_month&#x27;, y=&#x27;count_millions&#x27;, hue=&#x27;national_category&#x27;,
+             hue_order=last11, # control legend order
+             data=national_categories,
+             errorbar=None, 
+             linewidth=2, marker=&#x27;o&#x27;, ax=ax, palette=&#x27;Set2&#x27;)
+
+# Adding title and labels
+
+ax.set_title(&#x27;11 Other National Categories Over Time&#x27;, fontsize= 20, fontweight=&#x27;bold&#x27;)
+ax.set_xlabel(&#x27;Appointment Month&#x27;,fontsize= 16, fontweight=&#x27;bold&#x27;)
+ax.set_ylabel(&#x27;Count of Appointments (millions)&#x27;,fontsize= 16, fontweight=&#x27;bold&#x27;)
+
+# Adding tick marks
+
+ax.tick_params(axis=&#x27;x&#x27;, which=&#x27;major&#x27;, bottom=True,
+               length=5, width=1.5, rotation=45)
+
+ax.tick_params(axis=&#x27;y&#x27;, which=&#x27;major&#x27;, left=True,
+               length=5, width=1.5)
+
+# Adding legend
+plt.legend(bbox_to_anchor=(1.05, 1),
+          title=&#x27;National Category&#x27;, title_fontsize=14,
+          frameon=True, shadow=True)
+
+# Plot figure
+plt.tight_layout()  
+plt.savefig(&#x27;appointments_by_11_other_types_national_category.png&#x27;, dpi=300)
+plt.show()
+
+# #### Keytakeaways from above charts:
+# - The majority of national category type appointments show the same pattern over the period: steady rise from August 2021 to November 2021 and reached their peak in November 2021, followed by a sharp drop in December 2021, then kept a steady rise until March 2022 before dropped sharply in April 2022.
+# - Outliers that caught my attention:
+# + Planned clinical procedure and planned clinics: all reached their top levels of appointments in October 2021
+# + Patient contact during Care Home Round rise steadily over the time.
+# -&gt; Will take a look further into understanding these details
+
+# #### Investigation into Planned Clinics and Planned Clinical Procedure
+
+nc_clinics = nc[nc[&#x27;national_category&#x27;].isin([&#x27;Planned Clinics&#x27;, &#x27;Planned Clinical Procedure&#x27;])]
+
+nc_clinics
+
+nc_clinics.columns.tolist()
+
+nc_clinics[&#x27;appointment_month&#x27;]= pd.to_datetime(nc[&#x27;appointment_month&#x27;]).dt.strftime(&#x27;%Y-%m&#x27;)
+
+# #### Finding which ICB drove the strange pattern in 2021-09 and 2021-10
+
+nc_clinics_1 = nc_clinics.groupby([&#x27;appointment_month&#x27;, &#x27;sub_icb_location_name&#x27;,&#x27;national_category&#x27;])[&#x27;count_millions&#x27;].sum().reset_index()
+
+nc_clinics_1
+
+spike_period = nc_clinics_1[nc_clinics_1[&#x27;appointment_month&#x27;].isin([&#x27;2021-09&#x27;, &#x27;2021-10&#x27;])]
+
+top_icb_spike = spike_period.groupby(&#x27;sub_icb_location_name&#x27;)[&#x27;count_millions&#x27;]\
+                 .sum()\
+                 .sort_values(ascending=False).head(8)
+top_icb_spike
+
+# Create a DataFrame that include all 8 sub ICBS that got the most appointments in those 2 national category types
+nc_clinics_2 = nc_clinics_1[nc_clinics_1[&#x27;sub_icb_location_name&#x27;].isin([&#x27;NHS North West London ICB - W2U3Z&#x27;, &#x27;NHS Hampshire and Isle Of Wight ICB - D9Y0V&#x27;,
+                                                           &#x27;NHS Devon ICB - 15N&#x27;, &#x27;NHS Kent and Medway ICB - 91Q&#x27;,
+                                                           &#x27;NHS Norfolk and Waveney ICB - 26A&#x27;, &#x27;NHS North East London ICB - A3A8R&#x27;,
+                                                           &#x27;NHS Bedfordshire Luton and Milton Keynes ICB - M1J4Y&#x27;, &#x27;NHS Black Country ICB - D2P2L&#x27;])]
+nc_clinics_2
+
+# Step 1 — ensure appointment_month is string and count_millions exists
+nc_clinics_2[&#x27;appointment_month&#x27;] = nc_clinics_2[&#x27;appointment_month&#x27;].astype(str)
+
+# Step 2 — build ONE consistent palette from sorted ICB list
+icb_list = sorted(nc_clinics_2[&#x27;sub_icb_location_name&#x27;].unique())
+palette = dict(zip(icb_list, sns.color_palette(&#x27;tab10&#x27;, len(icb_list))))
+
+# Step 3 — plot
+fig, axes = plt.subplots(1, 2, figsize=(20,10), sharey=False)
+
+for ax, cat in zip(axes, [&#x27;Planned Clinics&#x27;, &#x27;Planned Clinical Procedure&#x27;]):
+    subset = nc_clinics_2[nc_clinics_2[&#x27;national_category&#x27;] == cat]
+    
+    sns.lineplot(data=subset,
+                 x=&#x27;appointment_month&#x27;,
+                 y=&#x27;count_millions&#x27;,
+                 hue=&#x27;sub_icb_location_name&#x27;,
+                 palette=palette,
+                 hue_order=icb_list,
+                 marker=&#x27;o&#x27;,
+                 ax=ax,
+                 legend=False)          # no per-axis legend
+    
+    ax.set_title(cat, fontsize=14, fontweight=&#x27;bold&#x27;)
+    ax.set_xlabel(&#x27;Month&#x27;, fontsize=12, fontweight=&#x27;bold&#x27;)
+    ax.set_ylabel(&#x27;Count (millions)&#x27;, fontsize=12, fontweight=&#x27;bold&#x27;)
+    ax.tick_params(axis=&#x27;x&#x27;, rotation=45)
+
+# Step 4 — single shared legend built manually from palette
+from matplotlib.lines import Line2D
+
+legend_handles = [
+    Line2D([0], [0], color=palette[icb], marker=&#x27;o&#x27;, linewidth=2, label=icb)
+    for icb in icb_list
+]
+
+fig.legend(handles=legend_handles,
+           bbox_to_anchor=(1.01, 0.5),
+           loc=&#x27;center left&#x27;,
+           title=&#x27;ICB&#x27;,
+           fontsize=9,
+           title_fontsize=10,
+           frameon=True,
+           shadow=True)
+
+plt.suptitle(&#x27;Top ICBs &#x27;,
+             fontsize=16, fontweight=&#x27;bold&#x27;, y=1.02)
+plt.tight_layout()
+plt.savefig(&#x27;icb_regional_variation.png&#x27;, dpi=300, bbox_inches=&#x27;tight&#x27;)
+plt.show()
+
+# Find the top ICBs with most appointments in Planned Clinics
+planned_clinics = nc_clinics_2[nc_clinics_2[&#x27;national_category&#x27;] == &#x27;Planned Clinics&#x27;]
+top_planned_clinics = (planned_clinics.groupby(&#x27;sub_icb_location_name&#x27;)[&#x27;count_millions&#x27;]
+               .sum()
+               .sort_values(ascending=False))
+total_planned_clinics = top_planned_clinics.sum()
+
+top_planned_clinics_pct = top_planned_clinics.reset_index()
+top_planned_clinics_pct.columns = [&#x27;sub_icb_location_name&#x27;, &#x27;count_millions&#x27;]
+top_planned_clinics_pct[&#x27;percentage&#x27;] = (top_planned_clinics_pct[&#x27;count_millions&#x27;] / total_planned_clinics * 100).round(2)
+
+print(top_planned_clinics_pct.to_string(index=False))
+
+# Test whether the spike is driven by NW London alone
+without_nwl = nc_clinics_2[nc_clinics_2[&#x27;sub_icb_location_name&#x27;] != &#x27;NHS North West London ICB - W2U3Z&#x27;]
+
+clinics_no_nwl = (without_nwl[without_nwl[&#x27;national_category&#x27;] == &#x27;Planned Clinics&#x27;]
+                  .groupby(&#x27;appointment_month&#x27;)[&#x27;count_millions&#x27;]
+                  .sum())
+
+print(clinics_no_nwl)
+
+# Find the top ICBs with most appointments in Planned Clinical Procedure with the percentage
+procedure_clinics = nc_clinics_2[nc_clinics_2[&#x27;national_category&#x27;] == &#x27;Planned Clinical Procedure&#x27;]
+top_procedure_clinics = (procedure_clinics.groupby(&#x27;sub_icb_location_name&#x27;)[&#x27;count_millions&#x27;]
+               .sum()
+               .sort_values(ascending=False))
+total = top_procedure_clinics.sum()
+
+top_procedure_clinics_pct = top_procedure_clinics.reset_index()
+top_procedure_clinics_pct.columns = [&#x27;sub_icb_location_name&#x27;, &#x27;count_millions&#x27;]
+top_procedure_clinics_pct[&#x27;percentage&#x27;] = (top_procedure_clinics_pct[&#x27;count_millions&#x27;] / total * 100).round(2)
+
+print(top_procedure_clinics_pct.to_string(index=False))
+
+# #### Insights from above charts and tables
+# - Planned Clinical Procedure: all top 8 ICBs showed a similar pattern to the general pattern; this can be explained by the spike from August 2021 to October 2021 happening at a national level. The top 6 ICBs account for 80% of the whole nation, which means this type of appointment is fairly concentrated in 6 ICBs, and if the NHS wants to deploy a new policy, bringing changes to those 6 ICBS might result in a national effect.
+# - Planned Clinics: 1 ICB account for almost 31% of all appointments across the whole country, while others ICB share the same patterns, this ICB shows a slightly different pattern with reaching its peak in November 2021
+
+# Check if NW London has unusually high row counts vs other ICBs
+row_counts = (nc_clinics_2[nc_clinics_2[&#x27;national_category&#x27;] == &#x27;Planned Clinics&#x27;]
+              .groupby(&#x27;sub_icb_location_name&#x27;)
+              .agg(
+                  row_count=(&#x27;count_millions&#x27;, &#x27;count&#x27;),
+                  total_appointments=(&#x27;count_millions&#x27;, &#x27;sum&#x27;),
+                  avg_per_row=(&#x27;count_millions&#x27;, &#x27;mean&#x27;)
+              )
+              .sort_values(&#x27;total_appointments&#x27;, ascending=False))
+
+print(row_counts.head(10))
+
+# #### Validating the information why NHS North West London ICB - W2U3Z got that amount of surprising high appointments
+
+# Getting the sub_icb_location_ons_code from actual_duration dataset to link with another dataset
+
+top8= ad[ad[&#x27;sub_icb_location_name&#x27;].\
+    isin([&#x27;NHS North West London ICB - W2U3Z&#x27;,&#x27;NHS Bedfordshire Luton and Milton Keynes ICB - M1J4Y &#x27;,
+         &#x27;NHS Norfolk and Waveney ICB - 26A&#x27;, &#x27;NHS Hampshire and Isle Of Wight ICB - D9Y0V&#x27;,
+        &#x27;NHS Devon ICB - 15N&#x27;, &#x27;NHS North East London ICB - A3A8R&#x27;,
+          &#x27;NHS Black Country ICB - D2P2L&#x27;,&#x27;NHS Kent and Medway ICB - 91Q&#x27;])]
+top8
+
+top_icbs=top8.groupby([&#x27;sub_icb_location_name&#x27;, &#x27;sub_icb_location_ons_code&#x27;])[&#x27;count_of_appointments&#x27;].sum().reset_index()
+
+top_icbs
+
+top_icbs[&#x27;sub_icb_location_ons_code&#x27;].tolist()
+
+# Getting number of patients from these 8 top ICBs
+
+patients=pd.read_csv(&#x27;gp-reg-pat-prac-all.csv&#x27;)
+
+patients
+
+patients_top8= patients[patients[&#x27;ONS_SUB_ICB_LOCATION_CODE&#x27;].isin([&#x27;E38000259&#x27;,
+ &#x27;E38000230&#x27;,
+ &#x27;E38000253&#x27;,
+ &#x27;E38000237&#x27;,
+ &#x27;E38000239&#x27;,
+ &#x27;E38000255&#x27;,
+ &#x27;E38000256&#x27;])]
+
+patients_group=patients_top8.groupby(&#x27;ONS_SUB_ICB_LOCATION_CODE&#x27;)[&#x27;NUMBER_OF_PATIENTS&#x27;].sum().reset_index()
+
+patients_group= patients_group.rename(columns={&#x27;ONS_SUB_ICB_LOCATION_CODE&#x27;:&#x27;sub_icb_location_ons_code&#x27;})
+
+patients_group
+
+patients_merge= pd.merge(patients_group, top_icbs, on=&#x27;sub_icb_location_ons_code&#x27;, how=&#x27;outer&#x27;)
+
+patients_merge.sort_values(by=&#x27;NUMBER_OF_PATIENTS&#x27;, ascending=False)
+
+# Calculating appointments per 1000 registered patients:
+patients_merge[&#x27;appts_per_1000&#x27;] = (
+    (patients_merge[&#x27;count_of_appointments&#x27;] / patients_merge[&#x27;NUMBER_OF_PATIENTS&#x27;]) * 1000
+).round(1)
+
+patients_merge.sort_values(by=&#x27;count_of_appointments&#x27;, ascending=False)
+
+# Plot the figure
+
+ig, ax = plt.subplots(figsize=(12, 6))
+
+colors = [&#x27;red&#x27; if &#x27;W2U3Z&#x27; in str(x) else &#x27;steelblue&#x27; 
+          for x in patients_merge[&#x27;sub_icb_location_name&#x27;]]
+
+ax.barh(patients_merge[&#x27;sub_icb_location_name&#x27;], 
+        patients_merge[&#x27;appts_per_1000&#x27;],
+        color=colors)
+
+# Adding title and label
+ax.set_xlabel(&#x27;Appointments per 1,000 Registered Patients&#x27;, fontsize=12)
+ax.set_title(&#x27;Planned Clinics: Appointments per 1,000 Patients by ICB\n(red = potential outlier)&#x27;, 
+             fontsize=14, fontweight=&#x27;bold&#x27;)
+ax.legend()
+plt.tight_layout()
+plt.savefig(&#x27;appts_per_1000_patients.png&#x27;, dpi=300, bbox_inches=&#x27;tight&#x27;)
+plt.show()
+
+# #### Keytakeway:
+# - NHS North West London ICB - W2U3Z does not appear as an outlier due to data duplicates - it has the largest registered patient base compared to other ICBs, that&#x27;s why it accounts for 31% in the planned clinics appointments in the whole nation.
+# - Any change to this ICB planned clinics appointments type can have a big effect on the whole nation&#x27; planned clinics performance.
+
+# #### Patient Care Home Round
+# This national category type is currently showing a completely contrast pattern compared to other types - a steady clear rising trend.
+# -&gt; Decided to investigate this a bit further
+
+# Extracting a new dataset dedicated to Patient Care Home Round
+care_home = nc[nc[&#x27;national_category&#x27;] == &#x27;Patient contact during Care Home Round&#x27;]
+
+care_home
+
+# Take a look at which service settings are driving the growth?
+
+care_home_service= care_home.groupby([&#x27;service_setting&#x27;,&#x27;appointment_month&#x27;])[&#x27;count_millions&#x27;].sum().reset_index()
+
+care_home_service
+
+# Plot the appointments over the available date range, and review the national categories for months.
+# Adding more color options for better visualisation
+import matplotlib.cm as cm
+colors = cm.tab20.colors 
+
+# Create a lineplot.
+fig, ax = plt.subplots()
+fig.set_size_inches(16,10)
+# Plot data
+
+sns.lineplot(x=&#x27;appointment_month&#x27;, y=&#x27;count_millions&#x27;, hue=&#x27;service_setting&#x27;,
+             data=care_home_service,
+             errorbar=None, 
+             linewidth=2, marker=&#x27;o&#x27;, ax=ax, palette= colors)
+
+# Adding title and labels
+
+ax.set_title(&#x27;Service Settings Appointments in Patient Care Home Round&#x27;, fontsize= 20, fontweight=&#x27;bold&#x27;)
+ax.set_xlabel(&#x27;Appointment Month&#x27;,fontsize= 16, fontweight=&#x27;bold&#x27;)
+ax.set_ylabel(&#x27;Count of Appointments (millions)&#x27;,fontsize= 16, fontweight=&#x27;bold&#x27;)
+
+# Adding tick marks
+
+ax.tick_params(axis=&#x27;x&#x27;, which=&#x27;major&#x27;, bottom=True,
+               length=5, width=1.5, rotation=45)
+
+ax.tick_params(axis=&#x27;y&#x27;, which=&#x27;major&#x27;, left=True,
+               length=5, width=1.5)
+
+# Adding legend
+plt.legend(bbox_to_anchor=(1.05, 1),
+          title=&#x27;Service Settings&#x27;, title_fontsize=16,
+           frameon=True, shadow=True)
+
+# Plot figure
+plt.tight_layout()  
+plt.savefig(&#x27;service_setting_care_home.png&#x27;, dpi=300)
+plt.show()
+
+# Take a look at ICBs were driving the growth?
+
+care_home_icb = (care_home.groupby([&#x27;appointment_month&#x27;, &#x27;sub_icb_location_name&#x27;])
+                 [&#x27;count_of_appointments&#x27;].sum()
+                 .reset_index())
+
+care_home_icb.sort_values(by=&#x27;count_of_appointments&#x27;, ascending=False)
+
+care_home_icb_total = pd.DataFrame(care_home_icb.groupby(&#x27;sub_icb_location_name&#x27;)[&#x27;count_of_appointments&#x27;].sum().reset_index())
+
+care_home_icb_total.sort_values(by=[&#x27;count_of_appointments&#x27;], ascending=False)
+
+# Add percentage column to see the proportion of each ICB
+total = care_home_icb_total[&#x27;count_of_appointments&#x27;].sum()
+care_home_icb_total[&#x27;percentage&#x27;] = (
+    (care_home_icb_total[&#x27;count_of_appointments&#x27;] / total) * 100
+).round(2)
+
+care_home_icb_total.sort_values(by=&#x27;count_of_appointments&#x27;, ascending=False)
+
+# ### Key takeaways:
+# - General Practice and Primary Care Network is striking ahead.
+# - Extended Access Provision and Other are negligible and flat
+# - Activity is extremely fragmented — the top ICB (Hampshire) accounts for only 4.34%, and the top 5 combined account for roughly 18%. Across 103 ICBs, no single region dominates
+# -&gt; The change in Patient Care Home Round happened in a national level, and not just limited to any particular ICBs. This might not entirely suggest that the patients in need of care home services were growing rapidly? Is this something related to the different way of reporting in the NHS system/ how the data was collected also needed to investigate a bit further. If this is soemthing related to how the data was collected, would it be worth it to apply new data collection method to other service settings to improve data collection accuracy?
+
+# ### Objective 2
+# Create four visualisations indicating the number of appointments for service setting per season. The seasons are summer (August 2021), autumn (September to November 2021), winter (December to February 2022), and spring (March to May 2022).
+
+# **Summer (August 2021):** as the data in nc dataset only started from August 2021
+
+# Create a separate data set that can be used in future weeks. 
+nc_summer2021= nc_copy[nc_copy[&#x27;appointment_month&#x27;]== &#x27;2021-08&#x27;]
+
+# View output.
+nc_summer2021
+
+nc_summer2021.dtypes
+
+!pip install holidays
+
+# Filter to all business days in a month, excluding weekends and holidays if possible.
+# This aims to provide a better presentation of data.
+# Create a holiday list.
+
+import holidays
+
+# get UK holidays automatically
+uk_holidays = holidays.country_holidays(&#x27;GB&#x27;, subdiv=&#x27;ENG&#x27;, 
+                                         years=[2021, 2022])
+
+# convert to list
+my_holiday_list = [str(d) for d in uk_holidays.keys()]
+
+print(my_holiday_list)
+
+# Filter to all business days in a month, excluding weekends and holidays if possible.
+# This aims to provide a better presentation of data.
+# Create a reusable function.
+
+def business_days(start_date, end_date):
+    &quot;&quot;&quot; Excluding weekends and holidays in any datasets to provide better presentation of data 
+        Input: df, start and end date strings
+        Output: dataframe with weekdays only&quot;&quot;&quot;
+    
+    # write a code to excludes weekends and holidays:
+    bdays= pd.bdate_range(start=start_date, end=end_date,
+                          freq=&#x27;C&#x27;, holidays=my_holiday_list)
+    # Return a list of dates as business days
+    return bdays.strftime(&#x27;%Y-%m-%d&#x27;).tolist()
+
+# Test if the function works
+
+august_bdays= business_days(&#x27;2021-08-02&#x27;, &#x27;2021-08-31&#x27;)
+print(august_bdays)
+
+# Use business_days as a filter
+nc_summer2021_sub= nc_summer2021[nc_summer2021[&#x27;appointment_date&#x27;].isin(august_bdays)]
+
+nc_summer2021_sub
+
+# Create a separate data set that can be used in future weeks. 
+summer_2021= nc_summer2021_sub.groupby([&#x27;service_setting&#x27;,&#x27;appointment_date&#x27;])\
+             [[&#x27;count_millions&#x27;]].sum().reset_index()
+# View output.
+summer_2021
+
+# Look at August 2021 in more detail to allow a closer look.
+
+summer_2021[&#x27;appointment_date&#x27;] = pd.to_datetime(summer_2021[&#x27;appointment_date&#x27;])
+
+# Create a lineplot.
+fig, ax = plt.subplots()
+fig.set_size_inches(12,8)
+# Plot data
+
+sns.lineplot(x=&#x27;appointment_date&#x27;, y=&#x27;count_millions&#x27;, hue=&#x27;service_setting&#x27;,
+             data= summer_2021,
+            errorbar=None, linewidth=2, marker=&#x27;o&#x27;,
+             palette=&#x27;colorblind&#x27;,ax=ax)
+
+# Adding the weekly tick marks- Mondays with labels
+ax.xaxis.set_major_locator(mdates.WeekdayLocator(byweekday=mdates.MO))
+ax.xaxis.set_major_formatter(mdates.DateFormatter(&quot;%Y-%m-%d&quot;))
+
+# Adding tick parameters
+ax.tick_params(axis=&#x27;x&#x27;,which=&#x27;major&#x27;,bottom=True,
+               length=5,width=1.5, rotation=45) 
+
+ax.tick_params(axis=&#x27;y&#x27;, which=&#x27;major&#x27;, left=True,
+               length=5, width=1.5)
+
+# Adding title and labels
+ax.set_title(&#x27;Appointments in August 2021 by Service Setting&#x27;, fontsize= 20, fontweight=&#x27;bold&#x27;)
+ax.set_xlabel(&#x27;Appointment Date&#x27;, fontsize= 16, fontweight=&#x27;bold&#x27;)
+ax.set_ylabel(&#x27;Count of Appointments (millions)&#x27;,fontsize= 16, fontweight=&#x27;bold&#x27;)
+
+# Adding legend
+plt.legend(title=&#x27;Service Setting&#x27;, bbox_to_anchor=(1.05, 1),
+          title_fontsize= 14, frameon=True, shadow=True)
+
+# Plot the figure
+plt.tight_layout()  
+plt.savefig(&#x27;appointments_by_service_setting_August2021.png&#x27;, dpi=300, bbox_inches=&#x27;tight&#x27;)
+plt.show()
+
+# **Autumn (September to November 2021):**
+
+# Look at September to November 2021 in more detail to allow a closer look.
+nc_autumn2021= nc_copy[nc_copy[&#x27;appointment_month&#x27;].isin([&#x27;2021-09&#x27;, &#x27;2021-10&#x27;, &#x27;2021-11&#x27;])]
+
+nc_autumn2021
+
+# Filter out business days in Autumn 2021
+autumn_bdays= business_days(&#x27;2021-09-01&#x27;, &#x27;2021-11-30&#x27;)
+print(autumn_bdays)
+
+# Use business_days as a filter
+nc_autumn2021_sub= nc_autumn2021[nc_autumn2021[&#x27;appointment_date&#x27;].isin(autumn_bdays)]
+
+nc_autumn2021_sub
+
+# Create a separate data set that can be used in future weeks. 
+autumn_2021= nc_autumn2021_sub.groupby([&#x27;service_setting&#x27;,&#x27;appointment_date&#x27;])\
+             [[&#x27;count_millions&#x27;]].sum().reset_index()
+
+# View output.
+autumn_2021
+
+# Look at Sep to Nov 2021 in more detail to allow a closer look.
+autumn_2021[&#x27;appointment_date&#x27;] = pd.to_datetime(autumn_2021[&#x27;appointment_date&#x27;])
+# Create a lineplot.
+fig, ax = plt.subplots()
+fig.set_size_inches(12,8)
+# Plot data
+
+sns.lineplot(x=&#x27;appointment_date&#x27;, y=&#x27;count_millions&#x27;, hue=&#x27;service_setting&#x27;,
+             data= autumn_2021,
+            errorbar=None, linewidth=2, marker=&#x27;o&#x27;,
+             palette=&#x27;colorblind&#x27;,ax=ax)
+
+# Adding the weekly tick marks- Mondays with labels
+ax.xaxis.set_major_locator(mdates.WeekdayLocator(byweekday=mdates.MO))
+ax.xaxis.set_major_formatter(mdates.DateFormatter(&quot;%Y-%m-%d&quot;))
+
+# Adding tick parameters
+ax.tick_params(axis=&#x27;x&#x27;,which=&#x27;major&#x27;,bottom=True,
+               length=5,width=1.5, rotation=45) 
+
+ax.tick_params(axis=&#x27;y&#x27;, which=&#x27;major&#x27;, left=True,
+               length=5, width=1.5)
+
+# Adding title and labels
+ax.set_title(&#x27;Appointments in Autumn 2021 by Service Setting&#x27;, fontsize= 20, fontweight=&#x27;bold&#x27;)
+ax.set_xlabel(&#x27;Appointment Date&#x27;, fontsize= 16, fontweight=&#x27;bold&#x27;)
+ax.set_ylabel(&#x27;Count of Appointments (millions)&#x27;,fontsize= 16, fontweight=&#x27;bold&#x27;)
+
+# Adding legend
+plt.legend(title=&#x27;Service Setting&#x27;, bbox_to_anchor=(1.05, 1),
+          title_fontsize= 14, frameon=True, shadow=True)
+
+
+# Plot figure
+plt.tight_layout() 
+plt.savefig(&#x27;appointments_by_service_setting_Autumn2021.png&#x27;, dpi=300)
+plt.show()
+
+# **Winter (December to February 2022):**
+
+# Look at December 2021 to Febuary 2022 in more detail to allow a closer look.
+nc_winter2021= nc_copy[nc_copy[&#x27;appointment_month&#x27;].isin([&#x27;2021-12&#x27;, &#x27;2022-01&#x27;, &#x27;2022-02&#x27;])]
+
+nc_winter2021
+
+# Filter out business days in Winter 
+winter_bdays= business_days(&#x27;2021-12-01&#x27;, &#x27;2022-02-28&#x27;)
+print(winter_bdays)
+
+# Use business_days as a filter
+nc_winter2021_sub= nc_winter2021[nc_winter2021[&#x27;appointment_date&#x27;].isin(winter_bdays)]
+
+nc_winter2021_sub
+
+# Create a separate data set that can be used in future weeks. 
+winter_2021= nc_winter2021_sub.groupby([&#x27;service_setting&#x27;,&#x27;appointment_date&#x27;])\
+             [[&#x27;count_millions&#x27;]].sum().reset_index()
+
+# View output.
+winter_2021
+
+# Look at December to February 2022 in more detail to allow a closer look.
+winter_2021[&#x27;appointment_date&#x27;]= pd.to_datetime(winter_2021[&#x27;appointment_date&#x27;])
+# Create a lineplot.
+
+fig, ax = plt.subplots()
+fig.set_size_inches(12,8)
+# Plot data
+
+sns.lineplot(x=&#x27;appointment_date&#x27;, y=&#x27;count_millions&#x27;, hue=&#x27;service_setting&#x27;,
+             data= winter_2021,
+            errorbar=None, linewidth=2, marker=&#x27;o&#x27;,
+             palette=&#x27;colorblind&#x27;,ax=ax)
+
+# Adding the weekly tick marks- Mondays with labels
+ax.xaxis.set_major_locator(mdates.WeekdayLocator(byweekday=mdates.MO))
+ax.xaxis.set_major_formatter(mdates.DateFormatter(&quot;%Y-%m-%d&quot;))
+
+# Adding tick parameters
+ax.tick_params(axis=&#x27;x&#x27;,which=&#x27;major&#x27;,bottom=True,
+               length=5,width=1.5, rotation=45) 
+
+ax.tick_params(axis=&#x27;y&#x27;, which=&#x27;major&#x27;, left=True,
+               length=5, width=1.5)
+
+# Adding title and label
+ax.set_title(&#x27;Appointments in Winter 2021 by Service Setting&#x27;, fontsize= 20, fontweight=&#x27;bold&#x27;)
+ax.set_xlabel(&#x27;Appointment Date&#x27;, fontsize= 16, fontweight=&#x27;bold&#x27;)
+ax.set_ylabel(&#x27;Count of Appointments (millions)&#x27;,fontsize= 16, fontweight=&#x27;bold&#x27;)
+
+# Adding legend
+plt.legend(title=&#x27;Service Setting&#x27;, bbox_to_anchor=(1.05, 1),
+          title_fontsize= 14, frameon=True, shadow=True)
+
+
+# Plot figure
+plt.tight_layout() 
+plt.savefig(&#x27;appointments_by_service_setting_Winter 2021.png&#x27;, dpi=300)
+plt.show()
+
+# **Spring (March to May 2022):**
+
+nc_spring2022= nc_copy[nc_copy[&#x27;appointment_month&#x27;].isin([&#x27;2022-03&#x27;, &#x27;2022-04&#x27;, &#x27;2022-05&#x27;])]
+
+nc_spring2022
+
+# Filter out business days in Winter 
+spring_bdays= business_days(&#x27;2022-03-01&#x27;, &#x27;2022-05-31&#x27;)
+print(spring_bdays)
+
+# Use business_days as a filter
+nc_spring2022_sub= nc_spring2022[nc_spring2022[&#x27;appointment_date&#x27;].isin(spring_bdays)]
+
+nc_spring2022_sub
+
+# Create a separate data set that can be used in future weeks. 
+spring_2022= nc_spring2022_sub.groupby([&#x27;service_setting&#x27;,&#x27;appointment_date&#x27;])\
+             [[&#x27;count_millions&#x27;]].sum().reset_index()
+
+# View output.
+spring_2022
+
+# Look at March to May 2022 in more detail to allow a closer look.
+spring_2022[&#x27;appointment_date&#x27;]= pd.to_datetime(spring_2022[&#x27;appointment_date&#x27;])
+# Create a lineplot.
+
+fig, ax = plt.subplots()
+fig.set_size_inches(12,8)
+# Plot data
+
+sns.lineplot(x=&#x27;appointment_date&#x27;, y=&#x27;count_millions&#x27;, hue=&#x27;service_setting&#x27;,
+             data= spring_2022,
+            errorbar=None, linewidth=2, marker=&#x27;o&#x27;,
+             palette=&#x27;colorblind&#x27;,ax=ax)
+
+# Adding the weekly tick marks- Mondays with labels
+ax.xaxis.set_major_locator(mdates.WeekdayLocator(byweekday=mdates.MO))
+ax.xaxis.set_major_formatter(mdates.DateFormatter(&quot;%Y-%m-%d&quot;))
+
+# Adding tick parameters
+ax.tick_params(axis=&#x27;x&#x27;,which=&#x27;major&#x27;,bottom=True,
+               length=5,width=1.5, rotation=45) 
+
+ax.tick_params(axis=&#x27;y&#x27;, which=&#x27;major&#x27;, left=True,
+               length=5, width=1.5)
+
+# Adding title and label
+ax.set_title(&#x27;Appointments in Spring 2022 by Service Setting&#x27;, fontsize= 20, fontweight=&#x27;bold&#x27;)
+ax.set_xlabel(&#x27;Appointment Date&#x27;, fontsize= 16, fontweight=&#x27;bold&#x27;)
+ax.set_ylabel(&#x27;Count of Appointments (millions)&#x27;,fontsize= 16, fontweight=&#x27;bold&#x27;)
+
+# Adding legend
+plt.legend(title=&#x27;Service Setting&#x27;, bbox_to_anchor=(1.05, 1),
+          title_fontsize= 14, frameon=True, shadow=True)
+
+# Plot the figure
+plt.tight_layout() 
+plt.savefig(&#x27;appointments_by_service_setting_Spring_2022.png&#x27;, dpi=300)
+plt.show()
+
+# #
+
+# # Assignment activity 5
+
+# Start with proof
+# then comes with suggestion: if they want to collect data this way, how could they improve?
+# Your team asked you to analyse a provided sample of tweets from X to determine whether this type of data could be useful for the business.
+# You should demonstrate how data from social media could potentially be used for the team to make a business case to justify the expense of sourcing the data
+
+# ### Analyse tweets from Twitter with hashtags related to healthcare in the UK.
+
+# Libraries and settings needed for analysis
+import pandas as pd
+import seaborn as sns
+
+# Set figure size.
+sns.set(rc={&#x27;figure.figsize&#x27;:(15, 12)})
+
+# Set the plot style as white.
+sns.set_style(&#x27;white&#x27;)
+
+# Maximum column width to display
+pd.options.display.max_colwidth = 200
+
+# Load the data set.
+tweets = pd.read_csv(&#x27;tweets.csv&#x27;)
+
+# View the DataFrame.
+tweets.head()
+
+# Explore the metadata.
+tweets.describe()
+tweets.info()
+tweets.columns.tolist()
+
+# Explore the data set.
+tweets[&#x27;tweet_retweet_count&#x27;].value_counts(ascending=False)
+
+# Explore the data set.
+tweets[&#x27;tweet_favorite_count&#x27;].value_counts(ascending=False)
+
+# ### Would it be useful to only look at retweeted and favourite tweet messages?
+# ### Explain your answer.
+# On social media, retweet and favorite counts can also be used as indicators of whether a post receives positive feedback or whether others agree with it by showing interest.
+# However, in this case, I will need to dig deeper, as looking only at retweet and favorite counts might not show the full picture because:
+# - The majority of posts receive fewer than 5 reactions (either retweets or favorites): this may be due to various reasons, such as not everyone using X to share their ideas and the post not reaching many people.
+# - I need to understand and identify trends in people&#x27;s tweets: what are the major problems with regard to the NHS, and are there any common themes among posts that receive more reactions?
+# - As reactions on X are quite limited compared to other social platforms, is it really worth sourcing the data from X? Would it be better to look at data from other platforms where public reactions are more active?
+
+# Create a new DataFrame containing only the text.
+tweets_text = tweets[&#x27;tweet_full_text&#x27;]
+
+# View the DataFrame.
+tweets_text
+
+# Loop through the messages, and create a list of values containing the # symbol.
+tags = []
+
+for y in [x.split(&#x27; &#x27;) for x in tweets[&#x27;tweet_full_text&#x27;].values]:
+    for z in y:
+        if &#x27;#&#x27; in z:
+            # Change to lowercase.
+            tags.append(z.lower())
+
+# Display the first 30 records.
+pd.Series(tags).value_counts().head(30)
+
+# Convert the series to a DataFrame in preparation for visualisation.
+tweets_hashtag = pd.Series(tags).value_counts().to_frame().reset_index()
+
+# Rename the columns.
+tweets_hashtag.columns=[&#x27;word&#x27;,&#x27;count&#x27;]
+tweets_hashtag
+
+# Explore the metadata
+
+tweets_hashtag.shape
+tweets_hashtag.describe()
+tweets_hashtag.info()
+
+# Display records where the count is larger than 10.
+# Create a new DataFrame with all counts record &gt; 10
+filtered_tweets_hashtag = tweets_hashtag[tweets_hashtag[&#x27;count&#x27;] &gt;=10]
+
+# View the DataFrame
+
+filtered_tweets_hashtag
+with pd.option_context(&#x27;display.max_rows&#x27;, None, &#x27;display.max_columns&#x27;, None):
+    display(filtered_tweets_hashtag)
+
+# Create a Seaborn barplot indicating records with a count &gt;10 records.
+plt.figure(figsize=(10, 6))
+sns.barplot(x=&#x27;count&#x27;, y=&#x27;word&#x27;, 
+            data=filtered_tweets_hashtag, palette=&#x27;Set3&#x27;)
+
+plt.title(&#x27;Top Popular Hashtags&#x27;, fontsize=14)
+plt.xlabel(&#x27;Hashtag&#x27;, fontsize=12)
+plt.ylabel(&#x27;Count of Tweets&#x27;, fontsize=12)
+plt.xticks(rotation=45, ha=&#x27;right&#x27;)
+plt.tight_layout()
+plt.savefig(&#x27;top_popular_hastag_crowded.png&#x27;, dpi=300)
+plt.show()
+
+# #### Improvement needs to be made to the charts:
+# - remove any overpresented hashtags: thinking of reducing the amount of hashtag by combining them into 1 category: for example: any hashtag including health or healthcare should be combined into 1 category only.
+# - after refining the hashtags categories, create new plot to understand the hashtag trend better
+
+def group_hashtags(tag):
+    if any(x in tag for x in [&#x27;health&#x27;, &#x27;medical&#x27;, &#x27;medicine&#x27;, &#x27;doctor&#x27;, 
+                                &#x27;nurse&#x27;, &#x27;nursing&#x27;, &#x27;hospital&#x27;, &#x27;patient&#x27;,
+                                &#x27;wellness&#x27;, &#x27;telehealth&#x27;, &#x27;telemedicine&#x27;,
+                                &#x27;meded&#x27;, &#x27;medtwitter&#x27;, &#x27;foamed&#x27;,&#x27;#medicare&#x27;]):
+        return &#x27;#health&#x27;
+    
+    elif any(x in tag for x in [&#x27;covid&#x27;, &#x27;coronavirus&#x27;, &#x27;pandemic&#x27;]):
+        return &#x27;#covid19&#x27;
+    
+    elif any(x in tag for x in [&#x27;pharma&#x27;, &#x27;pharmaceutical&#x27;, &#x27;biotech&#x27;, &#x27;vaccine&#x27;]):
+        return &#x27;#pharma&#x27;
+    
+    elif any(x in tag for x in [&#x27;tech&#x27;, &#x27;ai&#x27;, &#x27;machinelearning&#x27;, &#x27;digital&#x27;,
+                                  &#x27;data&#x27;, &#x27;rstats&#x27;, &#x27;html&#x27;, &#x27;nodejs&#x27;,
+                                  &#x27;100daysofmlcode&#x27;, &#x27;#python&#x27;,&#x27;innovation&#x27;]):
+        return &#x27;#tech&#x27;
+    
+    elif any(x in tag for x in [&#x27;marketing&#x27;, &#x27;strategy&#x27;, &#x27;competitive&#x27;]):
+        return &#x27;#marketing&#x27;
+    
+    elif any(x in tag for x in [&#x27;job&#x27;, &#x27;hiring&#x27;, &#x27;career&#x27;]):
+        return &#x27;#job&#x27;
+    elif any(x in tag for x in [&#x27;usa&#x27;, &#x27;chicago&#x27;]):
+        return &#x27;#usa&#x27;
+    else:
+        return tag  # keep original if no match
+
+# Apply the function
+filtered_tweets_hashtag[&#x27;word&#x27;] = filtered_tweets_hashtag[&#x27;word&#x27;].apply(group_hashtags)
+
+# Regroup and sum counts
+filtered_tweets_hashtag= filtered_tweets_hashtag.groupby(&#x27;word&#x27;)[&#x27;count&#x27;].sum().reset_index()
+
+# Sort by most frequent
+filtered_tweets_hashtag = filtered_tweets_hashtag.sort_values(&#x27;count&#x27;, ascending=False).reset_index(drop=True)
+
+filtered_tweets_hashtag
+
+# Plot new barplot using new fitered DataFrame
+
+plt.figure(figsize=(10, 6))
+sns.barplot(x=&#x27;count&#x27;, y=&#x27;word&#x27;, 
+            data=filtered_tweets_hashtag, palette=&#x27;Set3&#x27;)
+
+plt.title(&#x27;Popular Hashtags Categories&#x27;, fontsize=14)
+plt.xlabel(&#x27;Hashtag&#x27;, fontsize=12)
+plt.ylabel(&#x27;Count of Tweets&#x27;, fontsize=12)
+plt.xticks(rotation=45, ha=&#x27;right&#x27;)
+plt.tight_layout()
+plt.show()
+
+# #### For better comparison
+# 2 bar charts for comparing top 15 popular hashtags and popular hashtags categories
+
+# Create the plot.
+
+top_hashtags = tweets_hashtag.head(15)
+
+fig, axes = plt.subplots(1, 2, figsize=(10, 6), constrained_layout=True)
+
+# Bar chart - top 15 popular hashtags
+sns.barplot(x=&#x27;count&#x27;, y=&#x27;word&#x27;, data=top_hashtags, 
+            palette=&#x27;Set3&#x27;, ax=axes[0])
+axes[0].set_title(&#x27;Top 15 Most Used Hashtags&#x27;, fontsize=16, fontweight=&#x27;bold&#x27;)
+axes[0].set_xlabel(&#x27;Counts&#x27;, fontsize=12, fontstyle=&#x27;italic&#x27;)
+axes[0].set_ylabel(&#x27;Hashtag&#x27;, fontsize=12, fontstyle=&#x27;italic&#x27;)
+axes[0].tick_params(axis=&#x27;x&#x27;, rotation=45, length=5, width=2,
+                   bottom=True, color=&#x27;black&#x27;)
+
+# Plot the data
+sns.barplot(x=&#x27;count&#x27;, y=&#x27;word&#x27;, data=filtered_tweets_hashtag, 
+            palette=&#x27;Set3&#x27;, ax=axes[1])
+axes[1].set_title(&#x27;Popular Hashtags Categories&#x27;, fontsize=16, fontweight=&#x27;bold&#x27;)
+axes[1].set_xlabel(&#x27;Counts&#x27;, fontsize=12, fontstyle=&#x27;italic&#x27;)
+axes[1].set_ylabel(&#x27;Hashtag&#x27;, fontsize=12,fontstyle=&#x27;italic&#x27;)
+axes[1].tick_params(axis=&#x27;x&#x27;, rotation=45, which=&#x27;major&#x27;, length=5, width=2, 
+                    bottom=True,color=&#x27;black&#x27;)
+
+plt.suptitle(&#x27;Hashtag Analysis&#x27;, fontsize=20, fontweight=&#x27;bold&#x27;,fontstyle=&#x27;italic&#x27;, x=0.5)
+plt.tight_layout()
+# View the barplot.
+plt.savefig(&#x27;Hashtag Analysis.png&#x27;, dpi=300)
+plt.show()
+
+# ### Dig deeper in extracting more insights from tweets text
+
+!pip install textblob
+
+tweets_copy = tweets
+tweets_copy
+
+# #### Seek for insights regarding how people react to healthcare in general
+
+# Finding how people feel about healthcare
+# Using sentiment_assessments:
+from textblob import TextBlob
+
+def get_textblob_sentiment(text):
+    blob = TextBlob(str(text))
+    return pd.Series([blob.sentiment.polarity, blob.sentiment.subjectivity])
+
+# Apply the function and create two new columns
+tweets_copy[[&#x27;polarity&#x27;, &#x27;subjectivity&#x27;]] = tweets_copy[&#x27;tweet_full_text&#x27;].apply(get_textblob_sentiment)
+
+# 2. Print the improved summary metrics
+print(&quot;=== HEALTHCARE SENTIMENT REPORT ===&quot;)
+print(f&#x27;Average Polarity (Tone):     {tweets_copy[&quot;polarity&quot;].mean():.2f}&#x27;)
+print(f&#x27;Most Positive Tweet Score:   {tweets_copy[&quot;polarity&quot;].max():.2f}&#x27;)
+print(f&#x27;Most Negative Tweet Score:   {tweets_copy[&quot;polarity&quot;].min():.2f}&#x27;) 
+print(&quot;-&quot; * 35)
+print(f&#x27;Average Subjectivity (Bias): {tweets_copy[&quot;subjectivity&quot;].mean():.2f}&#x27;)
+
+# Get insights by combining both metrics
+print(&quot;\n=== DEEPER INSIGHTS ===&quot;)
+
+# Factual/Objective complaints (e.g., policy updates, systemic issues, wait times)
+factual_negative = tweets_copy[(tweets_copy[&#x27;polarity&#x27;] &lt; -0.1) &amp; (tweets_copy[&#x27;subjectivity&#x27;] &lt; 0.3)]
+print(f&quot;Number of factual/objective complaints: {len(factual_negative)}&quot;)
+
+# Emotional opinions (e.g., personal stories, rants, high praise)
+emotional_tweets = tweets_copy[tweets_copy[&#x27;subjectivity&#x27;] &gt; 0.6]
+print(f&quot;Number of highly emotional/personal opinions: {len(emotional_tweets)}&quot;)
+
+# Filter by health-related hashtags
+health_keywords = [&#x27;health&#x27;, &#x27;healthcare&#x27;, &#x27;hospital&#x27;, &#x27;medical&#x27;, 
+                    &#x27;medicine&#x27;, &#x27;digitalhealth&#x27;, &#x27;healthtech&#x27;,
+                   &#x27;doctor&#x27;, &#x27;nurse&#x27;, &#x27;nursing&#x27;, &#x27;hospital&#x27;, &#x27;patient&#x27;,
+                    &#x27;wellness&#x27;, &#x27;telehealth&#x27;, &#x27;telemedicine&#x27;,
+                    &#x27;meded&#x27;, &#x27;medtwitter&#x27;, &#x27;foamed&#x27;,&#x27;medicare&#x27;]
+
+# Creating a Dataframe that was filtered by using health-related hashtags
+health_tweets= tweets_copy[
+    tweets_copy[&#x27;tweet_entities_hashtags&#x27;].str.lower().str.contains(
+        &#x27;|&#x27;.join(health_keywords), na=False)]
+
+# View the DataFrame with specific columns
+
+health_tweets[[&#x27;tweet_full_text&#x27;, &#x27;tweet_entities_hashtags&#x27;,&#x27;polarity&#x27;, &#x27;subjectivity&#x27;]].head(10)
+
+# Create a define function that will categorize into different polarity sentiment segments.
+def polarity(score):
+    if score &gt; 0.05:
+        return &#x27;Positive&#x27;
+    elif score &lt; -0.05:
+        return &#x27;Negative&#x27;
+    else:
+        return &#x27;Neutral&#x27;
+        
+# Create a define function that will categorize into different subjectivity sentiments segments:
+def subjectivity(score):
+    if score &gt; 0.05:
+        return &#x27;Subjective&#x27;
+    else:
+        return &#x27;Objective&#x27;
+        
+
+health_tweets[&#x27;polarity_label&#x27;] = health_tweets[&#x27;polarity&#x27;].apply(polarity)
+health_tweets[&#x27;subjectivity_label&#x27;] = health_tweets[&#x27;subjectivity&#x27;].apply(subjectivity)
+
+health_tweets[[&#x27;tweet_full_text&#x27;, &#x27;tweet_entities_hashtags&#x27;, &#x27;polarity&#x27;, &#x27;subjectivity&#x27;, &#x27;polarity_label&#x27;, &#x27;subjectivity_label&#x27;]]
+
+# Create a barchart for easy visualisation of healthcare sentiment distribution
+# Use plt.subplots() instead of plt.figure() for better axis controlreport 
+fig, ax = plt.subplots(figsize=(10,6))
+
+# Create the countplot
+sns.countplot(x=&#x27;polarity_label&#x27;, 
+              data=health_tweets,
+              order=[&#x27;Positive&#x27;, &#x27;Neutral&#x27;, &#x27;Negative&#x27;],
+              hue=&#x27;subjectivity_label&#x27;,
+              palette=&#x27;Set3&#x27;,
+              ax=ax)
+
+# Set titles and labels directly on the axis object
+ax.set_title(&#x27;Public Perception and Engagement Type of Healthcare-related Tweets&#x27;, fontsize=16, fontweight=&#x27;bold&#x27;)
+ax.set_xlabel(&#x27;Customer Perception &#x27;, fontsize=12, fontstyle=&#x27;italic&#x27;, fontweight=&#x27;bold&#x27;)
+ax.set_ylabel(&#x27;Counts of Tweets&#x27;, fontsize=12, fontstyle=&#x27;italic&#x27;, fontweight=&#x27;bold&#x27;)
+
+# Cleanly add count labels on top of bars using containers
+for container in ax.containers:
+    # Filter out 0 or empty values to avoid visual clutter at the baseline
+    labels = [f&#x27;{int(value)}&#x27; if value &gt; 0 else &#x27;&#x27; for value in container.datavalues]
+    ax.bar_label(container, labels=labels, fontsize=11)
+
+# Adding tick marks
+
+ax.tick_params(axis=&#x27;x&#x27;, which=&#x27;major&#x27;, bottom=True,
+               length=5, width=1.5, rotation=45)
+
+ax.tick_params(axis=&#x27;y&#x27;, which=&#x27;major&#x27;, left=True,
+               length=5, width=1.5)
+
+# Adding legend
+plt.legend(title=&#x27;Subjectivity&#x27;, labels=[&#x27;Subjective&#x27;, &#x27;Objective&#x27;],
+           bbox_to_anchor=(1.05, 1),
+           title_fontsize= 14, frameon=True, shadow=True) 
+
+# Plot the figure
+plt.tight_layout()
+plt.savefig(&#x27;Public Perception and Engagement Type of Healthcare-related Tweets.png&#x27;, dpi=300)
+plt.show()
+
+# Most positive
+print(&#x27;=== Top 5 Most Positive Healthcare Tweets ===&#x27;)
+display(health_tweets.nlargest(5, &#x27;polarity&#x27;)[[&#x27;tweet_full_text&#x27;, &#x27;polarity&#x27;]])
+
+# Most negative
+print(&#x27;\n=== Top 5 Most Negative Healthcare Tweets ===&#x27;)
+display(health_tweets.nsmallest(5, &#x27;polarity&#x27;)[[&#x27;tweet_full_text&#x27;, &#x27;polarity&#x27;]])
+
+# #### Finding the specific NHS related twitter to gather public opinions
+
+# Create a list of keywords that is related to NHS 
+
+nhs_keywords = [&#x27;nhs&#x27;, &#x27;uk health&#x27;, &#x27;national health service&#x27;,
+                &#x27;uk healthcare&#x27;, &#x27;nhs uk&#x27;, &#x27;british health&#x27;,
+                &#x27;england health&#x27;,
+                &#x27;uk hospital&#x27;, &#x27;nhs trust&#x27;, &#x27;nhs digital&#x27;,
+                &#x27;nhs england&#x27;]
+# Create a function to use later to filter down the related text&quot;
+def filter_nhs_tweets(text):
+    text_lower = str(text).lower()
+    return any(keyword in text_lower for keyword in nhs_keywords)
+
+# Apply filter to the column &quot;tweet_full_text&quot;
+nhs_tweets = health_tweets[
+    health_tweets[&#x27;tweet_full_text&#x27;].apply(filter_nhs_tweets)]
+
+print(f&#x27;Total NHS/UK health tweets found: {len(nhs_tweets)}&#x27;)
+nhs_tweets[[&#x27;tweet_full_text&#x27;]].head(10)
+
+# Filter from &quot;tweet_entities_hashtags&quot; column
+nhs_tweets = health_tweets[
+    health_tweets[&#x27;tweet_entities_hashtags&#x27;].str.lower().str.contains(
+        &#x27;|&#x27;.join(nhs_keywords), na=False)]
+
+print(f&#x27;Total NHS tweets found: {len(nhs_tweets)}&#x27;)
+nhs_tweets[[&#x27;tweet_full_text&#x27;, &#x27;tweet_entities_hashtags&#x27;]].head(10)
+
+# # Assignment activity 6
+
+# ### Make recommendations to the NHS.
+
+# Prepare your workstation.
+# Load the appointments_regional.csv file.
+# View the DataFrame.
+ar
+
+# Print the min and max dates.
+ar[&#x27;appointment_month&#x27;].agg([&#x27;min&#x27;, &#x27;max&#x27;])
+
+# Filter the data set to only look at data from 2021-08 onwards.
+
+ar_copy = ar[ar[&#x27;appointment_month&#x27;] &gt;= &#x27;2021-08&#x27;]
+
+ar_copy
+
+# **Question 1:** Should the NHS start looking at increasing staff levels?
+
+# Create an aggregated data set to review the different features.
+
+ar_agg = ar_copy[[&#x27;appointment_month&#x27;, &#x27;hcp_type&#x27;, &#x27;appointment_status&#x27;,
+                  &#x27;appointment_mode&#x27;, &#x27;time_between_book_and_appointment&#x27;,&#x27;count_of_appointments&#x27;]]
+
+# View the DataFrame.
+ar_agg
+
+# Determine the total number of appointments per month.
+ar_df = ar_agg.groupby(&#x27;appointment_month&#x27;)[&#x27;count_of_appointments&#x27;].sum().reset_index()
+
+# Add a new column to indicate the average utilisation of services.
+# Monthly aggregate / 30 to get to a daily value.
+ar_df[&#x27;utilisation&#x27;] = (ar_df[&#x27;count_of_appointments&#x27;] / 30).round(1)
+
+# View the DataFrame.
+ar_df
+
+# #### Background information:
+# The NHS has provided a figure of an average of 1,200,000 appointments per day being used for planning purposes, which you can use as a guideline for maximum capacity.
+
+# Plot sum of count of monthly visits.
+# Convert the appointment_month to string data type for ease of visualisation.
+ar_df[&#x27;appointment_month&#x27;]= ar_df[&#x27;appointment_month&#x27;]. astype(str)
+
+# Adding a column as &quot;count_millions&quot; to count appointments in millions
+ar_df[&#x27;appointment_millions&#x27;]= ar_df[&#x27;count_of_appointments&#x27;]/ 1_000_000
+# Create a lineplot with Seaborn.
+
+fig, ax = plt.subplots()
+fig.set_size_inches(10,6)
+# Plot data
+
+sns.lineplot(x=&#x27;appointment_month&#x27;, y=&#x27;appointment_millions&#x27;,
+             data= ar_df,
+            errorbar=None, linewidth=2, marker=&#x27;o&#x27;,
+             palette=&#x27;pastel&#x27;,ax=ax)
+
+
+# Adding tick parameters
+ax.tick_params(axis=&#x27;x&#x27;,which=&#x27;major&#x27;,bottom=True,
+               length=5,width=1.5, rotation=45) 
+ax.tick_params(axis=&#x27;y&#x27;,which=&#x27;major&#x27;,left=True,
+               length=5,width=1.5) 
+
+
+# Adding title and label
+ax.set_title(&#x27;Total Number of Appointments per month from August 2021 to June 2022&#x27;, fontsize= 20, fontweight=&#x27;bold&#x27;)
+ax.set_xlabel(&#x27;Appointment Month&#x27;, fontsize= 16, fontweight=&#x27;bold&#x27;)
+ax.set_ylabel(&#x27;Count of Appointments (millions)&#x27;,fontsize= 16, fontweight=&#x27;bold&#x27;)
+
+# Plot figure
+plt.tight_layout() 
+plt.savefig(&#x27;appointment_per_month_from_august2021_to_june2022&#x27;, dpi=300)
+plt.show()
+
+# Plot monthly capacity utilisation
+# Adding a column as &quot;count_millions_utilisation&quot; to count appointments in millions
+ar_df[&#x27;utilisation_millions&#x27;]= ar_df[&#x27;utilisation&#x27;]/ 1_000_000
+
+# Create a lineplot.
+fig, ax = plt.subplots()
+fig.set_size_inches(10,6)
+# Plot data
+
+sns.lineplot(x=&#x27;appointment_month&#x27;, y=&#x27;utilisation_millions&#x27;,
+             data= ar_df,
+            errorbar=None, linewidth=2, marker=&#x27;o&#x27;,
+             palette=&#x27;pastel&#x27;,ax=ax)
+
+
+# Adding tick parameters
+ax.tick_params(axis=&#x27;x&#x27;,which=&#x27;major&#x27;,bottom=True,
+               length=5,width=1.5, rotation=45) 
+ax.tick_params(axis=&#x27;y&#x27;,which=&#x27;major&#x27;,left=True,
+               length=5,width=1.5) 
+
+
+# Adding title and label
+ax.set_title(&#x27;Utilisations of Appointments per day from August 2021 to June 2022&#x27;, fontsize= 20, fontweight=&#x27;bold&#x27;)
+ax.set_xlabel(&#x27;Appointment Month&#x27;, fontsize= 16, fontweight=&#x27;bold&#x27;)
+ax.set_ylabel(&#x27;Count of Appointments (millions)&#x27;,fontsize= 16, fontweight=&#x27;bold&#x27;)
+
+# Plot figure
+plt.tight_layout() 
+plt.savefig(&#x27;utilisation_per_day_from_august2021_to_june2022&#x27;, dpi=300)
+plt.show()
+
+# **Question 2:** How do the healthcare professional types differ over time?
+
+# Create a new DataFrame to answer the question
+ar_hcp = ar_agg.groupby([&#x27;appointment_month&#x27;, &#x27;hcp_type&#x27;])[&#x27;count_of_appointments&#x27;].sum().reset_index()
+
+# Adding a new column that shows appointment as millions for better visualisation
+ar_hcp[&#x27;appointments_millions&#x27;]= ar_hcp[&#x27;count_of_appointments&#x27;]/ 1_000_000
+
+# View the DataFrame
+ar_hcp
+
+# Create a line plot to answer the question.
+fig, ax = plt.subplots()
+fig.set_size_inches(14,6)
+# Plot data
+
+sns.lineplot(x=&#x27;appointment_month&#x27;, y=&#x27;appointments_millions&#x27;,
+             data= ar_hcp, hue=&#x27;hcp_type&#x27;,
+            errorbar=None, linewidth=2, marker=&#x27;o&#x27;,
+             palette=&#x27;pastel&#x27;,ax=ax)
+
+
+# Adding tick parameters
+ax.tick_params(axis=&#x27;x&#x27;,which=&#x27;major&#x27;,bottom=True,
+               length=5,width=1.5, rotation=45) 
+ax.tick_params(axis=&#x27;y&#x27;,which=&#x27;major&#x27;,left=True,
+               length=5,width=1.5) 
+
+
+# Adding title and label
+ax.set_title(&#x27;Total Appointments per Healthcare Professional Types from August 2021 to June 2022&#x27;, fontsize= 20, fontweight=&#x27;bold&#x27;)
+ax.set_xlabel(&#x27;Appointment Month&#x27;, fontsize= 16, fontweight=&#x27;bold&#x27;)
+ax.set_ylabel(&#x27;Count of Appointments (millions)&#x27;,fontsize= 16, fontweight=&#x27;bold&#x27;)
+
+# Adding legend
+plt.legend(title=&#x27;Healthcare Professional Types&#x27;, bbox_to_anchor=(1.05, 1),
+            title_fontsize= 14, frameon=True, shadow=True)
+
+# Plot figure
+plt.tight_layout() 
+plt.savefig(&#x27;healthcare_professional_type_appt_august2021_to_june2022&#x27;, dpi=300)
+plt.show()
+
+# **Question 3:** Are there significant changes in whether or not visits are attended?
+
+ar_agg
+
+# Create a new DataFrame to answer the question
+ar_stt = ar_agg.groupby([&#x27;appointment_month&#x27;, &#x27;appointment_status&#x27;])[&#x27;count_of_appointments&#x27;].sum().reset_index()
+
+# Adding a new column that shows appointment as millions for better visualisation
+ar_stt[&#x27;appointments_millions&#x27;]= ar_stt[&#x27;count_of_appointments&#x27;]/ 1_000_000
+
+# View the DataFrame
+ar_stt
+
+# Create a line plot to answer the question.
+fig, ax = plt.subplots()
+fig.set_size_inches(14,6)
+# Plot data
+
+sns.lineplot(x=&#x27;appointment_month&#x27;, y=&#x27;appointments_millions&#x27;,
+             data= ar_stt, hue=&#x27;appointment_status&#x27;,
+            errorbar=None, linewidth=2, marker=&#x27;o&#x27;,
+             palette=&#x27;pastel&#x27;,ax=ax)
+
+
+# Adding tick parameters
+ax.tick_params(axis=&#x27;x&#x27;,which=&#x27;major&#x27;,bottom=True,
+               length=5,width=1.5, rotation=45) 
+ax.tick_params(axis=&#x27;y&#x27;,which=&#x27;major&#x27;,left=True,
+               length=5,width=1.5) 
+
+
+# Adding title and label
+ax.set_title(&#x27;Total Appointments per Appointment Status from August 2021 to June 2022&#x27;, fontsize= 20, fontweight=&#x27;bold&#x27;)
+ax.set_xlabel(&#x27;Appointment Month&#x27;, fontsize= 16, fontweight=&#x27;bold&#x27;)
+ax.set_ylabel(&#x27;Count of Appointments (millions)&#x27;,fontsize= 16, fontweight=&#x27;bold&#x27;)
+
+# Adding legend
+plt.legend(title=&#x27;Appointment Status&#x27;, bbox_to_anchor=(1.05, 1),
+          title_fontsize= 14, frameon=True, shadow=True)
+
+# Plot figure
+plt.tight_layout() 
+plt.savefig(&#x27;Appointments_per_status_august2021_to_june2022&#x27;, dpi=300)
+plt.show()
+
+# **Question 4:** Are there changes in terms of appointment type and the busiest months?
+
+# Create a new DataFrame to answer the question
+ar_mode = ar_agg.groupby([&#x27;appointment_month&#x27;, &#x27;appointment_mode&#x27;])[&#x27;count_of_appointments&#x27;].sum().reset_index()
+
+# Adding a new column that shows appointment as millions for better visualisation
+ar_mode[&#x27;appointments_millions&#x27;]= ar_mode[&#x27;count_of_appointments&#x27;]/ 1_000_000
+
+# View the DataFrame
+ar_mode
+
+# Create a line plot to answer the question.
+fig, ax = plt.subplots()
+fig.set_size_inches(14,6)
+# Plot data
+
+sns.lineplot(x=&#x27;appointment_month&#x27;, y=&#x27;appointments_millions&#x27;,
+             data= ar_mode, hue=&#x27;appointment_mode&#x27;,
+            errorbar=None, linewidth=2, marker=&#x27;o&#x27;,
+             palette=&#x27;pastel&#x27;,ax=ax)
+
+# Adding tick parameters
+ax.tick_params(axis=&#x27;x&#x27;,which=&#x27;major&#x27;,bottom=True,
+               length=5,width=1.5, rotation=45) 
+ax.tick_params(axis=&#x27;y&#x27;,which=&#x27;major&#x27;,left=True,
+               length=5,width=1.5) 
+
+# Adding title and label
+ax.set_title(&#x27;Total Appointments per Appointment Type from August 2021 to June 2022&#x27;, fontsize= 20, fontweight=&#x27;bold&#x27;)
+ax.set_xlabel(&#x27;Appointment Month&#x27;, fontsize= 16, fontweight=&#x27;bold&#x27;)
+ax.set_ylabel(&#x27;Count of Appointments (millions)&#x27;,fontsize= 16, fontweight=&#x27;bold&#x27;)
+
+# Adding legend
+plt.legend(title=&#x27;Appointment Type&#x27;, bbox_to_anchor=(1.05, 1),
+          title_fontsize= 14, frameon=True, shadow=True)
+
+# Plot figure
+plt.tight_layout() 
+plt.savefig(&#x27;Appointments_mode_from_august2021_to_june2022&#x27;, dpi=300)
+plt.show()
+
+# **Question 5:** Are there any trends in time between booking and appointment?
+
+# Create a new DataFrame to answer the question
+ar_waittime = ar_agg.groupby([&#x27;appointment_month&#x27;, &#x27;time_between_book_and_appointment&#x27;])[&#x27;count_of_appointments&#x27;].sum().reset_index()
+
+# Adding a new column that shows appointment as millions for better visualisation
+ar_waittime[&#x27;appointments_millions&#x27;]= ar_waittime[&#x27;count_of_appointments&#x27;]/ 1_000_000
+
+# View the DataFrame
+ar_waittime
+
+# Create order of &quot;time_and_between_book_and_appointment&quot; column
+# Get the last value of each category in the column
+waittime = ar_waittime.groupby(&#x27;time_between_book_and_appointment&#x27;)\
+              [&#x27;appointments_millions&#x27;]\
+                .last().sort_values(ascending=False)
+
+waittime_categories = waittime.index.tolist()
+
+waittime_categories
+
+## Create a line plot to answer the question.
+fig, ax = plt.subplots()
+fig.set_size_inches(14,6)
+# Plot data
+
+sns.lineplot(x=&#x27;appointment_month&#x27;, y=&#x27;appointments_millions&#x27;,
+             data= ar_waittime, hue=&#x27;time_between_book_and_appointment&#x27;,
+             hue_order=waittime_categories, # control legend order
+            errorbar=None, linewidth=2, marker=&#x27;o&#x27;,
+             palette=&#x27;Set2&#x27;,ax=ax)
+
+# Adding tick parameters
+ax.tick_params(axis=&#x27;x&#x27;,which=&#x27;major&#x27;,bottom=True,
+               length=5,width=1.5, rotation=45) 
+ax.tick_params(axis=&#x27;y&#x27;,which=&#x27;major&#x27;,left=True,
+               length=5,width=1.5) 
+
+# Adding title and label
+ax.set_title(&#x27;Total Appointments per Waiting Time from August 2021 to June 2022&#x27;, fontsize= 20, fontweight=&#x27;bold&#x27;)
+ax.set_xlabel(&#x27;Appointment Month&#x27;, fontsize= 16, fontweight=&#x27;bold&#x27;)
+ax.set_ylabel(&#x27;Count of Appointments (millions)&#x27;,fontsize= 16, fontweight=&#x27;bold&#x27;)
+
+# Adding legend
+plt.legend(title=&#x27;Waiting Time&#x27;, bbox_to_anchor=(1.05, 1),
+          title_fontsize= 14, frameon=True, shadow=True)
+
+# Plot figure
+plt.tight_layout() 
+plt.savefig(&#x27;Appointments_mode_from_august2021_to_june2022&#x27;, dpi=300)
+plt.show()
+
+# Getting a new DataFrame that includes appointment_mode, time_between_book_and_appointment and count_of_appointments
+ar_leadtime1 = ar_copy.groupby([&#x27;appointment_mode&#x27;,&#x27;time_between_book_and_appointment&#x27;])[&#x27;count_of_appointments&#x27;].sum().reset_index()
+
+# Adding a new column that shows appointment as millions for better visualisation
+ar_leadtime1[&#x27;appointments_millions&#x27;]= ar_leadtime1[&#x27;count_of_appointments&#x27;]/ 1_000_000
+
+# View the DataFrame
+ar_leadtime1
+
+# Create a barchart for easy visualisation of healthcare sentiment distribution
+# Use plt.subplots() instead of plt.figure() for better axis controlreport 
+fig, ax = plt.subplots(figsize=(10,6))
+
+# Create the countplot
+sns.barplot(x=&#x27;appointment_mode&#x27;, 
+              data=ar_leadtime1,
+              y=&#x27;appointments_millions&#x27;,
+              hue=&#x27;time_between_book_and_appointment&#x27;,
+              palette=&#x27;Set3&#x27;,
+              ax=ax)
+
+# Set titles and labels directly on the axis object
+ax.set_title(&#x27;Appointment Lead Time in National Level per Appointment Mode from August 2021 to June 2022&#x27; , fontsize=16, fontweight=&#x27;bold&#x27;)
+ax.set_xlabel(&#x27;Appointment Mode&#x27;, fontsize=12, fontstyle=&#x27;italic&#x27;, fontweight=&#x27;bold&#x27;)
+ax.set_ylabel(&#x27;Counts of Appointments (millions)&#x27;, fontsize=12, fontstyle=&#x27;italic&#x27;, fontweight=&#x27;bold&#x27;)
+
+# Adding tick marks
+
+ax.tick_params(axis=&#x27;x&#x27;, which=&#x27;major&#x27;, bottom=True,
+               length=5, width=1.5, rotation=45)
+
+ax.tick_params(axis=&#x27;y&#x27;, which=&#x27;major&#x27;, left=True,
+               length=5, width=1.5)
+
+# Adding legend
+plt.legend(title=&#x27;Appointment Lead Time&#x27;,
+           bbox_to_anchor=(1.05, 1),
+           title_fontsize= 14, frameon=True, shadow=True) 
+
+# Plot the figure
+plt.tight_layout()
+plt.savefig(&#x27;appointment_leadtime_national_appointment_mode.png&#x27;, dpi=300)
+plt.show()
+
+# **Question 6:** How do the various service settings compare?
+
+# Let&#x27;s go back to the national category DataFrame you created in an earlier assignment activity.
+nc
+
+nc.columns.tolist()
+
+# Create a new DataFrame consisting of the month of appointment and the number of appointments.
+nc_df = nc.groupby([&#x27;appointment_month&#x27;,&#x27;service_setting&#x27;])[&#x27;count_millions&#x27;].sum().reset_index()
+# View the DataFrame.
+nc_df
+
+# Create a boxplot to indicate the service settings for the number of appointments
+fig, ax = plt.subplots()
+fig.set_size_inches(14, 8)
+
+# Plot data
+sns.boxplot(x=&#x27;service_setting&#x27;, y=&#x27;count_millions&#x27;,
+            data=nc_df,
+            notch=True, linewidth=2,
+            palette=&#x27;Set2&#x27;)
+
+# Adding tick parameters
+ax.tick_params(axis=&#x27;x&#x27;, which=&#x27;major&#x27;, bottom=True,
+               length=5, width=1.5, rotation=45)
+ax.tick_params(axis=&#x27;y&#x27;, which=&#x27;major&#x27;, left=True,
+               length=5, width=1.5)
+
+# Adding title and labels
+ax.set_title(&#x27;Service Setting from August 2021 to June 2022&#x27;,
+             fontsize=20, fontweight=&#x27;bold&#x27;)
+ax.set_xlabel(&#x27;Service Settings Type&#x27;, fontsize=16, fontweight=&#x27;bold&#x27;)
+ax.set_ylabel(&#x27;Count of Appointments (millions)&#x27;, fontsize=16, fontweight=&#x27;bold&#x27;)
+
+# Adding legend
+plt.legend(title=&#x27;Service Setting&#x27;, bbox_to_anchor=(1.05, 1),
+           title_fontsize=14, frameon=True, shadow=True)
+
+# Plot figure
+plt.tight_layout()
+plt.savefig(&#x27;service_setting_from_august2021_to_june2022&#x27;, dpi=300)
+plt.show()
+
+# Getting all service setting types
+nc_df[&#x27;service_setting&#x27;].unique().tolist()
+
+# Create a new Dataframe without GP visits
+nc_df_1 = nc_df[nc_df[&#x27;service_setting&#x27;].isin([&#x27;Extended Access Provision&#x27;,&#x27;Other&#x27;,
+                                               &#x27;Primary Care Network&#x27;,&#x27;Unmapped&#x27;])]
+
+nc_df_1
+
+# Create a boxplot in Seaborn where you concentrate on all the service settings, excluding GP visits.
+fig, ax = plt.subplots()
+fig.set_size_inches(14,8)
+
+# Plot data
+sns.boxplot(x=&#x27;service_setting&#x27;, y=&#x27;count_millions&#x27;,
+            data=nc_df_1,
+            notch=True, linewidth=2,
+            palette=&#x27;Set2&#x27;)
+
+# Adding tick parameters
+ax.tick_params(axis=&#x27;x&#x27;, which=&#x27;major&#x27;, bottom=True,
+               length=5, width=1.5)
+ax.tick_params(axis=&#x27;y&#x27;, which=&#x27;major&#x27;, left=True,
+               length=5, width=1.5)
+
+# Adding title and labels
+ax.set_title(&#x27;Service Setting excluding GP visits from August 2021 to June 2022&#x27;,
+             fontsize=20, fontweight=&#x27;bold&#x27;)
+ax.set_xlabel(&#x27;Service Settings Type&#x27;, fontsize=16, fontweight=&#x27;bold&#x27;)
+ax.set_ylabel(&#x27;Count of Appointments (millions)&#x27;, fontsize=16, fontweight=&#x27;bold&#x27;)
+
+# Plot figure
+plt.tight_layout()
+plt.savefig(&#x27;service_setting_excluding_GP_from_august2021_to_june2022&#x27;, dpi=300)
+plt.show()
+
+# #
+
+# ### Provide a summary of your findings and recommendations based on the analysis.
+
+# &gt; Double click to insert your summary.
+
+# #### Reflections and further data analysis
+
+# #### Limitations of data:
+# - Nearly 1.2 appoiments remain as &quot;unmapped&quot; -&gt; which shows a big data quality flag where a noticable share of appoinment arent properly classified.
+# - I want to deep dive in missed appointments and whether to find any insights from what reasons might affect the missed appointments -&gt; however none of current datasets provide any appointments regarding missed appointments -&gt; this could lead to further investigation to identify any links between unmapped service and &quot;missed appointments&quot; and any other data that could be used to strengthen the analysis. In my humble opinion, I would like to receive more information regarding the symptoms/ or any health conditions if possible to answer this question.
+
+# #### Questions for further exploration:
+# - Finding further correlations between waiting time and national service setting/appointment mode/
+# - Unmapped appointment: regarding data quality -&gt; seek any particular ICBs/sub ICBs to give recommendations
+
+# #### Utilizsation of resources question: Let&#x27;s deep dive into the period November 2021 and April 2022
+# - Through the above visualizations, it has been shown that from Sep to Nov 2021, the demand for NHS appointments was significantly increasing and experienced a steady upward trend before reaching its peak in Nov 2021. In November 2021, the benchmark of 1,200,000 appointments per day was at around 90%.
+# - However, it dropped sharply in December 2021 and January 2022, and fluctuated massively from March 2022 to June 2022. Compared to the overall figure, it clearly showed that the utilization of appointments never returned to their peak time in Sep to Nov 2021, and April 2022 marked its lowest point of utilisation.
+# I decided to look at these 2 months to seek deeper insights and see if there are any patterns that might be able to explain this contrast.
+
+# Calling a new DataFrame from the original DataFrame
+ar_subset = ar
+
+ar_subset.info()
+ar_subset
+
+# Filter appointment month to show only period in April 2022
+ar_april= ar_subset[ar_subset[&#x27;appointment_month&#x27;].isin([&#x27;2022-04&#x27;])]
+
+ar_april
+
+# Group by icb_ons_code for better comparison of appointments 
+
+ar_april_subset = ar_april.groupby([&#x27;icb_ons_code&#x27;])[&#x27;count_of_appointments&#x27;].sum().reset_index()
+
+# Adding &#x27;utilisations column for understanding capacity per day
+ar_april_subset[&#x27;utilisation&#x27;]= (ar_april_subset[&#x27;count_of_appointments&#x27;] / 30).round(1)
+
+ar_april_subset.sort_values(by=&#x27;utilisation&#x27;, ascending=False)
+
+# Plot monthly capacity utilisation per ICB
+# Create a lineplot.
+fig, ax = plt.subplots()
+fig.set_size_inches(12,8)
+# Plot data
+
+sns.barplot(x=&#x27;utilisation&#x27;,y=&#x27;icb_ons_code&#x27;,
+             data= ar_april_subset.sort_values(by=&#x27;utilisation&#x27;,ascending=False).head(10),
+            errorbar=None, linewidth=2,
+             palette=&#x27;pastel&#x27;,ax=ax)
+
+
+# Adding tick parameters
+ax.tick_params(axis=&#x27;x&#x27;,which=&#x27;major&#x27;,bottom=True,
+               length=5,width=1.5) 
+ax.tick_params(axis=&#x27;y&#x27;,which=&#x27;major&#x27;,left=True,
+               length=5,width=1.5) 
+
+
+# Adding title and label
+ax.set_title(&#x27;Average Appointments per day from in April 2022 top 10 ICBs&#x27;, fontsize= 20, fontweight=&#x27;bold&#x27;)
+ax.set_xlabel(&#x27;Count of Appointments&#x27;, fontsize= 16, fontweight=&#x27;bold&#x27;)
+ax.set_ylabel(&#x27;ICB_ONS_Code&#x27;,fontsize= 16, fontweight=&#x27;bold&#x27;)
+
+# Plot figure
+plt.tight_layout() 
+plt.savefig(&#x27;utilisation_per_day_icb_april2022&#x27;, dpi=300)
+plt.show()
+
+# Filter appointment month to show only period in November 2021
+ar_nov= ar_subset[ar_subset[&#x27;appointment_month&#x27;].isin([&#x27;2021-11&#x27;])]
+
+ar_nov
+
+# Group by icb_ons_code for better comparison of appointments 
+
+ar_nov_subset = ar_nov.groupby([&#x27;icb_ons_code&#x27;])[&#x27;count_of_appointments&#x27;].sum().reset_index()
+
+# Adding &#x27;utilisations column for understanding capacity per day
+ar_nov_subset[&#x27;utilisation&#x27;]= (ar_nov_subset[&#x27;count_of_appointments&#x27;] / 30).round(1)
+
+ar_nov_subset.sort_values(by=&#x27;utilisation&#x27;, ascending=False)
+
+# Plot monthly capacity utilisation per ICB
+# Create a lineplot.
+fig, ax = plt.subplots()
+fig.set_size_inches(14,8)
+# Plot data
+
+sns.barplot(x=&#x27;utilisation&#x27;,y=&#x27;icb_ons_code&#x27;,
+             data= ar_nov_subset.sort_values(by=&#x27;utilisation&#x27;,ascending=False).head(10),
+            errorbar=None, linewidth=2,
+             palette=&#x27;pastel&#x27;,ax=ax)
+
+# Adding tick parameters
+ax.tick_params(axis=&#x27;x&#x27;,which=&#x27;major&#x27;,bottom=True,
+               length=5,width=1.5) 
+ax.tick_params(axis=&#x27;y&#x27;,which=&#x27;major&#x27;,left=True,
+               length=5,width=1.5) 
+
+# Adding title and label
+ax.set_title(&#x27;Average Appointments per day from in November 2021 top 10 ICBs&#x27;, fontsize= 20, fontweight=&#x27;bold&#x27;)
+ax.set_xlabel(&#x27;Count of Appointments&#x27;, fontsize= 16, fontweight=&#x27;bold&#x27;)
+ax.set_ylabel(&#x27;ICB_ONS_Code&#x27;,fontsize= 16, fontweight=&#x27;bold&#x27;)
+
+# Plot figure
+plt.tight_layout() 
+plt.savefig(&#x27;utilisation_per_day_icb_nov2021&#x27;, dpi=300)
+plt.show()
+
+fig, axes = plt.subplots(1, 2, figsize=(14,6), constrained_layout=True)
+
+# ✅ November 2021 — LEFT (axes[0])
+sns.barplot(x=&#x27;utilisation&#x27;, y=&#x27;icb_ons_code&#x27;,
+            data=ar_nov_subset.sort_values(by=&#x27;utilisation&#x27;, ascending=False).head(10),
+            errorbar=None, linewidth=2,
+            palette=&#x27;pastel&#x27;, ax=axes[0])
+
+axes[0].set_title(&#x27;November 2021&#x27;, fontsize=12, fontweight=&#x27;bold&#x27;)
+axes[0].set_xlabel(&#x27;Count of Appointments&#x27;, fontsize=11, fontweight=&#x27;bold&#x27;)
+axes[0].set_ylabel(&#x27;ICB ONS Code&#x27;, fontsize=11, fontweight=&#x27;bold&#x27;)
+axes[0].tick_params(axis=&#x27;x&#x27;, which=&#x27;major&#x27;, bottom=True, length=5, width=1.5)
+axes[0].tick_params(axis=&#x27;y&#x27;, which=&#x27;major&#x27;, left=True, length=5, width=1.5)
+
+# ✅ April 2022 — RIGHT (axes[1])
+sns.barplot(x=&#x27;utilisation&#x27;, y=&#x27;icb_ons_code&#x27;,
+            data=ar_april_subset.sort_values(by=&#x27;utilisation&#x27;, ascending=False).head(10),
+            errorbar=None, linewidth=2,
+            palette=&#x27;pastel&#x27;, ax=axes[1])
+
+axes[1].set_title(&#x27;April 2022&#x27;, fontsize=12, fontweight=&#x27;bold&#x27;)
+axes[1].set_xlabel(&#x27;Count of Appointments&#x27;, fontsize=11, fontweight=&#x27;bold&#x27;)
+axes[1].set_ylabel(&#x27;ICB ONS Code&#x27;, fontsize=11, fontweight=&#x27;bold&#x27;)
+axes[1].tick_params(axis=&#x27;x&#x27;, which=&#x27;major&#x27;, bottom=True, length=5, width=1.5)
+axes[1].tick_params(axis=&#x27;y&#x27;, which=&#x27;major&#x27;, left=True, length=5, width=1.5)
+
+# Shared overall title
+fig.suptitle(&#x27;Average Appointments per day in Top 10 ICBs&#x27;,
+             fontsize=14, fontweight=&#x27;bold&#x27;, y=1.02)
+
+plt.savefig(&#x27;combined_utilisation.png&#x27;, dpi=300, bbox_inches=&#x27;tight&#x27;)
+plt.show()
+
+# #### Plot above chart in a different way for better comparison, where it can easily show how much the total of appointments has dropped within 4 months
+
+# 1. PREPARE THE DATA
+# Extract columns and rename them to distinguish between months
+df_nov = ar_nov_subset[[&#x27;icb_ons_code&#x27;, &#x27;utilisation&#x27;]].rename(columns={&#x27;utilisation&#x27;: &#x27;nov_utilisation&#x27;})
+df_apr = ar_april_subset[[&#x27;icb_ons_code&#x27;, &#x27;utilisation&#x27;]].rename(columns={&#x27;utilisation&#x27;: &#x27;apr_utilisation&#x27;})
+
+# Merge both months together based on the ICB code
+df_merged = pd.merge(df_nov, df_apr, on=&#x27;icb_ons_code&#x27;, how=&#x27;outer&#x27;)
+
+# Find the unique union of the Top 10 from both months (handles the 11 total unique ICBs)
+top_nov = ar_nov_subset.sort_values(by=&#x27;utilisation&#x27;, ascending=False).head(10)[&#x27;icb_ons_code&#x27;]
+top_apr = ar_april_subset.sort_values(by=&#x27;utilisation&#x27;, ascending=False).head(10)[&#x27;icb_ons_code&#x27;]
+unique_top_icbs = pd.concat([top_nov, top_apr]).unique()
+
+# Filter and sort the data (ascending=True places the highest April values at the top of a horizontal plot)
+df_plot = df_merged[df_merged[&#x27;icb_ons_code&#x27;].isin(unique_top_icbs)].copy()
+df_plot = df_plot.sort_values(by=&#x27;apr_utilisation&#x27;, ascending=True)
+
+# 2. PLOT THE DATA
+fig, ax = plt.subplots(figsize=(11, 7), constrained_layout=True)
+
+# Create fixed numerical positions for the y-axis rows
+y_positions = range(len(df_plot))
+
+# Draw the connecting lines (&quot;dumbbell handles&quot;)
+for i, (idx, row) in enumerate(df_plot.iterrows()):
+    # Only draw lines if data for both months exists to avoid NaN errors
+    if pd.notna(row[&#x27;nov_utilisation&#x27;]) and pd.notna(row[&#x27;apr_utilisation&#x27;]):
+        ax.plot([row[&#x27;nov_utilisation&#x27;], row[&#x27;apr_utilisation&#x27;]], [i, i], 
+                color=&#x27;#d3d3d3&#x27;, linewidth=2.5, zorder=1)
+
+# Plot the dots (&quot;dumbbell weights&quot;)
+ax.scatter(df_plot[&#x27;nov_utilisation&#x27;], y_positions, color=&#x27;#5cbae6&#x27;, s=130, label=&#x27;November 2021&#x27;, zorder=2)
+ax.scatter(df_plot[&#x27;apr_utilisation&#x27;], y_positions, color=&#x27;#b6a2de&#x27;, s=130, label=&#x27;April 2022&#x27;, zorder=2)
+
+# 3. STYLING &amp; LABELS
+# Set the text labels for the y-axis rows
+ax.set_yticks(y_positions)
+ax.set_yticklabels(df_plot[&#x27;icb_ons_code&#x27;], fontsize=10)
+
+# Add grid lines for the x-axis to make scanning values easier
+ax.grid(True, axis=&#x27;x&#x27;, linestyle=&#x27;--&#x27;, alpha=0.4)
+
+# Labels and Title
+ax.set_title(&#x27;Average Appointments per day in Top ICBs\nComparison: November 2021 vs April 2022&#x27;, 
+             fontsize=14, fontweight=&#x27;bold&#x27;, pad=15)
+ax.set_xlabel(&#x27;Count of Appointments&#x27;, fontsize=11, fontweight=&#x27;bold&#x27;)
+ax.set_ylabel(&#x27;ICB ONS Code&#x27;, fontsize=11, fontweight=&#x27;bold&#x27;)
+
+# Ticks styling
+ax.tick_params(axis=&#x27;x&#x27;, which=&#x27;major&#x27;, bottom=True, length=5, width=1.5)
+ax.tick_params(axis=&#x27;y&#x27;, which=&#x27;major&#x27;, left=True, length=5, width=1.5)
+
+for i, (idx, row) in enumerate(df_plot.iterrows()):
+    if pd.notna(row[&#x27;nov_utilisation&#x27;]) and pd.notna(row[&#x27;apr_utilisation&#x27;]):
+        # If April is less than November, it&#x27;s a decline (color it light red)
+        line_color = &#x27;#f3a6a6&#x27; if row[&#x27;apr_utilisation&#x27;] &lt; row[&#x27;nov_utilisation&#x27;] else &#x27;#d3d3d3&#x27;
+        
+        ax.plot([row[&#x27;nov_utilisation&#x27;], row[&#x27;apr_utilisation&#x27;]], [i, i], 
+                color=line_color, linewidth=2.5, zorder=1)
+# 4. ADDING CALCULATION HOW MUCH PERCENTAGE HASD DROPPED FROM APRIL 2022 to NOV 2021
+# Place the legend cleanly inside the plot space
+ax.legend(loc=&#x27;lower right&#x27;, frameon=True, facecolor=&#x27;white&#x27;, edgecolor=&#x27;none&#x27;, fontsize=10)
+# Create the figure and plot the dots as you normally do...
+for i, (idx, row) in enumerate(df_plot.iterrows()):
+    if pd.notna(row[&#x27;nov_utilisation&#x27;]) and pd.notna(row[&#x27;apr_utilisation&#x27;]):
+        nov_val = row[&#x27;nov_utilisation&#x27;]
+        apr_val = row[&#x27;apr_utilisation&#x27;]
+        
+        # 1. Calculate the percentage drop
+        pct_drop = ((apr_val - nov_val) / nov_val) * 100
+        
+        # 2. Draw the dumbbell handle
+        ax.plot([nov_val, apr_val], [i, i], color=&#x27;#f3a6a6&#x27;, linewidth=2.5, zorder=1)
+        
+        # 3. Add the percentage text label slightly above the middle of the handle
+        mid_point = (nov_val + apr_val) / 2
+        ax.text(mid_point, i + 0.15, f&quot;{pct_drop:.1f}%&quot;, 
+                ha=&#x27;center&#x27;, va=&#x27;bottom&#x27;, fontsize=9, fontweight=&#x27;bold&#x27;, color=&#x27;#c0392b&#x27;)
+
+# Save the new chart
+plt.savefig(&#x27;dumbbell_utilisation.png&#x27;, dpi=300, bbox_inches=&#x27;tight&#x27;)
+plt.show()
+
+# 1. Define the national benchmark (1.2 million per day)
+BENCHMARK = 1200000
+
+# 2. Convert raw appointment counts into percentage of national resource utilization
+df_plot[&#x27;nov_pct_of_national&#x27;] = (df_plot[&#x27;nov_utilisation&#x27;] / BENCHMARK) * 100
+df_plot[&#x27;apr_pct_of_national&#x27;] = (df_plot[&#x27;apr_utilisation&#x27;] / BENCHMARK) * 100
+
+# Sort by April resource utilization to keep your existing structural order
+df_plot = df_plot.sort_values(by=&#x27;apr_pct_of_national&#x27;, ascending=True)
+
+# 3. Plotting
+fig, ax = plt.subplots(figsize=(11, 7), constrained_layout=True)
+y_positions = range(len(df_plot))
+
+for i, (idx, row) in enumerate(df_plot.iterrows()):
+    if pd.notna(row[&#x27;nov_pct_of_national&#x27;]) and pd.notna(row[&#x27;apr_pct_of_national&#x27;]):
+        nov_pct = row[&#x27;nov_pct_of_national&#x27;]
+        apr_pct = row[&#x27;apr_pct_of_national&#x27;]
+        
+        # Calculate absolute difference in national resource share
+        share_dropped = nov_pct - apr_pct
+        
+        # Draw the connection line (representing lost national resource share)
+        ax.plot([nov_pct, apr_pct], [i, i], color=&#x27;#f3a6a6&#x27;, linewidth=2.5, zorder=1)
+        
+        # Label the line with how much national resource share was lost
+        mid_point = (nov_pct + apr_pct) / 2
+        ax.text(mid_point, i + 0.15, f&quot;-{share_dropped:.2f}% share&quot;, 
+                ha=&#x27;center&#x27;, va=&#x27;bottom&#x27;, fontsize=9, fontweight=&#x27;bold&#x27;, color=&#x27;#c0392b&#x27;)
+
+# Plot the individual month markers
+ax.scatter(df_plot[&#x27;nov_pct_of_national&#x27;], y_positions, color=&#x27;#5cbae6&#x27;, s=130, label=&#x27;Nov 2021 Utilization&#x27;, zorder=2)
+ax.scatter(df_plot[&#x27;apr_pct_of_national&#x27;], y_positions, color=&#x27;#b6a2de&#x27;, s=130, label=&#x27;Apr 2022 Utilization&#x27;, zorder=2)
+
+# Formatting
+ax.set_yticks(y_positions)
+ax.set_yticklabels(df_plot[&#x27;icb_ons_code&#x27;], fontsize=10)
+ax.set_title(&#x27;ICB Resource Utilization vs. 1.2M National Daily Benchmark\nShift in National Capacity Share (Nov 2021 to Apr 2022)&#x27;, 
+             fontsize=14, fontweight=&#x27;bold&#x27;, pad=15)
+ax.set_xlabel(&#x27;Percentage Share of National Daily Appointments (%)&#x27;, fontsize=11, fontweight=&#x27;bold&#x27;)
+ax.set_ylabel(&#x27;ICB ONS Code&#x27;, fontsize=11, fontweight=&#x27;bold&#x27;)
+ax.grid(True, axis=&#x27;x&#x27;, linestyle=&#x27;--&#x27;, alpha=0.4)
+ax.legend(loc=&#x27;lower right&#x27;, frameon=True, facecolor=&#x27;white&#x27;, edgecolor=&#x27;none&#x27;)
+
+plt.savefig(&#x27;national_benchmark_comparison.png&#x27;, dpi=300, bbox_inches=&#x27;tight&#x27;)
+plt.show()
+
+# #### Insights from above charts:
+# - Among the top 10 ICBs of the whole of England, from November 2021 to April 2022, total appointments in each ICB dropped by an average 20%.
+# - The biggest ICB of the whole nation E54000050 lost 1% in terms of its national resources from Nov 2021 to April 2022.
+# - What captured my intention was E5400044: the drop in percentage was the largest among the top 10 at 23.4 % - if using benchmarking with E54000051 and E54000032: they all had the same capacity in November 2021, however then in April 2022, E54000044 experienced a drop gap of 3% more than others.
+# - Compared with the benchmark of 1.2M appointments a day, this has also shows that: E54000044 lost about 0.61% of the entire UK&#x27;s daily appointment capacity over those 5 months, while other similar-sized peers such as E54000051 and E54000052 lost less, which were around 0.54% and 0.53% respectively.
+# -&gt; Need further investigations about what caused this to offer recommendations, which would be:
+# - an appointment status issue
+# - waiting time issue
+# - national categories issue
+# -&gt; Next step moving forward: extract all information regarding E5400044 and do further investigation.
+
+# #### Extract all information in 3 datasets related to E5400044 for analysis
+
+ar_44= ar_copy[ar_copy[&#x27;icb_ons_code&#x27;].isin([&#x27;E54000044&#x27;])]
+
+
+ar_44
+
+ar_44[&#x27;count_of_appointments&#x27;].sum()
+
+nc_44= nc[nc[&#x27;icb_ons_code&#x27;].isin([&#x27;E54000044&#x27;])]
+
+nc_44.columns.tolist()
+
+nc_44
+
+ad_44 = ad[ad[&#x27;icb_ons_code&#x27;].isin([&#x27;E54000044&#x27;])]
+
+ad_44
+
+ad_44[[&#x27;sub_icb_location_name&#x27;,&#x27;sub_icb_location_ons_code&#x27;]].drop_duplicates().values.tolist()
+
+# #### Plot some charts to understand the overall trends regarding this ICB
+
+# #### National Categories
+
+# Group the nc_44 dataset based on &#x27;national_category&#x27; column
+nc_44_subset = nc_44.groupby([&#x27;national_category&#x27;,&#x27;sub_icb_location_name&#x27;])[&#x27;count_millions&#x27;].sum().reset_index()
+
+# Display the result (fixed by adding proper newline separation)
+nc_44_subset
+
+# Plot the appointments over the national categories per sub ICBs
+# Adding more color options for better visualisation
+import matplotlib.cm as cm
+colors = cm.tab20.colors 
+
+# Create a lineplot.
+fig, ax = plt.subplots()
+fig.set_size_inches(20,8)
+# Plot data
+
+sns.lineplot(x=&#x27;sub_icb_location_name&#x27;, y=&#x27;count_millions&#x27;, hue=&#x27;national_category&#x27;,
+             hue_order=all_categories, # control legend order
+             data=nc_44_subset.sort_values(by=&#x27;count_millions&#x27;, ascending=True),
+             errorbar=None, 
+             linewidth=2, marker=&#x27;o&#x27;, ax=ax, palette= colors)
+
+# Adding title and labels
+
+ax.set_title(&#x27;Appointments per National Categories in NHS Buckinghamshire Oxfordshire and Berkshire West ICB&#x27;, 
+             fontsize= 20, fontweight=&#x27;bold&#x27;)
+ax.set_xlabel(&#x27;Sub ICB&#x27;,fontsize= 16, fontweight=&#x27;bold&#x27;)
+ax.set_ylabel(&#x27;Count of Appointments (millions)&#x27;,fontsize= 16, fontweight=&#x27;bold&#x27;)
+
+# Adding tick marks
+
+ax.tick_params(axis=&#x27;x&#x27;, which=&#x27;major&#x27;, bottom=True,
+               length=5, width=1.5)
+
+ax.tick_params(axis=&#x27;y&#x27;, which=&#x27;major&#x27;, left=True,
+               length=5, width=1.5)
+
+# Adding legend
+plt.legend(bbox_to_anchor=(1.05, 1),
+          title=&#x27;National Category&#x27;, title_fontsize=16,
+           frameon=True, shadow=True)
+
+# Plot figure
+plt.tight_layout()  
+plt.savefig(&#x27;appointments_by_national_category_inE54000044.png&#x27;, dpi=300)
+plt.show()
+
+patients
+
+# Getting a DataFrame where I can get the total number of patients for the 3 sub ICBs
+
+patients_ad44= patients[patients[&#x27;ONS_SUB_ICB_LOCATION_CODE&#x27;].isin([&#x27;E38000136&#x27;,&#x27;E38000223&#x27;,&#x27;E38000221&#x27;])]
+
+patients_ad44
+
+patients_number_ad44= patients_ad44.groupby(&#x27;ONS_SUB_ICB_LOCATION_CODE&#x27;)[&#x27;NUMBER_OF_PATIENTS&#x27;].sum().reset_index()
+
+patients_number_ad44= patients_number_ad44.rename(columns={&#x27;ONS_SUB_ICB_LOCATION_CODE&#x27;:&#x27;sub_icb_location_ons_code&#x27;})
+
+patients_number_ad44
+
+ad_44_merge= ad_44.groupby([&#x27;sub_icb_location_code&#x27;, &#x27;sub_icb_location_ons_code&#x27;,&#x27;sub_icb_location_name&#x27;])[&#x27;count_of_appointments&#x27;]\
+                            .sum().reset_index()
+
+ad_44_merge
+
+# Create a DataFrame that inlcuded the name patients and ub ICB code for further analysis
+ad44_ons_code =pd.merge(ad_44_merge, patients_number_ad44, on=&#x27;sub_icb_location_ons_code&#x27;, how=&#x27;outer&#x27;)
+
+ad44_ons_code
+
+# Calculate appts per 1000 patients for each sub-ICB
+ad44_ons_code[&#x27;appts_per_1000&#x27;] = (
+    (ad44_ons_code[&#x27;count_of_appointments&#x27;] / ad44_ons_code[&#x27;NUMBER_OF_PATIENTS&#x27;]) * 1000
+).round(1)
+
+ad44_ons_code.sort_values(by=&#x27;NUMBER_OF_PATIENTS&#x27;, ascending=False)
+
+# National average appointments per patient
+national_appts = nc[&#x27;count_of_appointments&#x27;].sum()
+national_patients = patients[&#x27;NUMBER_OF_PATIENTS&#x27;].sum()
+national_rate = round((national_appts / national_patients) * 1000, 1)
+
+# Calculate each sub ICB capacity versus national average
+ad44_ons_code[&#x27;comparison&#x27;] = ((ad44_ons_code[&#x27;appts_per_1000&#x27;] - national_rate) / national_rate * 100).round(1)
+
+# NHS Buckinghamshire Oxfordshire and Berkshire West ICB appointments total combined
+
+bob_total_appts = 8924264
+bob_total_patients = ad44_ons_code[&#x27;NUMBER_OF_PATIENTS&#x27;].sum()
+bob_rate = round((bob_total_appts / bob_total_patients) * 1000, 1)
+
+print(f&quot;Total of appointments in the whole NHS England system recorded from 2021-08 to 2022-06:  {national_appts} appointments&quot;)
+print(f&quot;Total of patients in the whole NHS England system:  {national_patients} patients&quot;)
+print(f&quot;National average appointments per patients:  {national_rate} appts per 1,000 patients&quot;)
+
+print(f&quot;NHS Buckinghamshire Oxfordshire and Berkshire West ICB average appointments per patients :  {bob_rate} appts per 1,000 patients&quot;)
+print(f&quot;NHS Buckinghamshire Oxfordshire and Berkshire West ICB vs National average appointments per patients :   {round((bob_rate - national_rate) / national_rate * 100, 1)}%&quot;)
+
+# ###### Keytakeaway from above findings:
+# - BOB ICB records 4.6% fewer appointments per registered patient than the national average.
+# - This may come from various reasons, part of it might come from data submission coverage or anything else.
+# -&gt; Further investigations into national category
+
+# Getting the proportions of each national category type of appointments in NHS Buckinghamshire Oxfordshire and Berkshire West ICB
+bob_quality = (nc_44.groupby(&#x27;national_category&#x27;)[&#x27;count_of_appointments&#x27;]
+               .sum() / nc_44[&#x27;count_of_appointments&#x27;].sum() * 100).round(2)
+bob_quality
+
+# Getting the proportions of each national category type of appointments in national overall levels
+national_quality = (nc.groupby(&#x27;national_category&#x27;)[&#x27;count_of_appointments&#x27;]
+                    .sum() / nc[&#x27;count_of_appointments&#x27;].sum() * 100).round(2)
+
+national_quality
+
+# Getting the result in a DataFrame
+comparison = pd.DataFrame({&#x27;NHS Buckinghamshire Oxfordshire and Berkshire West ICB %&#x27;: bob_quality, &#x27;National_%&#x27;: national_quality}).\
+             fillna(0)
+
+comparison.sort_values(by=&#x27;NHS Buckinghamshire Oxfordshire and Berkshire West ICB %&#x27;, ascending=False)
+
+# #### Summary of key findings for the NHS Buckinghamshire Oxfordshire and Berkshire West ICB (BOB):
+# - BOB records far fewer planned clinics than national levels ( 4.83% vs 9.46%) but recorded more planned clinical procedure than national levels( 12.31% vs 8.68%)
+# - BoB ICB experienced a drop gap of 3% in appointments more than others while average drop in appointments for other peers were 20%
+# - BoB ICB lost about 0.61% of the entire UK&#x27;s daily appointment capacity over those 5 months, while other similar-sized peers such as E54000051 and E54000052 lost less, which were around 0.54% and 0.53% respectively.
+# - BOB ICB records 4.6% fewer appointments per registered patient than the national average.
+
+# #### Finding areas for recommendations
+
+ar_44
+
+# Making sure that the dataframe used is covered from August 2021 to June 2022 for more precise analysis when compared with other datasets              
+ar_44_leadtime = ar_44.groupby([&#x27;appointment_mode&#x27;, &#x27;time_between_book_and_appointment&#x27;])[&#x27;count_of_appointments&#x27;].sum().reset_index()
+
+ar_44_leadtime
+
+# Create a barchart for easy visualisation of healthcare sentiment distribution
+# Adding a column that counts the appointments to millions for better visualisation
+
+ar_44_leadtime[&#x27;count_millions&#x27;] = ar_44_leadtime[&#x27;count_of_appointments&#x27;]/ 1_000_000
+# Use plt.subplots() instead of plt.figure() for better axis controlreport 
+fig, ax = plt.subplots(figsize=(10,6))
+
+# Create the countplot
+sns.barplot(x=&#x27;appointment_mode&#x27;, 
+              data=ar_44_leadtime,
+              y=&#x27;count_millions&#x27;,
+              hue=&#x27;time_between_book_and_appointment&#x27;,
+              palette=&#x27;Set3&#x27;,
+              ax=ax)
+
+# Set titles and labels directly on the axis object
+ax.set_title(&#x27;Appointment Lead Time in NHS Buckinghamshire Oxfordshire and Berkshire West ICB&#x27; , fontsize=16, fontweight=&#x27;bold&#x27;)
+ax.set_xlabel(&#x27;Appointment Mode&#x27;, fontsize=12, fontstyle=&#x27;italic&#x27;, fontweight=&#x27;bold&#x27;)
+ax.set_ylabel(&#x27;Counts of Appointments (millions)&#x27;, fontsize=12, fontstyle=&#x27;italic&#x27;, fontweight=&#x27;bold&#x27;)
+
+# Adding tick marks
+
+ax.tick_params(axis=&#x27;x&#x27;, which=&#x27;major&#x27;, bottom=True,
+               length=5, width=1.5, rotation=45)
+
+ax.tick_params(axis=&#x27;y&#x27;, which=&#x27;major&#x27;, left=True,
+               length=5, width=1.5)
+
+# Adding legend
+plt.legend(title=&#x27;Appointment Lead Time&#x27;,
+           bbox_to_anchor=(1.05, 1),
+           title_fontsize= 14, frameon=True, shadow=True) 
+
+# Plot the figure
+plt.tight_layout()
+plt.savefig(&#x27;appointment_leadtime_bob_icb.png&#x27;, dpi=300)
+plt.show()
+
+ar_44_combined = ar_44[ar_44[&#x27;appointment_month&#x27;].isin([&#x27;2021-11&#x27;,&#x27;2022-04&#x27;])]
+
+ar_44_combined
+
+ar_44_combined1= ar_44_combined.groupby([&#x27;appointment_month&#x27;,&#x27;appointment_mode&#x27;,&#x27;time_between_book_and_appointment&#x27;])\
+                                        [&#x27;count_of_appointments&#x27;].sum().reset_index()
+
+ar_44_combined1
+
+fig, axes = plt.subplots(1, 2, figsize=(14,6), constrained_layout=True)
+
+# ✅ November 2021 — LEFT (axes[0])
+sns.barplot(x=&#x27;appointment_mode&#x27;, y=&#x27;count_of_appointments&#x27;,
+            data=ar_44_combined1[ar_44_combined1[&#x27;appointment_month&#x27;].isin([&#x27;2021-11&#x27;])],
+            hue=&#x27;time_between_book_and_appointment&#x27;,
+            errorbar=None, linewidth=2,
+            palette=&#x27;pastel&#x27;, ax=axes[0])
+
+axes[0].set_title(&#x27;November 2021&#x27;, fontsize=12, fontweight=&#x27;bold&#x27;)
+axes[0].set_xlabel(&#x27;Appointment Mode&#x27;, fontsize=11, fontweight=&#x27;bold&#x27;)
+axes[0].set_ylabel(&#x27;Count of Appointments&#x27;, fontsize=11, fontweight=&#x27;bold&#x27;)
+axes[0].tick_params(axis=&#x27;x&#x27;, which=&#x27;major&#x27;, bottom=True, length=5, width=1.5)
+axes[0].tick_params(axis=&#x27;y&#x27;, which=&#x27;major&#x27;, left=True, length=5, width=1.5)
+axes[0].legend_.remove() 
+
+# ✅ April 2022 — RIGHT (axes[1])
+sns.barplot(x=&#x27;appointment_mode&#x27;, y=&#x27;count_of_appointments&#x27;,
+            data=ar_44_combined1[ar_44_combined1[&#x27;appointment_month&#x27;].isin([&#x27;2022-04&#x27;])],
+            hue=&#x27;time_between_book_and_appointment&#x27;,
+            errorbar=None, linewidth=2,
+            palette=&#x27;pastel&#x27;, ax=axes[1])
+
+axes[1].set_title(&#x27;April 2022&#x27;, fontsize=12, fontweight=&#x27;bold&#x27;)
+axes[1].set_xlabel(&#x27;Appointment Mode&#x27;, fontsize=11, fontweight=&#x27;bold&#x27;)
+axes[1].set_ylabel(&#x27;Count of Appointments&#x27;, fontsize=11, fontweight=&#x27;bold&#x27;)
+axes[1].tick_params(axis=&#x27;x&#x27;, which=&#x27;major&#x27;, bottom=True, length=5, width=1.5)
+axes[1].tick_params(axis=&#x27;y&#x27;, which=&#x27;major&#x27;, left=True, length=5, width=1.5)
+axes[1].legend_.remove()  
+
+# Using the same legend
+handles, labels = axes[1].get_legend_handles_labels()
+fig.legend( handles, labels,
+    title=&#x27;Appointment Lead Time&#x27;,
+    loc=&#x27;upper right&#x27;,
+    bbox_to_anchor=(1.18, 0.95),
+    fontsize=9,
+    title_fontsize=9,
+    framealpha=0.9,)
+
+# Shared overall title
+fig.suptitle(&#x27;Average Leadtime in NHS Buckinghamshire Oxfordshire and Berkshire West ICB Nov 2021 and Apr 2022 comparison &#x27;,
+             fontsize=16, fontweight=&#x27;bold&#x27;, y=1.08)
+
+plt.savefig(&#x27;combined_average_leadtime_BOB_ICB_nov2021_apr_2022.png&#x27;, dpi=300, bbox_inches=&#x27;tight&#x27;)
+plt.show()
+
+# #### Key findings from above chart
+# - As from previous findings, we could see that NHS Buckinghamshire Oxfordshire and Berkshire West ICB experienced a 23.4% in appointments from Nov 2021 to April 2022 - which was around 3.3% higher than average drop compared to other top8 ICBs across the nation.
+# - BoB ICB lost about 0.61% of the entire UK&#x27;s daily appointment capacity over those 5 months, while other similar-sized peers such as E54000051 and E54000052 lost less, which were around 0.54% and 0.53% respectively.
+# -&gt; Above charts have shown where the 3.3% gap appeared:
+# - Same Day Telephone appointments: drop from 210K to approx 180K
+# - Same Day Face to Face appointments: drop from 165K to 140K
+# - 2 to 7 Days Lead Time Appointments: also drop around 30% -&gt; At the moment no information on this have been provided, so we are not certain about this was because the lead time was too long that patients decided to cancel their appointments/or they already recovered so that they would not need the new appointment/ or the decision made by own clinics =&gt; This could be where further investigation can be made to better understand patients reasoning behind cancelling their appointments and make the best use out of NHS capacity.
+
+# #### Recommendations for NHS Buckinghamshire Oxfordshire and Berkshire West ICB
+# As the drop from peak November 2021 to April 2022 was the common trends across almost any ICBs, this could be understood as a national effect. As the financial year 2021-2022 ended in March 2022, it might be coming from the funding issue when funding for NHS was cut down in the new FY 2022-2023 (as it&#x27;s common knowledge that NHS is funded by the government).
+# -&gt; NHS Buckinghamshire Oxfordshire and Berkshire West ICB should find better ways in understanding their actual needs, avoid hiring too many fixed term contract within short amount of time and start relacing them with longer, more flexible contract in order to be more sustainable.
+# -&gt; A testing on this recommendation could be stated below
+
+ar_44_hcp=ar_44_combined.groupby([&#x27;appointment_status&#x27;,&#x27;hcp_type&#x27;,&#x27;appointment_month&#x27;])[&#x27;count_of_appointments&#x27;].sum().reset_index()
+
+ar_44_hcp
+
+fig, axes = plt.subplots(1, 2, figsize=(14,6), constrained_layout=True)
+
+# ✅ November 2021 — LEFT (axes[0])
+sns.barplot(x=&#x27;hcp_type&#x27;, y=&#x27;count_of_appointments&#x27;,
+            data=ar_44_hcp[ar_44_hcp[&#x27;appointment_month&#x27;].isin([&#x27;2021-11&#x27;])],
+            hue=&#x27;appointment_status&#x27;,
+            errorbar=None, linewidth=2,
+            palette=&#x27;pastel&#x27;, ax=axes[0])
+
+axes[0].set_title(&#x27;November 2021&#x27;, fontsize=12, fontweight=&#x27;bold&#x27;)
+axes[0].set_xlabel(&#x27;Healthcare Professional Type&#x27;, fontsize=11, fontweight=&#x27;bold&#x27;)
+axes[0].set_ylabel(&#x27;Count of Appointments&#x27;, fontsize=11, fontweight=&#x27;bold&#x27;)
+axes[0].tick_params(axis=&#x27;x&#x27;, which=&#x27;major&#x27;, bottom=True, length=5, width=1.5)
+axes[0].tick_params(axis=&#x27;y&#x27;, which=&#x27;major&#x27;, left=True, length=5, width=1.5)
+axes[0].legend_.remove() 
+
+# ✅ April 2022 — RIGHT (axes[1])
+sns.barplot(x=&#x27;hcp_type&#x27;, y=&#x27;count_of_appointments&#x27;,
+            data=ar_44_hcp[ar_44_hcp[&#x27;appointment_month&#x27;].isin([&#x27;2022-04&#x27;])],
+            hue=&#x27;appointment_status&#x27;,
+            errorbar=None, linewidth=2,
+            palette=&#x27;pastel&#x27;, ax=axes[1])
+
+axes[1].set_title(&#x27;April 2022&#x27;, fontsize=12, fontweight=&#x27;bold&#x27;)
+axes[1].set_xlabel(&#x27;Healthcare Professional Type&#x27;, fontsize=11, fontweight=&#x27;bold&#x27;)
+axes[1].set_ylabel(&#x27;Count of Appointments&#x27;, fontsize=11, fontweight=&#x27;bold&#x27;)
+axes[1].tick_params(axis=&#x27;x&#x27;, which=&#x27;major&#x27;, bottom=True, length=5, width=1.5)
+axes[1].tick_params(axis=&#x27;y&#x27;, which=&#x27;major&#x27;, left=True, length=5, width=1.5)
+axes[1].legend_.remove()  
+
+# Using the same legend
+handles, labels = axes[1].get_legend_handles_labels()
+fig.legend( handles, labels,
+    title=&#x27;Appointment Status&#x27;,
+    loc=&#x27;upper right&#x27;,
+    bbox_to_anchor=(1.1, 0.8), 
+    fontsize=9,shadow=True,
+    title_fontsize=9,
+    framealpha=0.9,)
+
+# Shared overall title
+fig.suptitle(&#x27;Heathcare Professional Type in NHS Buckinghamshire Oxfordshire and Berkshire West ICB Nov 2011 and Apr 2022 comparison &#x27;,
+             fontsize=16, fontweight=&#x27;bold&#x27;, y=1.08)
+
+plt.savefig(&#x27;hcp_type_BOB_ICB_nov2021_apr_2022.png&#x27;, dpi=300, bbox_inches=&#x27;tight&#x27;)
+plt.show()
+
+ar_44_hcp_test= ar_44_hcp.groupby([&#x27;hcp_type&#x27;,&#x27;appointment_month&#x27;])[&#x27;count_of_appointments&#x27;].sum().reset_index()
+
+ar_44_hcp_test
+
+ar_44_hcp_test_pivot=(ar_44_hcp_test.pivot(index=&#x27;hcp_type&#x27;, columns=&#x27;appointment_month&#x27;, values=&#x27;count_of_appointments&#x27;)
+              .rename(columns={&#x27;2021-11&#x27;: &#x27;Nov 2021&#x27;, &#x27;2022-04&#x27;: &#x27;Apr 2022&#x27;})
+              .reset_index())
+
+ar_44_hcp_test_pivot.columns.name = None
+
+ar_44_hcp_test_pivot
+
+ar_44_hcp_test_pivot[&#x27;Appointments Drop&#x27;] = ar_44_hcp_test_pivot[&#x27;Nov 2021&#x27;] - ar_44_hcp_test_pivot[&#x27;Apr 2022&#x27;]
+
+ar_44_hcp_test_pivot[&#x27;Appointments Drop Percentage&#x27;] = (
+    (ar_44_hcp_test_pivot[&#x27;Nov 2021&#x27;] - ar_44_hcp_test_pivot[&#x27;Apr 2022&#x27;])
+    / ar_44_hcp_test_pivot[&#x27;Nov 2021&#x27;]
+    * 100
+).round(2)
+
+ar_44_hcp_test_pivot
+
+share_nov = ar_44_hcp_test_pivot[&#x27;Nov 2021&#x27;] / ar_44_hcp_test_pivot[&#x27;Nov 2021&#x27;].sum() * 100
+share_apr = ar_44_hcp_test_pivot[&#x27;Apr 2022&#x27;] / ar_44_hcp_test_pivot[&#x27;Apr 2022&#x27;].sum() * 100
+ar_44_hcp_test_pivot[&#x27;Nov Share (%)&#x27;] = share_nov
+ar_44_hcp_test_pivot[&#x27;Apr Share (%)&#x27;] = share_apr
+ar_44_hcp_test_pivot[&#x27;Share Shift (Percentage Points)&#x27;] = share_apr - share_nov
+
+ar_44_hcp_test_pivot
+
+# #### Next recommendations:
+# - The share shift was quite close to 0: the patient behavior did not change. As shown in above Healthcare Professional Type chart, the pattern in all bar stayed the same.
+# - The 23.4% drop in appointments can be explained by: the drop in healthcare system headcount: the appointments provided by GP and other practice staff all dropped by 22.81% and 25.24% respectively, which could result from the cutting in headcount and reduced service.
+# - However, we are not so sure about if cutting headcount was the right thing to do, because as seen in the overall national level of Healthcare Professional Type, the overall appointments experienced a noticable rise in May 2022.
+
+ar_44
+
+# Group by month and lead time to see the distribution of wait times over the full year
+ar_44_finaltest= ar_44.groupby([&#x27;appointment_month&#x27;,&#x27;time_between_book_and_appointment&#x27;])[&#x27;count_of_appointments&#x27;].sum().unstack()
+
+# Convert to percentage shares per month to normalize the volume drops
+ar_44_shares = ar_44_finaltest.div(ar_44_finaltest.sum(axis=1), axis=0) * 100
+
+print(&quot;📊 PERCENTAGE SHARE OF WAITING TIMES&quot;)
+
+ar_44_table = ar_44_shares.loc[[&#x27;2021-08&#x27;,&#x27;2021-09&#x27;,&#x27;2021-10&#x27;,
+                  &#x27;2021-11&#x27;,&#x27;2021-12&#x27;,&#x27;2022-01&#x27;,&#x27;2022-03&#x27;, &#x27;2022-04&#x27;, &#x27;2022-05&#x27;,&#x27;2022-06&#x27;]].round(2)
+ar_44_table
+
+# #### Final result:
+# The funding cut was actually fine, and the ICB has enough structural baseline capacity.
+# If ICB was drastically understaffed or patients were struggling to seek for help, the percentage shares in appointments must fluctuate a lot, however we can see a stable trend in here
+# -&gt; NHS Buckinghamshire Oxfordshire and Berkshire West ICB got its capacity under control
+</code></pre>
+      </details>
+    
+  </article>
+    <nav class="pager" aria-label="More projects">
+      <a class="prev" href="2market.html"><small>← Previous project</small>Customer Behaviour &amp; Market Segmentation — 2Market</a>
+      <a class="next" href="turtle-games.html"><small>Next project →</small>Predictive Modelling &amp; Sentiment Analysis — Turtle Games</a>
+    </nav>
+  <footer>
+    <span>Lan Ngoc Mau — Data Analytics Portfolio</span>
+    <a href="index.html#projects" style="color:var(--accent);text-decoration:none">Back to all projects ↑</a>
+  </footer>
+</div>
+</body>
+</html>
