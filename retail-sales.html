@@ -311,6 +311,7 @@
   .case-hero h1{font-size:clamp(1.8rem, 4.5vw, 2.4rem); line-height:1.1; margin-top:6px;}
   .case-hero .stack{margin-top:14px;}
   .case-page{margin-top:22px;}
+  .repo-link{margin:14px 0 0;}
   .case-kpis{margin:18px 0 16px;}
   .case-kpis .kpi-val{font-size:1.35rem;}
   .pager{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:40px;}
@@ -319,6 +320,14 @@
   .pager small{display:block; font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--ink-soft); margin-bottom:3px;}
   .pager .next{text-align:right; grid-column:2;}
   @media (max-width:520px){ .pager{grid-template-columns:1fr;} .pager .next{grid-column:1;} }
+  /* ---------- core question, recommendations ---------- */
+  .core-q{margin:0 0 22px; padding:16px 18px; border:1px solid var(--accent); border-radius:10px; background:var(--accent-soft); font-family:'Fraunces', serif; font-size:1.12rem; line-height:1.45; color:var(--ink);}
+  .core-q .tk-label{display:block; font-family:'IBM Plex Mono', monospace; font-size:11px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:var(--accent); margin-bottom:6px;}
+  .recs{margin:0; padding:0; list-style:none; counter-reset:rec;}
+  .recs li{counter-increment:rec; position:relative; padding:0 0 0 38px; margin-bottom:12px; font-size:14.5px; color:var(--ink-soft); line-height:1.55;}
+  .recs li::before{content:counter(rec); position:absolute; left:0; top:1px; width:26px; height:26px; border-radius:50%; background:var(--accent); color:var(--paper-raised); font-family:'IBM Plex Mono', monospace; font-size:12.5px; font-weight:600; display:flex; align-items:center; justify-content:center;}
+  .recs li b{display:block; color:var(--ink); font-weight:600;}
+  .case-block.after-figs{margin-top:28px;}
 </style>
 </head>
 <body>
@@ -331,10 +340,12 @@
     <p class="eyebrow">Case study 2 of 5 · Power BI dashboard · independent project</p>
     <h1>Retail Sales Performance Dashboard — Multi-Store Retailer</h1>
     <div class="stack"><span>Power Query</span><span>DAX</span><span>Power BI</span></div>
+    <p class="repo-link"><a class="btn" href="https://github.com/lanngoc94/retail-sales-dashboard" target="_blank" rel="noopener noreferrer">View project on GitHub ↗</a></p>
     <div class="kpis case-kpis"><div class="kpi"><div class="kpi-val">£143.43K</div><div class="kpi-lbl">total sales, +7.7% YoY</div></div><div class="kpi"><div class="kpi-val">596</div><div class="kpi-lbl">transactions, +9.8%</div></div><div class="kpi"><div class="kpi-val">+23.6%</div><div class="kpi-lbl">City of London, top store</div></div><div class="kpi"><div class="kpi-val">−33.2%</div><div class="kpi-lbl">Womenswear, biggest fall</div></div></div>
     <p class="takeaway"><span class="tk-label">Key takeaway</span>Sales grew 7.7% year on year, led by City of London (+23.6%). Home makes up about half of every store's sales, and Womenswear fell 33% even though its customers spend the most per transaction (£256), so it is worth recovering rather than dropping.</p>
   </header>
   <article class="project case-page">
+      <div class="core-q"><span class="tk-label">Core question</span>Which stores and product categories are driving year-on-year sales growth, and where is the business slipping?</div>
       
       <div class="case-block">
         <p class="case-label">Business Context &amp; Problem</p>
@@ -354,7 +365,6 @@
           <li><b>Overall growth:</b> total sales reached £143.43K (+7.7%), driven by more transactions (596, +9.8%) rather than bigger baskets, as average spend per transaction dipped 1.8% to £240.65.</li>
           <li><b>Store performance:</b> every store grew, led by City of London (+23.6%) and Carnaby Street (+17.8%). Regent Street handles by far the most transactions but grew the least (+3.4%) at below-average spend.</li>
           <li><b>Category mix:</b> Home accounts for around 50% of sales in every store. Accessories (+31.8%) and Home (+21.5%) grew strongly, while Womenswear (−33.2%), Footwear (−13.6%) and Menswear (−11.8%) declined.</li>
-          <li><b>Strategic recommendation:</b> prioritise recovering Womenswear volume, since it has the highest average transaction value (£256), and use Regent Street's high footfall to raise basket size through cross-selling Home and Accessories.</li>
         </ul>
       </div>
       
@@ -363,6 +373,18 @@
         <figcaption>Sales Performance Dashboard: year-on-year KPIs, store and category growth, transaction volume versus average spend, and category share by store.</figcaption>
       </figure>
     
+      <div class="case-block after-figs">
+        <p class="case-label">Recommendations</p>
+        <ol class="recs">
+          <li><b>Recover Womenswear volume.</b> It fell 33.2% but has the highest average transaction value (&pound;256), so it is worth recovering rather than dropping.</li>
+          <li><b>Raise basket size at Regent Street.</b> It handles by far the most transactions but grew the least (+3.4%) at below-average spend, a good place to cross-sell Home and Accessories.</li>
+          <li><b>Protect Home as the core category.</b> Home makes up around half of sales in every store and grew 21.5%.</li>
+          <li><b>Build on Accessories growth.</b> Accessories grew fastest (+31.8%) and pairs naturally with Home for cross-selling.</li>
+          <li><b>Learn from City of London and Carnaby Street.</b> The two fastest-growing stores (+23.6% and +17.8%) are the benchmark for what is working.</li>
+          <li><b>Investigate Footwear and Menswear.</b> Both declined (&minus;13.6% and &minus;11.8%) and need a closer look before the trend sets in.</li>
+          <li><b>Lift average spend, not just footfall.</b> Growth came from more transactions (+9.8%) while average spend per transaction dipped 1.8% to &pound;240.65.</li>
+        </ol>
+      </div>
   </article>
     <nav class="pager" aria-label="More projects">
       <a class="prev" href="msf.html"><small>← Previous project</small>Travel Operations &amp; Carbon/Cost Tracking — MSF Group Project</a>
