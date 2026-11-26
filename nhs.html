@@ -320,6 +320,14 @@
   .pager small{display:block; font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--ink-soft); margin-bottom:3px;}
   .pager .next{text-align:right; grid-column:2;}
   @media (max-width:520px){ .pager{grid-template-columns:1fr;} .pager .next{grid-column:1;} }
+  /* ---------- core question, recommendations ---------- */
+  .core-q{margin:0 0 22px; padding:16px 18px; border:1px solid var(--accent); border-radius:10px; background:var(--accent-soft); font-family:'Fraunces', serif; font-size:1.12rem; line-height:1.45; color:var(--ink);}
+  .core-q .tk-label{display:block; font-family:'IBM Plex Mono', monospace; font-size:11px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:var(--accent); margin-bottom:6px;}
+  .recs{margin:0; padding:0; list-style:none; counter-reset:rec;}
+  .recs li{counter-increment:rec; position:relative; padding:0 0 0 38px; margin-bottom:12px; font-size:14.5px; color:var(--ink-soft); line-height:1.55;}
+  .recs li::before{content:counter(rec); position:absolute; left:0; top:1px; width:26px; height:26px; border-radius:50%; background:var(--accent); color:var(--paper-raised); font-family:'IBM Plex Mono', monospace; font-size:12.5px; font-weight:600; display:flex; align-items:center; justify-content:center;}
+  .recs li b{display:block; color:var(--ink); font-weight:600;}
+  .case-block.after-figs{margin-top:28px;}
 </style>
 </head>
 <body>
@@ -337,27 +345,27 @@
     <p class="takeaway"><span class="tk-label">Key takeaway</span>BOB ICB's 23.4% drop in appointments was a capacity problem, not falling demand, so it can be fixed by redesigning bookings and closing data-quality gaps rather than hiring more staff.</p>
   </header>
   <article class="project case-page">
-      
+      <div class="core-q"><span class="tk-label">Core question</span>Did NHS BOB ICB&rsquo;s 23.4% drop in appointments come from patients needing less care, or from less capacity to see them, and does it need more staff?</div>
       <div class="case-block">
         <p class="case-label">Business Context &amp; Problem</p>
-        <p class="desc">Analysed NHS England's national appointment dataset (Aug 2021–Jun 2022) to diagnose why NHS Buckinghamshire, Oxfordshire and Berkshire West (BOB) ICB saw a 23.4% drop in appointments, and whether the answer was more staff or a different way of working.</p>
+        <p class="desc">Analysed NHS England&rsquo;s national appointment data (Aug 2021&ndash;Jun 2022) to find out why NHS Buckinghamshire, Oxfordshire and Berkshire West (BOB) ICB saw a 23.4% drop in appointments between November 2021 and April 2022, and whether the answer was more staff or a different way of working.</p>
       </div>
       <div class="case-block">
         <p class="case-label">Technical Execution &amp; Tools Used</p>
         <ul class="case-list">
-          <li><b>Python (pandas)</b> — data cleaning, aggregation, and benchmarking BOB ICB against the ten highest-volume ICBs and the national average per 1,000 patients.</li>
-          <li><b>matplotlib</b> — benchmark dumbbell chart, staff-type trend lines, and waiting-time mix over time.</li>
-          <li><b>TextBlob</b> — scraped and sentiment-scored healthcare-related tweets to test social media as an early-warning signal.</li>
+          <li><b>Python (pandas) &mdash;</b> loaded and sense-checked three NHS datasets (appointment durations, regional appointments and national categories), then aggregated and benchmarked BOB ICB against the ten highest-volume ICBs and the national average per 1,000 registered patients.</li>
+          <li><b>matplotlib &amp; seaborn &mdash;</b> benchmark dumbbell chart, staff-type trend lines, and waiting-time mix over time.</li>
+          <li><b>TextBlob &mdash;</b> sentiment-scored a sample of healthcare-related tweets to test social media as an early-warning signal.</li>
         </ul>
       </div>
       <div class="case-block">
         <p class="case-label">Key Business Insights &amp; Impact</p>
         <ul class="case-list">
-          <li><b>Steepest decline:</b> BOB ICB's 23.4% drop was the largest among the ten highest-volume ICBs — roughly 3 points worse than similarly-sized peers, which mostly fell 16–22% — leaving it 4.6% below the national average of appointments per 1,000 patients.</li>
-          <li><b>Supply, not demand:</b> GP and Other Practice Staff volumes both fell 22–25% between the November peak and April trough, while the split between the two groups barely shifted — pointing to a capacity cut, not a change in patient behaviour.</li>
-          <li><b>Stable booking pattern:</b> same-day appointments held steady at 46% of the total across all ten months, showing the booking system was reactive by design rather than destabilised.</li>
-          <li><b>Social media signal:</b> the tweet sample proved too sparse and largely unrelated to the NHS to serve as a useful early-warning indicator.</li>
-          <li><b>Strategic recommendation:</b> no extra headcount needed — instead, redesign the booking system, close the "Unmapped"/"Inconsistent Mapping" data-quality gap, and deploy automated reminders to reduce non-attendance. BOB ICB would need roughly 237 more appointments per 1,000 patients to close the gap to the national average.</li>
+          <li><b>Steepest decline:</b> BOB ICB&rsquo;s 23.4% drop was the largest among the ten highest-volume ICBs, roughly 3 points worse than similar-sized peers, which mostly fell 16&ndash;22%. It is now 4.6% below the national average of appointments per 1,000 patients.</li>
+          <li><b>Lost capacity share:</b> measured against the NHS planning guideline of 1.2M appointments a day, BOB ICB lost about 0.61% of national daily capacity between November and April, more than similar-sized peers (0.53&ndash;0.54%).</li>
+          <li><b>Supply, not demand:</b> GP and Other Practice Staff appointments fell 22.8% and 25.2% between the November peak and the April trough, while the split between the two groups barely shifted. This points to a cut in capacity, not a change in patient behaviour.</li>
+          <li><b>Stable booking pattern:</b> same-day appointments held steady at about 46% of the total in every month, so the booking system was reactive by design rather than destabilised.</li>
+          <li><b>Social media signal:</b> the tweet sample was too sparse and mostly unrelated to the NHS to work as an early-warning indicator.</li>
         </ul>
       </div>
       
@@ -393,6 +401,56 @@ share_apr = ar_44_hcp_test_pivot['Apr 2022'] / ar_44_hcp_test_pivot['Apr 2022'].
 ar_44_hcp_test_pivot['Share Shift (pp)'] = share_apr - share_nov
 # -&gt; GP -22.8%, Other Practice Staff -25.2%, but the share barely moved:
 #    both fell together, so this reads as a supply-side cut, not a change in patient mix.</code></pre>
+      </div>
+      <div class="code-block">
+        <p class="code-label">Data validation: is North West London&rsquo;s 31% share of Planned Clinics real, or duplicate rows?</p>
+        <pre><code>row_counts = (nc_clinics_2[nc_clinics_2['national_category'] == 'Planned Clinics']
+              .groupby('sub_icb_location_name')
+              .agg(row_count=('count_millions', 'count'),
+                   total_appointments=('count_millions', 'sum'),
+                   avg_per_row=('count_millions', 'mean'))
+              .sort_values('total_appointments', ascending=False))
+
+# Normalise by population before calling anything an outlier
+patients_merge['appts_per_1000'] = (
+    patients_merge['count_of_appointments'] / patients_merge['NUMBER_OF_PATIENTS'] * 1000)
+# -&gt; Not duplicates: NW London simply has the largest registered patient base.</code></pre>
+      </div>
+      <div class="code-block">
+        <p class="code-label">Benchmark: BOB ICB appointments per 1,000 registered patients vs England</p>
+        <pre><code>national_appts = nc['count_of_appointments'].sum()
+national_patients = patients['NUMBER_OF_PATIENTS'].sum()
+national_rate = round(national_appts / national_patients * 1000, 1)
+
+bob_total_patients = ad44_ons_code['NUMBER_OF_PATIENTS'].sum()
+bob_rate = round(bob_total_appts / bob_total_patients * 1000, 1)
+
+gap_pct = round((bob_rate - national_rate) / national_rate * 100, 1)
+# -&gt; BOB ICB records 4.6% fewer appointments per registered patient than the national average</code></pre>
+      </div>
+      <div class="case-block after-figs">
+        <p class="case-label">Recommendations</p>
+        <ol class="recs">
+          <li><b>Make better use of existing capacity before hiring.</b> GP and other practice staff appointments fell together while the patient mix stayed flat, so the gap is in capacity used, not in demand.</li>
+          <li><b>Start with the booking system.</b> Same-day bookings held at about 46% of the total every month, which shows a reactive system by design and the natural place to redesign.</li>
+          <li><b>Set a target to close the gap to the national average.</b> BOB ICB would need roughly 237 more appointments per 1,000 patients to match England, a clear and trackable goal.</li>
+          <li><b>Clean up &ldquo;Unmapped&rdquo; and &ldquo;Inconsistent Mapping&rdquo; records.</b> Appointments that are not classified properly hide where capacity goes and make the ICB harder to compare with its peers.</li>
+          <li><b>Send automated appointment reminders.</b> Reminders are a low-cost way to cut non-attendance and get more out of appointments that already exist.</li>
+          <li><b>Benchmark against similar-sized peers.</b> E54000051 and E54000052 had similar capacity to BOB ICB in November but lost less of the national share by April, so they are the first places to compare working practices.</li>
+          <li><b>Check the low share of Planned Clinics.</b> BOB ICB records 4.83% of appointments as Planned Clinics against 9.46% nationally, and more Planned Clinical Procedures (12.31% vs 8.68%), which may be a recording difference rather than a service one.</li>
+          <li><b>Do not rely on Twitter as an early-warning signal.</b> The tweet sample was too sparse and mostly unrelated to the NHS, so monitoring effort is better spent on the appointment data itself.</li>
+        </ol>
+      </div>
+      <div class="case-block after-figs">
+        <p class="case-label">Data Quality &amp; Limitations</p>
+        <ul class="case-list">
+          <li><b>Sense-checked first:</b> all three datasets were checked for missing values and data types, and North West London&rsquo;s 31% share of Planned Clinics was validated against registered patients rather than dismissed as duplicates.</li>
+          <li><b>Unclassified records:</b> a noticeable share of appointments sits under the &ldquo;Unmapped&rdquo; service setting, which limits how precisely capacity can be attributed.</li>
+          <li><b>No reasons for missed appointments:</b> none of the datasets record why appointments are missed, or any symptom or condition data, so non-attendance cannot be traced to its causes.</li>
+          <li><b>Daily figures are estimates:</b> daily utilisation was approximated as monthly totals divided by 30, then compared with the 1.2M-a-day planning guideline.</li>
+          <li><b>Short time window:</b> 11 months of data (Aug 2021&ndash;Jun 2022) is not enough to separate seasonal patterns from one-off effects.</li>
+          <li><b>Possible reporting effects:</b> the steady national rise in Care Home Round appointments may reflect changes in how activity is recorded rather than in demand.</li>
+        </ul>
       </div>
       <details class="full-script">
         <summary>View full Python notebook</summary>

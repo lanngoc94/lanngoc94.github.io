@@ -320,6 +320,14 @@
   .pager small{display:block; font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--ink-soft); margin-bottom:3px;}
   .pager .next{text-align:right; grid-column:2;}
   @media (max-width:520px){ .pager{grid-template-columns:1fr;} .pager .next{grid-column:1;} }
+  /* ---------- core question, recommendations ---------- */
+  .core-q{margin:0 0 22px; padding:16px 18px; border:1px solid var(--accent); border-radius:10px; background:var(--accent-soft); font-family:'Fraunces', serif; font-size:1.12rem; line-height:1.45; color:var(--ink);}
+  .core-q .tk-label{display:block; font-family:'IBM Plex Mono', monospace; font-size:11px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:var(--accent); margin-bottom:6px;}
+  .recs{margin:0; padding:0; list-style:none; counter-reset:rec;}
+  .recs li{counter-increment:rec; position:relative; padding:0 0 0 38px; margin-bottom:12px; font-size:14.5px; color:var(--ink-soft); line-height:1.55;}
+  .recs li::before{content:counter(rec); position:absolute; left:0; top:1px; width:26px; height:26px; border-radius:50%; background:var(--accent); color:var(--paper-raised); font-family:'IBM Plex Mono', monospace; font-size:12.5px; font-weight:600; display:flex; align-items:center; justify-content:center;}
+  .recs li b{display:block; color:var(--ink); font-weight:600;}
+  .case-block.after-figs{margin-top:28px;}
 </style>
 </head>
 <body>
@@ -338,6 +346,7 @@
     <p class="takeaway"><span class="tk-label">Key takeaway</span>Spain holds 49% of the $1.26M spend, and Alcohol and Meat make up 78% of it. The best return lies in Twitter and Email campaigns aimed at middle-income customers aged 45+, not in spreading budget across smaller markets.</p>
   </header>
   <article class="project case-page">
+      <div class="core-q"><span class="tk-label">Core question</span>Which customers, products and marketing channels give 2Market the best return on its marketing spend?</div>
       
       <div class="case-block">
         <p class="case-label">Business Context &amp; Problem</p>
@@ -359,7 +368,6 @@
           <li><b>Customers:</b> middle-income households ($30K–$80K) spend the most, led by BSc graduates. 45–54 is the largest age group (697 customers, two-thirds married), and customers aged 45+ give the highest return.</li>
           <li><b>Channels:</b> Twitter brings the most successful conversions (104), and Email drives the most website visits (922, then Twitter with 713). Facebook, Brochure and Instagram trail on both.</li>
           <li><b>Purchase behaviour:</b> in-store purchases exceed online in every age group, for example 3,916 vs 2,768 for customers aged 65+.</li>
-          <li><b>Strategic recommendation:</b> focus marketing spend on Twitter and Email, target middle-income customers aged 45+ with Alcohol and Meat offers, and deepen retention in Spain before expanding into smaller, lower-spend markets.</li>
         </ul>
       </div>
       
@@ -368,6 +376,17 @@
         <figcaption>Final Power BI dashboard: headline findings in the KPI cards, with income bracket and age group slicers across spend, customer, channel and country views.</figcaption>
       </figure>
     
+      <div class="case-block after-figs">
+        <p class="case-label">Recommendations</p>
+        <ol class="recs">
+          <li><b>Put channel budget into Twitter and Email.</b> Twitter brings the most conversions (104) and Email the most website visits (922), while Facebook, Brochure and Instagram trail on both.</li>
+          <li><b>Target middle-income customers aged 45+.</b> Households earning $30K&ndash;$80K spend the most, and customers aged 45+ give the highest return.</li>
+          <li><b>Lead offers with Alcohol and Meat.</b> The two categories make up 78% of spend, so promotions built around them reach most of the revenue.</li>
+          <li><b>Deepen retention in Spain before expanding.</b> Spain holds 49% of spend ($618K), three times the next market, South Africa ($197K).</li>
+          <li><b>Review spend on the weakest channels.</b> Facebook, Brochure and Instagram trail on both conversions and visits, so their budget is the first to test moving elsewhere.</li>
+          <li><b>Plan campaigns around in-store buying.</b> In-store purchases beat online in every age group, for example 3,916 vs 2,768 for customers aged 65+.</li>
+        </ol>
+      </div>
   </article>
     <nav class="pager" aria-label="More projects">
       <a class="prev" href="retail-sales.html"><small>← Previous project</small>Retail Sales Performance Dashboard — Multi-Store Retailer</a>

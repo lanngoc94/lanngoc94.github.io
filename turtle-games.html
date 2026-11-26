@@ -320,6 +320,14 @@
   .pager small{display:block; font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--ink-soft); margin-bottom:3px;}
   .pager .next{text-align:right; grid-column:2;}
   @media (max-width:520px){ .pager{grid-template-columns:1fr;} .pager .next{grid-column:1;} }
+  /* ---------- core question, recommendations ---------- */
+  .core-q{margin:0 0 22px; padding:16px 18px; border:1px solid var(--accent); border-radius:10px; background:var(--accent-soft); font-family:'Fraunces', serif; font-size:1.12rem; line-height:1.45; color:var(--ink);}
+  .core-q .tk-label{display:block; font-family:'IBM Plex Mono', monospace; font-size:11px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:var(--accent); margin-bottom:6px;}
+  .recs{margin:0; padding:0; list-style:none; counter-reset:rec;}
+  .recs li{counter-increment:rec; position:relative; padding:0 0 0 38px; margin-bottom:12px; font-size:14.5px; color:var(--ink-soft); line-height:1.55;}
+  .recs li::before{content:counter(rec); position:absolute; left:0; top:1px; width:26px; height:26px; border-radius:50%; background:var(--accent); color:var(--paper-raised); font-family:'IBM Plex Mono', monospace; font-size:12.5px; font-weight:600; display:flex; align-items:center; justify-content:center;}
+  .recs li b{display:block; color:var(--ink); font-weight:600;}
+  .case-block.after-figs{margin-top:28px;}
 </style>
 </head>
 <body>
@@ -333,31 +341,31 @@
     <h1>Predictive Modelling &amp; Sentiment Analysis — Turtle Games</h1>
     <div class="stack"><span>Python</span><span>R</span><span>scikit-learn</span><span>K-Means</span><span>NLP / VADER / TextBlob</span></div>
     <p class="repo-link"><a class="btn" href="https://github.com/lanngoc94/turtle-games-customer-analytics" target="_blank" rel="noopener noreferrer">View code on GitHub ↗</a></p>
-    <div class="kpis case-kpis"><div class="kpi"><div class="kpi-val">83%</div><div class="kpi-lbl">loyalty variance explained</div></div><div class="kpi"><div class="kpi-val">97.7%</div><div class="kpi-lbl">decision tree R²</div></div><div class="kpi"><div class="kpi-val">5</div><div class="kpi-lbl">customer segments (K-Means)</div></div><div class="kpi"><div class="kpi-val">88.8%</div><div class="kpi-lbl">reviews positive</div></div></div>
-    <p class="takeaway"><span class="tk-label">Key takeaway</span>Customer score and income together explain 83% of loyalty points, and one high-value segment earns about 2.5x the points of everyone else, which makes it the clear focus for loyalty spend.</p>
+    <div class="kpis case-kpis"><div class="kpi"><div class="kpi-val">83%</div><div class="kpi-lbl">loyalty variance explained</div></div><div class="kpi"><div class="kpi-val">0.977</div><div class="kpi-lbl">decision tree R² (test set)</div></div><div class="kpi"><div class="kpi-val">5</div><div class="kpi-lbl">customer segments (K-Means)</div></div><div class="kpi"><div class="kpi-val">88.8%</div><div class="kpi-lbl">reviews positive</div></div></div>
+    <p class="takeaway"><span class="tk-label">Key takeaway</span>Customer score and income together explain 83% of loyalty points, and customers scoring above 67 earn about 2.5x the points of the rest, which makes high-engagement customers the clear focus for loyalty spend.</p>
   </header>
   <article class="project case-page">
-      
+      <div class="core-q"><span class="tk-label">Core question</span>What drives customers&rsquo; loyalty points, which customer groups should marketing target, and what do reviews say Turtle Games needs to fix?</div>
       <div class="case-block">
         <p class="case-label">Business Context &amp; Problem</p>
-        <p class="desc">Analysed Turtle Games' customer dataset to explain and predict how customers accumulate loyalty points, segment the customer base into actionable groups, and understand what customers say in their reviews — to inform product and marketing decisions.</p>
+        <p class="desc">Analysed Turtle Games&rsquo; customer data to explain and predict how customers build up loyalty points, split the customer base into groups marketing can act on, and understand what customers say in their reviews, to inform product and marketing decisions.</p>
       </div>
       <div class="case-block">
         <p class="case-label">Technical Execution &amp; Tools Used</p>
         <ul class="case-list">
-          <li><b>Python &amp; R</b> — multiple linear regression on Customer Score and Annual Income to explain loyalty points.</li>
-          <li><b>scikit-learn</b> — Decision Tree Regressor on the same features, and K-Means clustering with k=5 validated by the Elbow and Silhouette methods.</li>
-          <li><b>NLP (TextBlob &amp; VADER)</b> — sentiment analysis and word-frequency analysis of customer reviews.</li>
+          <li><b>Python &amp; R &mdash;</b> multiple linear regression on Customer Score and Annual Income to explain loyalty points, with the final model built in R, Turtle Games&rsquo; preferred language.</li>
+          <li><b>scikit-learn &mdash;</b> Decision Tree Regressor on the same features, scored by R&sup2; on a 30% hold-out test set, and K-Means clustering with k=5 chosen by the Elbow and Silhouette methods.</li>
+          <li><b>NLP (TextBlob &amp; VADER) &mdash;</b> cleaned the review text (lower case, punctuation removed, duplicates dropped), then scored sentiment with both tools and compared their top positive and negative reviews.</li>
         </ul>
       </div>
       <div class="case-block">
         <p class="case-label">Key Business Insights &amp; Impact</p>
         <ul class="case-list">
-          <li><b>Loyalty drivers:</b> on their own, Customer Score explained 45% of the variance in loyalty points and Annual Income 38%; combining both in a multiple linear regression raised this to 83%.</li>
-          <li><b>Best model:</b> the Decision Tree Regressor reached an R² of 0.977 on the test set (97.7% of variance explained) using the same two features and confirmed gender and age had zero predictive power.</li>
-          <li><b>Most valuable segment:</b> K-Means identified five customer groups by income and engagement; customers scoring 67+ with income above &pound;74k earn around 2.5x the loyalty points of the rest.</li>
-          <li><b>Customer sentiment:</b> 88.8% of reviews were positive, driven by value, fun, and educational framing; the main negative themes were unclear instructions, age-mislabelling, and quality control.</li>
-          <li><b>Strategic recommendation:</b> fed the segmentation and review findings directly into product and marketing recommendations — focusing loyalty efforts on the high-value segment and addressing the recurring complaints around instructions, age labelling, and quality.</li>
+          <li><b>Loyalty drivers:</b> on their own, Customer Score explained 45% of the variance in loyalty points and Annual Income 38%. Combining both in a multiple linear regression raised this to 83% (R&sup2; 0.83).</li>
+          <li><b>Best model:</b> the Decision Tree Regressor reached an R&sup2; of 0.977 on the test set, against 0.827 for the linear model. It split on income (52.5% importance) and customer score (47.5%); gender and age added nothing.</li>
+          <li><b>High-engagement customers:</b> customers with a score above 67 earn about 2.5x the loyalty points of the rest (2,767 vs 1,081 on average), and those who also earn over &pound;74k average around 4,849 points.</li>
+          <li><b>Five segments:</b> K-Means split customers into five groups by income and score (table below), including 330 well-paid but disengaged customers.</li>
+          <li><b>Customer sentiment:</b> VADER scored 88.8% of reviews as positive and 6.6% as negative. Praise centred on value, fun and educational use; the main complaints were unclear instructions, products not suiting the advertised age, and quality control.</li>
         </ul>
       </div>
       <table class="segment-table">
@@ -402,6 +410,67 @@ importances.sort_values('importance', ascending=False)
 #          customer_score (1-100)  0.475
 #          gender                  0.000
 #          age                     0.000</code></pre>
+      </div>
+      <div class="code-block">
+        <p class="code-label">Choosing k: Elbow and Silhouette methods for K-Means</p>
+        <pre><code>x = df3[['annual_income (k£)', 'customer_score (1-100)']]
+
+# Elbow: within-cluster sum of squares for k = 1 to 10
+ss = [KMeans(n_clusters=k, init='k-means++', n_init=10, random_state=0).fit(x).inertia_
+      for k in range(1, 11)]
+
+# Silhouette: how well separated the clusters are for k = 2 to 10
+sil = [silhouette_score(x, KMeans(n_clusters=k).fit(x).labels_, metric='euclidean')
+       for k in range(2, 11)]
+# -&gt; the elbow flattens at k=5 and the silhouette score peaks at k=5
+
+kmeans = KMeans(n_clusters=5, init='k-means++', max_iter=15000, random_state=0).fit(x)
+x['K-Means Predicted'] = kmeans.labels_</code></pre>
+      </div>
+      <div class="code-block">
+        <p class="code-label">Sentiment: VADER compound score and label for each review</p>
+        <pre><code>analyzer = SentimentIntensityAnalyzer()
+
+survey3['review_vader_compound'] = survey3['review'].apply(
+    lambda x: analyzer.polarity_scores(x)['compound'])
+survey3['summary_vader_compound'] = survey3['summary'].apply(
+    lambda x: analyzer.polarity_scores(x)['compound'])
+survey3['combined_vader_compound'] = (
+    survey3['review_vader_compound'] + survey3['summary_vader_compound']) / 2
+
+def get_vader_label(score):
+    if score &gt;= 0.05:
+        return 'Positive'
+    elif score &lt;= -0.05:
+        return 'Negative'
+    return 'Neutral'
+
+survey3['combined_vader_label'] = survey3['combined_vader_compound'].apply(get_vader_label)
+# -&gt; 88.8% of reviews positive, 6.6% negative</code></pre>
+      </div>
+      <div class="case-block after-figs">
+        <p class="case-label">Recommendations</p>
+        <ol class="recs">
+          <li><b>Focus loyalty rewards on high-engagement customers.</b> Customers scoring above 67 earn about 2.5x the points of the rest, so raising customer score is the strongest lever the programme has.</li>
+          <li><b>Move customers out of the 0&ndash;2,000 points tier.</b> A noticeable share of customers in every segment sits in this low tier, including some on incomes above &pound;60k, and review feedback can show what would move them up.</li>
+          <li><b>Re-engage the well-paid but disengaged segment.</b> 330 customers earn &pound;55k&ndash;&pound;105k+ but score only 1&ndash;40, so they have spending power the programme is not capturing.</li>
+          <li><b>Use the regression for mid-tier forecasting only.</b> It predicts typical customers well but goes negative near zero points and underestimates customers above about 4,000 points.</li>
+          <li><b>Collect richer customer data.</b> Purchase frequency, product preferences and gift purchases would help explain the points that income and score cannot.</li>
+          <li><b>Improve product instructions.</b> &ldquo;Complicated instructions&rdquo; was one of the most common complaints, and visual step-by-step guides, ideally with images or video links, would address it.</li>
+          <li><b>Review age-range labelling.</b> Several reviewers said products did not suit the advertised age, a direct cause of disappointment and returns.</li>
+          <li><b>Tighten quality checks before shipping.</b> Incomplete kits and mismatched parts appear in the most negative reviews, so pre-shipment checks would directly cut 1-star reviews.</li>
+        </ol>
+      </div>
+      <div class="case-block after-figs">
+        <p class="case-label">Data Quality &amp; Limitations</p>
+        <ul class="case-list">
+          <li><b>Prepared before modelling:</b> checked for missing values, and for the NLP work lower-cased the text, removed punctuation and dropped duplicate reviews.</li>
+          <li><b>Linear model blind spots:</b> it predicts negative points near zero and underestimates customers above about 4,000 points. Its RMSE of about 534 points against a mean of about 1,578 means roughly a third average error per customer.</li>
+          <li><b>One test split:</b> the decision tree was scored on a single 70/30 split without cross-validation, so its 0.977 R&sup2; may be optimistic on new customers.</li>
+          <li><b>Narrow feature set:</b> the data holds demographics, income, score and education only, with no purchase history.</li>
+          <li><b>Skewed customer base:</b> most customers are over 30 and university-educated, so the findings may not carry over to younger or less-educated customers.</li>
+          <li><b>Sentiment tools miss context:</b> TextBlob scored some clearly positive reviews at &minus;0.4, gives single-word summaries extreme scores, and stopword removal can drop words like &ldquo;not&rdquo;. VADER was used as a cross-check.</li>
+        </ul>
       </div>
       <details class="full-script">
         <summary>View full Python notebook</summary>
