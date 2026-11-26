@@ -319,6 +319,14 @@
   .pager small{display:block; font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--ink-soft); margin-bottom:3px;}
   .pager .next{text-align:right; grid-column:2;}
   @media (max-width:520px){ .pager{grid-template-columns:1fr;} .pager .next{grid-column:1;} }
+  /* ---------- core question, recommendations ---------- */
+  .core-q{margin:0 0 22px; padding:16px 18px; border:1px solid var(--accent); border-radius:10px; background:var(--accent-soft); font-family:'Fraunces', serif; font-size:1.12rem; line-height:1.45; color:var(--ink);}
+  .core-q .tk-label{display:block; font-family:'IBM Plex Mono', monospace; font-size:11px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:var(--accent); margin-bottom:6px;}
+  .recs{margin:0; padding:0; list-style:none; counter-reset:rec;}
+  .recs li{counter-increment:rec; position:relative; padding:0 0 0 38px; margin-bottom:12px; font-size:14.5px; color:var(--ink-soft); line-height:1.55;}
+  .recs li::before{content:counter(rec); position:absolute; left:0; top:1px; width:26px; height:26px; border-radius:50%; background:var(--accent); color:var(--paper-raised); font-family:'IBM Plex Mono', monospace; font-size:12.5px; font-weight:600; display:flex; align-items:center; justify-content:center;}
+  .recs li b{display:block; color:var(--ink); font-weight:600;}
+  .case-block.after-figs{margin-top:28px;}
 </style>
 </head>
 <body>
@@ -335,6 +343,7 @@
     <p class="takeaway"><span class="tk-label">Key takeaway</span>Bringing €18.64M of travel spend and 21.37K tonnes of CO2 into one view revealed quick wins: switching a single layover on the Kinshasa–Kigali route alone would cut about 41 tonnes, with no policy change needed.</p>
   </header>
   <article class="project case-page">
+      <div class="core-q"><span class="tk-label">Core question</span>Where are the travel budget and carbon emissions going, and which changes would cut both without a new travel policy?</div>
       
       <div class="case-block">
         <p class="case-label">Business Context &amp; Problem</p>
@@ -355,13 +364,6 @@
           <li><b>Carbon savings:</b> 38.43 tonnes of potential CO2 savings from shifting trips under 750km onto rail; air-only and mixed air/rail trips run 2–9x higher average emissions per trip than rail-only.</li>
           <li><b>Cost leakage:</b> 4,365 trips exceeded the &euro;66 agency-fee cap, and 94% of ticket changes ended up fully exchanged rather than refunded — concentrating cost risk in repeat-exchange bookings.</li>
           <li><b>Route spotlight — Kinshasa to Kigali:</b> most of the 121 trips on this route lay over in Addis Ababa; only 15 stopped in Nairobi. Choosing Nairobi as the layover airport on this one route would cut total emissions by approximately 41 tonnes of CO2.</li>
-          <li><b>Strategic recommendation — carbon:</b>
-            <ul class="case-list sub-list">
-              <li>Find the fifteen routes with the biggest gap between the shortest routing MSF has flown and the typical one.</li>
-              <li>Ask the travel agency whether the shorter routing is bookable as standard and, where it is, make it the default.</li>
-              <li>Success measure: median distance on those routes within 20% of the shortest already achieved. No policy change or new system needed.</li>
-            </ul>
-          </li>
         </ul>
       </div>
       
@@ -380,6 +382,24 @@
         <figcaption>Filtered monthly view (Nov 2024) highlighting period-over-period spend, emissions, and distance shifts, with route-level and exchange-cost breakdowns for the selected month.</figcaption>
       </figure>
     
+      <div class="case-block after-figs">
+        <p class="case-label">Recommendations</p>
+        <ol class="recs">
+          <li><b>Make the shortest routing the default on the 15 widest-gap routes.</b> Find the routes with the biggest gap between the shortest routing already flown and the typical one, and ask the travel agency to book the shorter one as standard where possible.</li>
+          <li><b>Switch the Kinshasa&ndash;Kigali layover to Nairobi.</b> Most of the 121 trips lay over in Addis Ababa; choosing Nairobi on this one route would cut about 41 tonnes of CO2.</li>
+          <li><b>Move trips under 750 km onto rail.</b> This would save an estimated 38.43 tonnes of CO2, since air and mixed air/rail trips emit 2&ndash;9x more per trip than rail-only.</li>
+          <li><b>Enforce the &euro;66 agency-fee cap.</b> 4,365 trips exceeded it, a cost leak that booking rules can close.</li>
+          <li><b>Reduce repeat ticket exchanges.</b> 94% of ticket changes ended up fully exchanged rather than refunded, which concentrates cost risk in repeat-exchange bookings.</li>
+          <li><b>Track progress with one simple measure.</b> Aim for median distance on the targeted routes within 20% of the shortest already achieved, reviewed monthly in the dashboard.</li>
+        </ol>
+      </div>
+      <div class="case-block after-figs">
+        <p class="case-label">Data Quality &amp; Limitations</p>
+        <ul class="case-list">
+          <li><b>Reconstructed from raw exports:</b> the data came as raw, multi-source travel agency exports that had to be cleaned in SQL and rebuilt into trip-level records before any analysis.</li>
+          <li><b>Savings are estimates:</b> the CO2 savings for rail shifts and layover changes are modelled from past trips, and depend on those routings being bookable.</li>
+        </ul>
+      </div>
   </article>
     <nav class="pager" aria-label="More projects">
       <a class="next" href="retail-sales.html"><small>Next project →</small>Retail Sales Performance Dashboard — Multi-Store Retailer</a>
