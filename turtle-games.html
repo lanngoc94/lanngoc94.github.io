@@ -311,6 +311,7 @@
   .case-hero h1{font-size:clamp(1.8rem, 4.5vw, 2.4rem); line-height:1.1; margin-top:6px;}
   .case-hero .stack{margin-top:14px;}
   .case-page{margin-top:22px;}
+  .repo-link{margin:14px 0 0;}
   .case-kpis{margin:18px 0 16px;}
   .case-kpis .kpi-val{font-size:1.35rem;}
   .pager{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:40px;}
@@ -331,7 +332,8 @@
     <p class="eyebrow">Case study 5 of 5 · Predictive modelling &amp; NLP · LSE course 3 · 84%</p>
     <h1>Predictive Modelling &amp; Sentiment Analysis — Turtle Games</h1>
     <div class="stack"><span>Python</span><span>R</span><span>scikit-learn</span><span>K-Means</span><span>NLP / VADER / TextBlob</span></div>
-    <div class="kpis case-kpis"><div class="kpi"><div class="kpi-val">83%</div><div class="kpi-lbl">loyalty variance explained</div></div><div class="kpi"><div class="kpi-val">97.7%</div><div class="kpi-lbl">decision tree accuracy</div></div><div class="kpi"><div class="kpi-val">5</div><div class="kpi-lbl">customer segments (K-Means)</div></div><div class="kpi"><div class="kpi-val">88.8%</div><div class="kpi-lbl">reviews positive</div></div></div>
+    <p class="repo-link"><a class="btn" href="https://github.com/lanngoc94/turtle-games-customer-analytics" target="_blank" rel="noopener noreferrer">View code on GitHub ↗</a></p>
+    <div class="kpis case-kpis"><div class="kpi"><div class="kpi-val">83%</div><div class="kpi-lbl">loyalty variance explained</div></div><div class="kpi"><div class="kpi-val">97.7%</div><div class="kpi-lbl">decision tree R²</div></div><div class="kpi"><div class="kpi-val">5</div><div class="kpi-lbl">customer segments (K-Means)</div></div><div class="kpi"><div class="kpi-val">88.8%</div><div class="kpi-lbl">reviews positive</div></div></div>
     <p class="takeaway"><span class="tk-label">Key takeaway</span>Customer score and income together explain 83% of loyalty points, and one high-value segment earns about 2.5x the points of everyone else, which makes it the clear focus for loyalty spend.</p>
   </header>
   <article class="project case-page">
@@ -352,7 +354,7 @@
         <p class="case-label">Key Business Insights &amp; Impact</p>
         <ul class="case-list">
           <li><b>Loyalty drivers:</b> on their own, Customer Score explained 45% of the variance in loyalty points and Annual Income 38%; combining both in a multiple linear regression raised this to 83%.</li>
-          <li><b>Best model:</b> the Decision Tree Regressor reached 97.7% accuracy on the same two features and confirmed gender and age had zero predictive power.</li>
+          <li><b>Best model:</b> the Decision Tree Regressor reached an R² of 0.977 on the test set (97.7% of variance explained) using the same two features and confirmed gender and age had zero predictive power.</li>
           <li><b>Most valuable segment:</b> K-Means identified five customer groups by income and engagement; customers scoring 67+ with income above &pound;74k earn around 2.5x the loyalty points of the rest.</li>
           <li><b>Customer sentiment:</b> 88.8% of reviews were positive, driven by value, fun, and educational framing; the main negative themes were unclear instructions, age-mislabelling, and quality control.</li>
           <li><b>Strategic recommendation:</b> fed the segmentation and review findings directly into product and marketing recommendations — focusing loyalty efforts on the high-value segment and addressing the recurring complaints around instructions, age labelling, and quality.</li>
@@ -391,7 +393,7 @@ y_pred_final = reg_final.predict(X_test)
 
 r2_final = r2_score(y_test, y_pred_final)
 print(f'R² Score: {r2_final:.4f}')       # 0.9774
-print(f'Accuracy: {r2_final * 100:.2f}%')    # 97.74% -- vs. 82.7% for the linear model
+print(f'Variance explained: {r2_final * 100:.2f}%')    # 97.74% -- vs. 82.7% for the linear model
 
 importances = pd.DataFrame({'feature': X_train.columns, 'importance': reg_final.feature_importances_})
 importances.sort_values('importance', ascending=False)
@@ -403,43 +405,27 @@ importances.sort_values('importance', ascending=False)
       </div>
       <details class="full-script">
         <summary>View full Python notebook</summary>
-        <pre><code># ### LSE Data Analytics Online Career Accelerator
-# # DA301:  Advanced Analytics for Organisational Impact
+        <pre><code># Turtle Games: customer loyalty, segmentation and review sentiment
+# Author: Lan Ngoc Mau
+# Tools: Python (pandas, statsmodels, scikit-learn, NLTK, TextBlob, VADER, WordCloud)
+#
+# Business question: how do customers accumulate loyalty points, which customer
+# segments should marketing target, and what do product reviews say about the
+# customer experience?
+#   Part 1  OLS linear regression: loyalty points vs age, income and spending score
+#   Part 2  Decision tree regression, pruned and compared across feature sets
+#   Part 3  k-means clustering on income and spending score (Elbow + Silhouette)
+#   Part 4  NLP: word frequency, word clouds, TextBlob and VADER sentiment
+#
+# Data files expected in the working directory (not included in this repo):
+#   turtle_reviews.csv (Part 1 saves a cleaned copy, turtle_reviews_new.csv)
+#
+# Exported from a Jupyter notebook: lines starting with "# " were markdown cells.
 
-# ## Assignment template
-
-# ### Scenario
-# You are a data analyst working for Turtle Games, a game manufacturer and retailer. They manufacture and sell their own products, along with sourcing and selling products manufactured by other companies. Their product range includes books, board games, video games and toys. They have a global customer base and have a business objective of improving overall sales performance by utilising customer trends. In particular, Turtle Games wants to understand:
-# - how customers accumulate loyalty points (Week 1)
-# - exploring the structure using decision trees (Week 2)
-# - exploring clusters in customer behaviour (Week 3)
-# - can social data (e.g. customer reviews) be used in marketing campaigns (Week 4)
-# - loading, transforming and visualising data in R (Week 5)
-# - statistical analysis and modelling in R (Week 6)
-
-# # Week 1 assignment: Linear regression using Python
-# The marketing department of Turtle Games prefers Python for data analysis. As you are fluent in Python, they asked you to assist with data analysis of social media data. The marketing department wants to better understand how users accumulate loyalty points. Therefore, you need to investigate the possible relationships between the loyalty points, age, remuneration, and spending scores. Note that you will use this data set in future modules as well and it is, therefore, strongly encouraged to first clean the data as per provided guidelines and then save a copy of the clean data for future use.
-# ## Instructions
-# 1. Load and explore the data.
-# 1. Create a new DataFrame (e.g. reviews).
-# 2. Sense-check the DataFrame.
-# 3. Determine if there are any missing values in the DataFrame.
-# 4. Create a summary of the descriptive statistics.
-# 2. Remove redundant columns (`language` and `platform`).
-# 3. Change column headings to names that are easier to reference (e.g. `renumeration` and `spending_score`).
-# 4. Save a copy of the clean DataFrame as a CSV file. Import the file to sense-check.
-# 5. Use linear regression and goodness of fit metrics to evaluate possible linear relationships between loyalty points and age/renumeration/spending scores to determine whether these can be used to predict the loyalty points.
-# 1. Specify the independent and dependent variables.
-# 2. Create the OLS model.
-# 3. Extract the estimated parameters, standard errors, and predicted values.
-# 4. Generate the regression table based on the X coefficient and constant values.
-# 5. Plot the linear regression and add a regression line.
-# 6. Include your insights and observations.
-
+# # Part 1: How do customers accumulate loyalty points? (OLS linear regression)
 # ## 1. Load and explore the data
 
-# Install the statsmodel package
-!pip install statsmodels
+# Requires: pip install statsmodels
 
 # Imports
 import numpy as np
@@ -458,13 +444,13 @@ from sklearn.model_selection import train_test_split
 from sklearn import metrics
 from sklearn.linear_model import LinearRegression
 
-# Note: indicates situations that aren&#x27;t necessarily exceptions.
+# Note: indicates situations that aren't necessarily exceptions.
 import warnings
-warnings.filterwarnings(&#x27;ignore&#x27;)
+warnings.filterwarnings('ignore')
 
 # Load the CSV file(s) as reviews.
 
-reviews = pd.read_csv(&#x27;turtle_reviews.csv&#x27;)
+reviews = pd.read_csv('turtle_reviews.csv')
 # View the DataFrame.
 
 reviews.info()
@@ -488,7 +474,7 @@ reviews.corr(numeric_only=True)
 # ## 2. Drop columns
 
 # Drop unnecessary columns.
-reviews_new=reviews.drop(columns=[&#x27;language&#x27;, &#x27;platform&#x27;])
+reviews_new=reviews.drop(columns=['language', 'platform'])
 
 # View column names.
 reviews_new
@@ -496,8 +482,8 @@ reviews_new
 # ## 3. Rename columns
 
 # Rename the column headers.
-reviews_new.rename(columns={&#x27;remuneration (k£)&#x27;:&#x27;annual_income (k£)&#x27;,
-                            &#x27;spending_score (1-100)&#x27;:&#x27;customer_score (1-100)&#x27;}, inplace=True)
+reviews_new.rename(columns={'remuneration (k£)':'annual_income (k£)',
+                            'spending_score (1-100)':'customer_score (1-100)'}, inplace=True)
 
 # View column names.
 reviews_new
@@ -505,10 +491,10 @@ reviews_new
 # ## 4. Save the DataFrame as a CSV file
 
 # Create a CSV file as output
-reviews_new.to_csv(&#x27;turtle_reviews_new.csv&#x27;, index=False)
+reviews_new.to_csv('turtle_reviews_new.csv', index=False)
 
 # Import new CSV file with Pandas.
-turtle= pd.read_csv(&#x27;turtle_reviews_new.csv&#x27;)
+turtle= pd.read_csv('turtle_reviews_new.csv')
 
 # View DataFrame.
 turtle.info()
@@ -519,14 +505,14 @@ turtle
 # ### 5a) spending vs loyalty
 
 # Define independent variable.
-x1 = turtle[&#x27;customer_score (1-100)&#x27;].values.reshape(-1, 1)
+x1 = turtle['customer_score (1-100)'].values.reshape(-1, 1)
 
 # Define dependent variable.
-y1 = turtle[&#x27;loyalty_points&#x27;]
+y1 = turtle['loyalty_points']
 
 # Create model and print summary of metrics.
 # Run the OLS test
-f = &#x27;y1 ~ x1&#x27;
+f = 'y1 ~ x1'
 
 test1 = ols(f, data=turtle).fit()
 
@@ -538,17 +524,17 @@ test1.summary()
 plt.scatter(x1,y1)
 
 # Extract the estimated parameters.
-print(&quot;R-squared value: &quot;, test1.params)
+print("R-squared value: ", test1.params)
 
 # Extract the standard errors.
-print(&quot;Standard errors: &quot;, test1.bse)
+print("Standard errors: ", test1.bse)
 
 # Extract the predicted values.
-print(&quot;Predicted values: &quot;, test1.predict())
+print("Predicted values: ", test1.predict())
 
 # Set the X coefficient and the constant to generate the regression table.
 # Set the coefficient to 33.061693 and the constant to -75.052663 to generate the regression table 
-y1_pred = (-75.052663) + 33.061693 * turtle[&#x27;customer_score (1-100)&#x27;]
+y1_pred = (-75.052663) + 33.061693 * turtle['customer_score (1-100)']
 # View the output.
 y1_pred
 
@@ -557,34 +543,34 @@ y1_pred
 plt.scatter(x1,y1)
 
 # Plot the graph with the regression line (in black)
-plt.plot(x1, y1_pred, color=&#x27;black&#x27;)
+plt.plot(x1, y1_pred, color='black')
 
 # Set the x and y limits on the axes.
 plt.xlim(0)
 plt.ylim(0)
 
 # Adding more information to the plot
-plt.xlabel(&#x27;Customer_Score&#x27;, fontsize=14, fontweight=&#x27;bold&#x27;)
-plt.ylabel(&#x27;Loyalty_Points&#x27;, fontsize=14, fontweight=&#x27;bold&#x27;)
-plt.title(&#x27;Customer Score vs Loyalty Points&#x27;, fontsize= 18, fontweight=&#x27;bold&#x27;)
+plt.xlabel('Customer_Score', fontsize=14, fontweight='bold')
+plt.ylabel('Loyalty_Points', fontsize=14, fontweight='bold')
+plt.title('Customer Score vs Loyalty Points', fontsize= 18, fontweight='bold')
 
 # View the plot
-plt.savefig(&#x27;customer_score_vs_loyalty_points.png&#x27;, dpi=300)
+plt.savefig('customer_score_vs_loyalty_points.png', dpi=300)
 plt.show()
 
-# ### 5b) renumeration vs loyalty
+# ### 5b) remuneration vs loyalty
 
 turtle
 
 # Define independent variable.
 
-x2 = turtle[&#x27;annual_income (k£)&#x27;]
+x2 = turtle['annual_income (k£)']
 # Define dependent variable.
 
-y2 = turtle[&#x27;loyalty_points&#x27;]
+y2 = turtle['loyalty_points']
 # Create model and print summary of metrics.
 # Run the OLS test
-f2 = &#x27;y2 ~ x2&#x27;
+f2 = 'y2 ~ x2'
 
 test2 = ols(f2, data=turtle).fit()
 
@@ -593,17 +579,17 @@ test2 = ols(f2, data=turtle).fit()
 test2.summary()
 
 # Extract the estimated parameters.
-print(&quot;Parameters: &quot;, test2.params)
+print("Parameters: ", test2.params)
 
 # Extract the standard errors.
-print(&quot;Standard errors: &quot;, test2.bse)
+print("Standard errors: ", test2.bse)
 
 # Extract the predicted values.
-print(&quot;Predicted values: &quot;, test2.predict())
+print("Predicted values: ", test2.predict())
 
 # Set the the X coefficient and the constant to generate the regression table.
 # Set the coefficient to 34.187825  and the constant to -65.686513 to generate the regression table 
-y2_pred = (-65.686513) + 34.187825 * turtle[&#x27;annual_income (k£)&#x27;]
+y2_pred = (-65.686513) + 34.187825 * turtle['annual_income (k£)']
 # View the output.
 y2_pred
 
@@ -612,50 +598,50 @@ y2_pred
 plt.scatter(x2,y2)
 
 # Plot the graph with the regression line (in orange)
-plt.plot(x2, y2_pred, color=&#x27;orange&#x27;)
+plt.plot(x2, y2_pred, color='orange')
 
 # Set the x and y limits on the axes.
 plt.xlim(0)
 plt.ylim(0)
 
 # Adding more information to the plot
-plt.xlabel(&#x27;Annual Income (k£)&#x27;, fontsize=14, fontweight=&#x27;bold&#x27;)
-plt.ylabel(&#x27;Loyalty_Points&#x27;, fontsize=14, fontweight=&#x27;bold&#x27;)
-plt.title(&#x27;Annual Income vs Loyalty Points&#x27;, fontsize= 18, fontweight=&#x27;bold&#x27;)
+plt.xlabel('Annual Income (k£)', fontsize=14, fontweight='bold')
+plt.ylabel('Loyalty_Points', fontsize=14, fontweight='bold')
+plt.title('Annual Income vs Loyalty Points', fontsize= 18, fontweight='bold')
 
 # View the plot
-plt.savefig(&#x27;annual_income_vs_loyalty_points.png&#x27;, dpi=300)
+plt.savefig('annual_income_vs_loyalty_points.png', dpi=300)
 plt.show()
 
 # ### 5c) age vs loyalty
 
 # Define independent variable.
 
-x3 = turtle[&#x27;age&#x27;]
+x3 = turtle['age']
 # Define dependent variable.
 
-y3 = turtle[&#x27;loyalty_points&#x27;]
+y3 = turtle['loyalty_points']
 # Create model and print summary of metrics.
 # Create formula and pass through OLS methods.
 
-f3 = &#x27;y3 ~ x3&#x27;
+f3 = 'y3 ~ x3'
 test3 = ols(f3, data= turtle).fit()
 
 # Print the regression table
 test3.summary()
 
 # Extract the estimated parameters.
-print(&quot;Parameters: &quot;, test3.params)
+print("Parameters: ", test3.params)
 
 # Extract the standard errors.
 
-print(&quot;Standard errors: &quot;, test3.bse)
+print("Standard errors: ", test3.bse)
 # Extract the predicted values.
-print(&quot;Predicted values: &quot;, test3.predict())
+print("Predicted values: ", test3.predict())
 
 # Set the X coefficient and the constant to generate the regression table
 # Set the coefficient to -4.012805  and the constant to 1736.517739 to generate the regression table 
-y3_pred = 1736.517739 - 4.012805 * turtle[&#x27;age&#x27;]
+y3_pred = 1736.517739 - 4.012805 * turtle['age']
 # View the output.
 y3_pred
 
@@ -664,71 +650,47 @@ y3_pred
 plt.scatter(x3,y3)
 
 # Plot the graph with the regression line (in orange)
-plt.plot(x3, y3_pred, color=&#x27;red&#x27;)
+plt.plot(x3, y3_pred, color='red')
 
 # Set the x and y limits on the axes.
 plt.xlim(0)
 plt.ylim(0)
 
 # Adding more information to the plot
-plt.xlabel(&#x27;Age (k£)&#x27;, fontsize=14, fontweight=&#x27;bold&#x27;)
-plt.ylabel(&#x27;Loyalty_Points&#x27;, fontsize=14, fontweight=&#x27;bold&#x27;)
-plt.title(&#x27;Age vs Loyalty Points&#x27;, fontsize= 18, fontweight=&#x27;bold&#x27;)
+plt.xlabel('Age (k£)', fontsize=14, fontweight='bold')
+plt.ylabel('Loyalty_Points', fontsize=14, fontweight='bold')
+plt.title('Age vs Loyalty Points', fontsize= 18, fontweight='bold')
 
 # View the plot
-plt.savefig(&#x27;age_vs_loyalty_points.png&#x27;, dpi=300)
+plt.savefig('age_vs_loyalty_points.png', dpi=300)
 plt.show()
 
 # ## 6. Observations and insights
 
-# ***Your observations here...***
-
 # #### Customer Score vs Loyalty Points:
-# - 45% of the total variability of loyalty points is explained by customer&#x27;s spending nature and behaviour.
+# - 45% of the total variability of loyalty points is explained by customer's spending nature and behaviour.
 # - Strong positive relationship.
 # - The upward trend is consistent up to a customer score of 60. When the customer score is more than 70, it is shown as the loyalty points they accumulated expands sharply -&gt; this could be understood adding more variables to understand.
 # - 2 visible groups: 1 group with high customer score and high loyalty points but also 1 group with low customer score yet low loyalty points.
 # #### Annual Income vs Loyalty Points:
 # - 38 % of the total variability of loyalty points is explained by annual income of customers.
 # - Positive correlation.
-# - When earning more than 60K, customers split into 2 groups: 1 group with high accumlated loyalty points and 1 group with low loyalty points
+# - When earning more than 60K, customers split into 2 groups: 1 group with high accumulated loyalty points and 1 group with low loyalty points
 # -&gt; High income does not fully reflect loyalty engagement.
 # #### Age vs Loyalty Points:
 # Age barely got any impact or correlation to loyalty points.
 # -&gt; No predictive power
 # #### What could be explored further and suggested future actions.
-# 1. As Customer Score shows a strong relationship towards loyalty points, I would combine this aspect with other aspects such as annual income in order to build a more effective model.
+# 1. As customer score shows a strong relationship towards loyalty points, I would combine this aspect with other aspects such as annual income in order to build a more effective model.
 # 2. Understanding why there are a group of customer showing high customer score and high income yet low loyalty points -&gt; is there any reason behind this pattern?
 # To be more specific:
 # - 55% total variability of loyalty points unexplained by customer score
 # - 62% total variability of loyalty points unexplained by annual income
 # -&gt; Many other unseen factors might affect overall loyalty points.
-# 4. Consider to remove age from the model as this factor might not be beneficial in optimizing the model.
+# 4. Consider removing age from the model as this factor might not be beneficial in optimizing the model.
 # 5. Customer segmentation can be considered
 
-# # Week 2 assignment: Exploring the structure using decision trees.
-# The team wants you to use decision trees to attempt to better understand the structure found in the data. You need to grow and prune a decision tree regressor and then visualise and interpret the output.
-# Make sure to comment on the potential usefulness in decision-making processes and your observations regarding the model.
-# ## Instructions
-# 1. Prepare the data for creating your decision tree.
-# 1. Import the CSV file you have prepared in Week 1.
-# 2. Create a new DataFrame with the appropriate columns.
-# 1. Specify that loyalty points is the target variable (Y) and should be excluded from your input data.
-# 2. Specify X for the independent variables and y as the dependent variable. Therefore, df\[cols\] will be the independent variables and the column containing loyalty points the dependent variable.
-# 3. Explore the new DataFrame.
-# 2. Split the data set into a train and test sets for both X and y at a 70:30 ratio. As previously, random_state=42.
-# 3. Create a decision tree regressor to explore the impact of other features on the loyalty points.
-# 1. Import the DecisionTreeRegressor class from the sklearn.tree library.
-# 2. Create a variable (e.g. regressor) to store the DecisionTreeRegressor() class. (As previously, random_state=42.).
-# 3. Fit the regressor object to the data set with the fit() function.
-# 4. Remember to prune your tree using basic pruning strategies and compare the performance before and after applying the pruning strategy.
-# 5. Plot the final decision tree.
-# 4. Fit a final model and interpret the output.
-# 1. Justify your selection of pruning strategy implemented and interpret the output.
-# 2. Evaluate the usefulness of the obtained result and interpret the tree and how it could be used to inform business decisions in the organisation.
-# 5. Summarise (150–200 words) the most important business insights, anything you would like to explore further, and suggested future actions.
-# Back up your work to a safe location. This will allow you to revert to a previous state in the case of making a mistake in the code or deleting a section by mistake. (A simple way of doing this is to save or email a compressed version to yourself at frequent intervals.)
-
+# # Part 2: Decision tree regression
 # ## 1. Load and prepare the data
 
 # Import all the necessary packages
@@ -743,53 +705,53 @@ import warnings
 import matplotlib.pyplot as plt
 
 # Settings for the notebook.
-warnings.filterwarnings(&quot;ignore&quot;)
-plt.rcParams[&#x27;figure.figsize&#x27;] = [15, 10]
+warnings.filterwarnings("ignore")
+plt.rcParams['figure.figsize'] = [15, 10]
 
 # Create your new DataFrame.
-df = pd.read_csv(&#x27;turtle_reviews_new.csv&#x27;)
+df = pd.read_csv('turtle_reviews_new.csv')
 
 # View the DataFrame
 df
 
-df[&#x27;gender&#x27;].unique()
+df['gender'].unique()
 
 # ### Transform categorical string values to numeric values for modelling
 
 # #### Gender column
-# Decided to make changes in the &#x27;gender&#x27; column to change from current string values to numeric values for modelling:
-# + &#x27;Male&#x27; replaced by 1
-# + &#x27;Female&#x27; replaced by 0
+# Decided to make changes in the 'gender' column to change from current string values to numeric values for modelling:
+# + 'Male' replaced by 1
+# + 'Female' replaced by 0
 
 # Update the gender column with male = 1, and female = 0
-df[&#x27;gender&#x27;] = df[&#x27;gender&#x27;].map({&#x27;Male&#x27;:1, &#x27;Female&#x27;:0})
+df['gender'] = df['gender'].map({'Male':1, 'Female':0})
 
 # View the output
 df
 
 # #### Education column
-# Realizing that the current education types follow the natural and clear from low to high order, decided to change from string values to numeric values. In particular:
-# + &quot;Basic&quot; : 0
-# + &quot;Diploma&quot;: 1
-# + Graduate&quot;: 2
-# + &quot;Postgraduate&quot;: 3
-# + &quot;PhD&quot;: 4
+# The education levels follow a natural low-to-high order, decided to change from string values to numeric values. In particular:
+# + "Basic" : 0
+# + "Diploma": 1
+# + Graduate": 2
+# + "Postgraduate": 3
+# + "PhD": 4
 
-df[&#x27;education&#x27;].value_counts()
+df['education'].value_counts()
 
-df[&#x27;education&#x27;].unique().tolist()
+df['education'].unique().tolist()
 
 # Plot graph for individual columns to understand the distribution
 # Gender male = 1, and female = 0 
-plt.rcParams[&#x27;figure.figsize&#x27;] = [6, 3]
-sns.countplot(x=df[&#x27;gender&#x27;])
+plt.rcParams['figure.figsize'] = [6, 3]
+sns.countplot(x=df['gender'])
 plt.show()
-sns.countplot(x=df[&#x27;education&#x27;])
+sns.countplot(x=df['education'])
 plt.show()
 
-# Update the gender column with &quot;Basic&quot; = 0 ,  &quot;Diploma&quot; =1, Graduate&quot;, &quot;Postgraduate&quot; = 3 and &quot;PhD&quot;: 4
-df[&#x27;education&#x27;] = df[&#x27;education&#x27;].map({&#x27;Basic&#x27;:0, &#x27;diploma&#x27;:1,
-                                       &#x27;graduate&#x27;:2,&#x27;postgraduate&#x27;:3, &#x27;PhD&#x27;:4})
+# Update the education column: "Basic" = 0, "Diploma" = 1, "Graduate" = 2, "Postgraduate" = 3, "PhD" = 4
+df['education'] = df['education'].map({'Basic':0, 'diploma':1,
+                                       'graduate':2,'postgraduate':3, 'PhD':4})
 
 # View the output
 df
@@ -797,10 +759,10 @@ df
 df.columns.tolist()
 
 # Specify Y.
-y = df[&#x27;loyalty_points&#x27;]
+y = df['loyalty_points']
 # Specify X.
-cols = [&#x27;gender&#x27;,&#x27;age&#x27;,&#x27;annual_income (k£)&#x27;,&#x27;customer_score (1-100)&#x27;]
-# cols1 = [&#x27;age&#x27;,&#x27;annual_income (k£)&#x27;,&#x27;customer_score (1-100)&#x27;]
+cols = ['gender','age','annual_income (k£)','customer_score (1-100)']
+# cols1 = ['age','annual_income (k£)','customer_score (1-100)']
 X = df[cols]
 
 # Review X and Y.
@@ -819,51 +781,51 @@ X_train.shape, y_train.shape, X_test.shape, y_test.shape
 from sklearn import tree
 my_tree = DecisionTreeRegressor(random_state=42, max_depth=7)
 
-# Train the Decistion Tree Regressor
+# Train the Decision Tree Regressor
 reg = my_tree.fit(X_train, y_train)
 
 # Predict the response for the dataset
 y_pred = reg.predict(X_test)
 
-# Scattter plot for predicted and tested value
+# Scatter plot for predicted and tested value
 plt.scatter(y_test, y_pred)
-plt.xlabel(&quot;True loyalty points from test set&quot;)
-plt.ylabel(&quot;Predicted prices from trained model&quot;)
-plt.title(&quot; Predicted vs Tested Royalty Points&quot;)
-plt.savefig(&#x27;decision_tree_regression_1.png&#x27;, dpi=300)
+plt.xlabel("True loyalty points from test set")
+plt.ylabel("Predicted prices from trained model")
+plt.title(" Predicted vs Tested Royalty Points")
+plt.savefig('decision_tree_regression_1.png', dpi=300)
 plt.show()
 
 # Getting mean absolute error
 from sklearn.metrics import mean_absolute_error as MAE
 err = MAE(y_test, y_pred)
-print(&quot;Mean absolute error of test set is: &quot;, err)
+print("Mean absolute error of test set is: ", err)
 
 # Plot the tree
 plt.figure(figsize=(40, 20)) 
 tree.plot_tree(reg, filled=True)
-plt.savefig(&#x27;decision_tree_regressor_2.png&#x27;, dpi=800)
+plt.savefig('decision_tree_regressor_2.png', dpi=800)
 
-# #### Determine the accuracy of the model
+# #### Evaluate the model (MAE, MSE, RMSE and R²)
 
-accuracy = pd.DataFrame({&#x27;Actual Value&#x27;: y_test, &#x27;Predicted Values&#x27;: y_pred})  
+accuracy = pd.DataFrame({'Actual Value': y_test, 'Predicted Values': y_pred})  
 print(accuracy)
 
-print(&#x27;Mean Absolute Error:&#x27;, metrics.mean_absolute_error(y_test, y_pred))
-print(&#x27;Mean Squared Error:&#x27;, metrics.mean_squared_error(y_test, y_pred))
-print(&#x27;Root Mean Squared Error:&#x27;, np.sqrt(metrics.mean_squared_error(y_test, y_pred)))
+print('Mean Absolute Error:', metrics.mean_absolute_error(y_test, y_pred))
+print('Mean Squared Error:', metrics.mean_squared_error(y_test, y_pred))
+print('Root Mean Squared Error:', np.sqrt(metrics.mean_squared_error(y_test, y_pred)))
 
 from sklearn.metrics import r2_score
 
 r2 = r2_score(y_test, y_pred)
-print(f&#x27;R² Score: {r2:.4f}&#x27;)
-print(f&#x27;Accuracy: {r2 * 100:.2f}%&#x27;)
+print(f'R² Score: {r2:.4f}')
+print(f'R² as a percentage: {r2 * 100:.2f}%')
 
 # ### Scenario 2: Test using variables with 3 columns only: age, customer_score, annual income
 
 # Specify y.
-y1 = df[&#x27;loyalty_points&#x27;]
+y1 = df['loyalty_points']
 # Specify X.
-cols1 = [&#x27;age&#x27;,&#x27;annual_income (k£)&#x27;,&#x27;customer_score (1-100)&#x27;]
+cols1 = ['age','annual_income (k£)','customer_score (1-100)']
 X1 = df[cols1]
 
 print(X1)
@@ -878,44 +840,44 @@ X1_train.shape, y1_train.shape, X1_test.shape, y1_test.shape
 from sklearn import tree
 my_tree_1 = DecisionTreeRegressor(random_state=42, max_depth=7)
 
-# Train the Decistion Tree Regressor
+# Train the Decision Tree Regressor
 reg_1 = my_tree_1.fit(X1_train, y1_train)
 
 # Predict the response for the dataset
 y1_pred = reg_1.predict(X1_test)
 
-# Scattter plot for predicted and tested value
+# Scatter plot for predicted and tested value
 plt.scatter(y1_test, y1_pred)
-plt.xlabel(&quot;True loyalty points from test set&quot;)
-plt.ylabel(&quot;Predicted prices from trained model&quot;)
-plt.title(&quot; Predicted vs Tested Royalty Points&quot;)
-plt.savefig(&#x27;decision_tree_regression_3.png&#x27;, dpi=300)
+plt.xlabel("True loyalty points from test set")
+plt.ylabel("Predicted prices from trained model")
+plt.title(" Predicted vs Tested Royalty Points")
+plt.savefig('decision_tree_regression_3.png', dpi=300)
 plt.show()
 
 # Plot the tree
 plt.figure(figsize=(40, 20)) 
 tree.plot_tree(reg_1, filled=True)
-plt.savefig(&#x27;decision_tree_regressor_4.png&#x27;, dpi=800)
+plt.savefig('decision_tree_regressor_4.png', dpi=800)
 
-accuracy_1 = pd.DataFrame({&#x27;Actual Value&#x27;: y1_test, &#x27;Predicted Values&#x27;: y1_pred})  
+accuracy_1 = pd.DataFrame({'Actual Value': y1_test, 'Predicted Values': y1_pred})  
 print(accuracy_1)
 
-print(&#x27;Mean Absolute Error:&#x27;, metrics.mean_absolute_error(y1_test, y1_pred))
-print(&#x27;Mean Squared Error:&#x27;, metrics.mean_squared_error(y1_test, y1_pred))
-print(&#x27;Root Mean Squared Error:&#x27;, np.sqrt(metrics.mean_squared_error(y1_test, y1_pred)))
+print('Mean Absolute Error:', metrics.mean_absolute_error(y1_test, y1_pred))
+print('Mean Squared Error:', metrics.mean_squared_error(y1_test, y1_pred))
+print('Root Mean Squared Error:', np.sqrt(metrics.mean_squared_error(y1_test, y1_pred)))
 
 from sklearn.metrics import r2_score
 
 r2_1 = r2_score(y1_test, y1_pred)
-print(f&#x27;R² Score: {r2_1:.4f}&#x27;)
-print(f&#x27;Accuracy: {r2_1 * 100:.2f}%&#x27;)
+print(f'R² Score: {r2_1:.4f}')
+print(f'R² as a percentage: {r2_1 * 100:.2f}%')
 
 # ### Scenario 3: Test using variables with 2 columns only: customer_score, annual income
 
 # Specify y.
-y2 = df[&#x27;loyalty_points&#x27;]
+y2 = df['loyalty_points']
 # Specify X.
-cols2 = [&#x27;annual_income (k£)&#x27;,&#x27;customer_score (1-100)&#x27;]
+cols2 = ['annual_income (k£)','customer_score (1-100)']
 X2 = df[cols2]
 
 print(X2)
@@ -930,46 +892,46 @@ X2_train.shape, y2_train.shape, X2_test.shape, y2_test.shape
 from sklearn import tree
 my_tree_2 = DecisionTreeRegressor(random_state=42, max_depth=7)
 
-# Train the Decistion Tree Regressor
+# Train the Decision Tree Regressor
 reg_2 = my_tree_2.fit(X2_train, y2_train)
 
 # Predict the response for the dataset
 y2_pred = reg_2.predict(X2_test)
 
-# Scattter plot for predicted and tested value
+# Scatter plot for predicted and tested value
 plt.scatter(y2_test, y2_pred)
-plt.xlabel(&quot;True loyalty points from test set&quot;)
-plt.ylabel(&quot;Predicted prices from trained model&quot;)
-plt.title(&quot; Predicted vs Tested Royalty Points&quot;)
-plt.savefig(&#x27;decision_tree_regression_5.png&#x27;, dpi=300)
+plt.xlabel("True loyalty points from test set")
+plt.ylabel("Predicted prices from trained model")
+plt.title(" Predicted vs Tested Royalty Points")
+plt.savefig('decision_tree_regression_5.png', dpi=300)
 plt.show()
 
 # Plot the tree
 plt.figure(figsize=(40,20)) 
 tree.plot_tree(reg_2, filled=True)
-plt.savefig(&#x27;decision_tree_regressor_6.png&#x27;, dpi=800)
+plt.savefig('decision_tree_regressor_6.png', dpi=800)
 
-accuracy_2 = pd.DataFrame({&#x27;Actual Value&#x27;: y2_test, &#x27;Predicted Values&#x27;: y2_pred})  
+accuracy_2 = pd.DataFrame({'Actual Value': y2_test, 'Predicted Values': y2_pred})  
 print(accuracy_2)
 
-print(&#x27;Mean Absolute Error:&#x27;, metrics.mean_absolute_error(y2_test, y2_pred))
-print(&#x27;Mean Squared Error:&#x27;, metrics.mean_squared_error(y2_test, y2_pred))
-print(&#x27;Root Mean Squared Error:&#x27;, np.sqrt(metrics.mean_squared_error(y2_test, y2_pred)))
+print('Mean Absolute Error:', metrics.mean_absolute_error(y2_test, y2_pred))
+print('Mean Squared Error:', metrics.mean_squared_error(y2_test, y2_pred))
+print('Root Mean Squared Error:', np.sqrt(metrics.mean_squared_error(y2_test, y2_pred)))
 
 from sklearn.metrics import r2_score
 
 r2_2 = r2_score(y2_test, y2_pred)
-print(f&#x27;R² Score: {r2_2:.4f}&#x27;)
-print(f&#x27;Accuracy: {r2_2 * 100:.2f}%&#x27;)
+print(f'R² Score: {r2_2:.4f}')
+print(f'R² as a percentage: {r2_2 * 100:.2f}%')
 
 # #### Interpret model and note observations.
 # - Results when testing with 4 columns: age, gender, customer_Score, income, max_depth=7
-# Accuracy: 97.74%
+# R²: 97.74%
 # - Result when testing with 3 columns: age, customer_score, income, max_depth = 7
-# Accuracy: 97.73%
+# R²: 97.73%
 # - Result when testing with 2 columns: customer_score, income, max_depth = 7
-# Accuracy: 97.02%
-# The depth at 7 gives high accuracy, will try with different max depth length later to decide how to prune the tree
+# R²: 97.02%
+# The depth of 7 gives a high R², will try with different max depth length later to decide how to prune the tree
 
 # ## 4. Fit and plot final model.
 
@@ -980,7 +942,7 @@ print(f&#x27;Accuracy: {r2_2 * 100:.2f}%&#x27;)
 # List of values to try for max_depth:
 max_depth_range = list(range(1, 7))
 
-# have a loop that fits decision trees for different &#x27;max_depth&#x27;, and calculate/store the accuracy of each tree
+# have a loop that fits decision trees for different 'max_depth', and calculate/store the R² of each tree
 accuracy_3 = []
 for depth in max_depth_range:    
     reg_3 = DecisionTreeRegressor(max_depth = depth, random_state = 0)
@@ -988,8 +950,8 @@ for depth in max_depth_range:
     score = reg_3.score(X_test, y_test)
     accuracy_3.append(score)
     
-# Plot accuracy values across the range of depth values evaluated
-plt.rcParams[&#x27;figure.figsize&#x27;] = [10, 5]
+# Plot R² values across the range of depth values evaluated
+plt.rcParams['figure.figsize'] = [10, 5]
 accuracy_3 = pd.DataFrame(accuracy_3)
 accuracy_3.plot()
 plt.show()
@@ -1004,52 +966,51 @@ X_train_final.shape, y_train_final.shape, X_test_final.shape, y_test_final.shape
 from sklearn import tree
 my_tree_final= DecisionTreeRegressor(random_state=42, max_depth=3)
 
-# Train the Decistion Tree Regressor
+# Train the Decision Tree Regressor
 reg_final = my_tree_final.fit(X_train_final, y_train_final)
 
 # Predict the response for the dataset
 y_pred_final = reg.predict(X_test_final)
 
-# Scattter plot for predicted and tested value
+# Scatter plot for predicted and tested value
 plt.scatter(y_test_final, y_pred_final)
-plt.xlabel(&quot;True loyalty points from test set&quot;)
-plt.ylabel(&quot;Predicted prices from trained model&quot;)
-plt.title(&quot; Predicted vs Tested Royalty Points&quot;)
-plt.savefig(&#x27;decision_tree_regression_3.png&#x27;, dpi=300)
+plt.xlabel("True loyalty points from test set")
+plt.ylabel("Predicted prices from trained model")
+plt.title(" Predicted vs Tested Royalty Points")
+plt.savefig('decision_tree_regression_3.png', dpi=300)
 plt.show()
 
 # Plot the tree
 plt.figure(figsize=(40,20)) 
 tree.plot_tree(reg_final, feature_names=cols, filled=True)
-plt.savefig(&#x27;decision_tree_regressor_final.png&#x27;, dpi=800)
+plt.savefig('decision_tree_regressor_final.png', dpi=800)
 
-print(&quot;Tree depth =&quot;, reg_final.get_depth(),&#x27;\n&#x27;
-      &quot;Number of leaves =&quot;, reg_final.get_n_leaves())
+print("Tree depth =", reg_final.get_depth(),'\n'
+      "Number of leaves =", reg_final.get_n_leaves())
 
 from sklearn.metrics import r2_score
 
 r2_final = r2_score(y_test_final, y_pred_final)
-print(f&#x27;R² Score: {r2_final:.4f}&#x27;)
-print(f&#x27;Accuracy: {r2_final * 100:.2f}%&#x27;)
+print(f'R² Score: {r2_final:.4f}')
+print(f'R² as a percentage: {r2_final * 100:.2f}%')
 
 # Finding out about Feature importance to help in the decision making process
 reg_input = reg_final
-importances = pd.DataFrame({&#x27;feature&#x27;:X_train_final.columns,&#x27;importance&#x27;:np.round(reg_input.feature_importances_,3)})
-importances = importances.sort_values(&#x27;importance&#x27;,ascending=False)
+importances = pd.DataFrame({'feature':X_train_final.columns,'importance':np.round(reg_input.feature_importances_,3)})
+importances = importances.sort_values('importance',ascending=False)
 importances
 
-accuracy_final = pd.DataFrame({&#x27;Actual Value&#x27;: y_test_final, &#x27;Predicted Values&#x27;: y_pred_final})  
+accuracy_final = pd.DataFrame({'Actual Value': y_test_final, 'Predicted Values': y_pred_final})  
 print(accuracy_final)
 
-print(&#x27;Mean Absolute Error:&#x27;, metrics.mean_absolute_error(y_test_final, y_pred_final))
-print(&#x27;Mean Squared Error:&#x27;, metrics.mean_squared_error(y_test_final, y_pred_final))
-print(&#x27;Root Mean Squared Error:&#x27;, np.sqrt(metrics.mean_squared_error(y_test_final, y_pred_final)))
+print('Mean Absolute Error:', metrics.mean_absolute_error(y_test_final, y_pred_final))
+print('Mean Squared Error:', metrics.mean_squared_error(y_test_final, y_pred_final))
+print('Root Mean Squared Error:', np.sqrt(metrics.mean_squared_error(y_test_final, y_pred_final)))
 
-# ## 5. Discuss: Insights and observations
-# ***Your observations here...***
+# ## 5. Insights and observations
 
 # #### Interpret model and note observations.
-# At first, I studied all variables possible: gender, age, customer score and, annual income. However, by plotting the trees using different variables combinatvariable combinationsion, seeing statistical results, and understanding the importance of each variable in the tree model, my findings would be:
+# At first, I studied all variables possible: gender, age, customer score and, annual income. However, by plotting the trees using different variables combinations, seeing statistical results, and understanding the importance of each variable in the tree model, my findings would be:
 # - Only 2 features actually have an impact on loyalty points: annual income and customer score:
 # + annual income slightly affects more than the other: 52.5%
 # + customer score: 47.5%
@@ -1059,37 +1020,17 @@ print(&#x27;Root Mean Squared Error:&#x27;, np.sqrt(metrics.mean_squared_error(y
 # ### Decision Tree Analysis
 # - The tree decision making process was based entirely on customer score and annual income, no gender or age was used as they do not have predictive power.
 # - Value: loyalty points prediction
-# - Root note: customer score &lt;=67, 1400 training samples split into 982 low score (&lt;=67), and 418 high score (&gt;67)
-# + customer score than 67: loyalty points 2767
+# - Root node: customer score &lt;=67, 1400 training samples split into 982 low score (&lt;=67), and 418 high score (&gt;67)
+# + customer score above 67: loyalty points 2767
 # + customer score less than 67: loyalty points 1081
-# -&gt; Customers with higher scores earn on average 2.5 more loyalty points than those with scores less than 67.
+# -&gt; Customers with higher scores earn on average 2.5 times more loyalty points than those with scores less than 67.
 # - Highest score customer(customer score above 67) with highest income (more than 74k) earns around 4,849 points: this can be considered the most valuable customer segment.
-# - 8 customer groups were defined based on a combination of income and customer score.
+# - The pruned tree (max depth 3) splits customers into 8 groups based on a combination of income and customer score.
 # -&gt; Suggestion: any loyalty program should focus on encouraging customer to increase their scores and targeting on higher income brackets.
 
 # #
 
-# # Week 3 assignment: Clustering with *k*-means using Python
-# The marketing department also wants to better understand the usefulness of renumeration and spending scores but do not know where to begin. You are tasked to identify groups within the customer base that can be used to target specific market segments. Use *k*-means clustering to identify the optimal number of clusters and then apply and plot the data using the created segments.
-# ## Instructions
-# 1. Prepare the data for clustering.
-# 1. Import the CSV file you have prepared in Week 1.
-# 2. Create a new DataFrame (e.g. `df3`) containing the `renumeration` and `spending_score` columns.
-# 3. Explore the new DataFrame.
-# 2. Plot the renumeration versus spending score.
-# 1. Create a scatterplot.
-# 2. Create a pairplot.
-# 3. Use the Silhouette and Elbow methods to determine the optimal number of clusters for *k*-means clustering.
-# 1. Plot both methods and explain how you determine the number of clusters to use.
-# 2. Add titles and legends to the plot.
-# 4. Evaluate the usefulness of at least three values for *k* based on insights from the Elbow and Silhoutte methods.
-# 1. Plot the predicted *k*-means.
-# 2. Explain which value might give you the best clustering.
-# 5. Fit a final model using your selected value for *k*.
-# 1. Justify your selection and comment on the respective cluster sizes of your final solution.
-# 2. Check the number of observations per predicted class.
-# 6. Plot the clusters and interpret the model.
-
+# # Part 3: Customer segmentation with k-means clustering
 # ## 1. Load and explore the data
 
 # Import necessary libraries.
@@ -1106,10 +1047,10 @@ from sklearn.metrics import accuracy_score
 from scipy.spatial.distance import cdist
 
 import warnings
-warnings.filterwarnings(&#x27;ignore&#x27;)
+warnings.filterwarnings('ignore')
 
 # Load the CSV file(s) as df2.
-df2= pd.read_csv(&#x27;turtle_reviews_new.csv&#x27;)
+df2= pd.read_csv('turtle_reviews_new.csv')
 
 # View DataFrame.
 df2
@@ -1118,7 +1059,7 @@ df2.columns.tolist()
 df2
 
 # Drop unnecessary columns.
-df3 = df2[[&#x27;annual_income (k£)&#x27;,&#x27;customer_score (1-100)&#x27;,&#x27;gender&#x27;, &#x27;education&#x27;]]
+df3 = df2[['annual_income (k£)','customer_score (1-100)','gender', 'education']]
 # View DataFrame.
 df3
 
@@ -1132,64 +1073,64 @@ df3.describe()
 
 # Create a scatterplot with Seaborn, using gender=hue
 
-sns.scatterplot(x=&#x27;annual_income (k£)&#x27;, y=&#x27;customer_score (1-100)&#x27;, hue=&#x27;gender&#x27;,data=df3)
+sns.scatterplot(x='annual_income (k£)', y='customer_score (1-100)', hue='gender',data=df3)
 
 # Create a scatterplot with Seaborn, using gender=education
 
-sns.scatterplot(x=&#x27;annual_income (k£)&#x27;, y=&#x27;customer_score (1-100)&#x27;, hue=&#x27;education&#x27;,data=df3)
+sns.scatterplot(x='annual_income (k£)', y='customer_score (1-100)', hue='education',data=df3)
 
-# Create a pairplot with Seaborn using hue=&#x27;gender&#x27;
+# Create a pairplot with Seaborn using hue='gender'
 
-x= df3[[&#x27;annual_income (k£)&#x27;, &#x27;customer_score (1-100)&#x27;]]
-sns.pairplot(df3, vars=x, hue=&#x27;gender&#x27;, diag_kind=&#x27;kde&#x27;)
+x= df3[['annual_income (k£)', 'customer_score (1-100)']]
+sns.pairplot(df3, vars=x, hue='gender', diag_kind='kde')
 
-# Create a pairplot with Seaborn using hue=&#x27;education&#x27;
+# Create a pairplot with Seaborn using hue='education'
 
-x= df3[[&#x27;annual_income (k£)&#x27;, &#x27;customer_score (1-100)&#x27;]]
-sns.pairplot(df3, vars=x, hue=&#x27;education&#x27;, diag_kind=&#x27;kde&#x27;)
+x= df3[['annual_income (k£)', 'customer_score (1-100)']]
+sns.pairplot(df3, vars=x, hue='education', diag_kind='kde')
 
-# ## 3. Elbow and silhoutte methods
+# ## 3. Elbow and silhouette methods
 
 # Determine the number of clusters: Elbow method.
 ss= []
 for i in range(1,11):
     kmeans= KMeans(n_clusters=i,
-                   init=&#x27;k-means++&#x27;,
+                   init='k-means++',
                    max_iter=300,
                    n_init=10,
                    random_state=0)
     kmeans.fit(x)
     ss.append(kmeans.inertia_)
 
-# Plot the elblow method: Plot the sum of squared distances from each point to its assigned centre
+# Plot the elbow method: Plot the sum of squared distances from each point to its assigned centre
 
-plt.plot(range(1,11), ss, marker=&#x27;o&#x27;)
+plt.plot(range(1,11), ss, marker='o')
 
 # Insert labels and title
-plt.title(&quot;The Elbow Method&quot;)
-plt.xlabel(&quot;Number of clusters&quot;)
-plt.ylabel(&quot;SS Distance&quot;)
-plt.savefig(&#x27;elbow_method.png&#x27;,dpi=300)
+plt.title("The Elbow Method")
+plt.xlabel("Number of clusters")
+plt.ylabel("SS Distance")
+plt.savefig('elbow_method.png',dpi=300)
 plt.show()
 
 # Determine the number of clusters: Silhouette method.
-# Find the range of clusters to be used using silhoutte method
+# Find the range of clusters to be used using silhouette method
 sil=[]
 kmax=10
 
 for k in range(2, kmax+1):
     kmeans_s = KMeans(n_clusters=k).fit(x)
     labels= kmeans_s.labels_
-    sil.append(silhouette_score(x, labels, metric=&#x27;euclidean&#x27;))
+    sil.append(silhouette_score(x, labels, metric='euclidean'))
 
 # Plot the silhouette method.
-plt.plot(range(2, kmax+1), sil, marker=&#x27;o&#x27;)
+plt.plot(range(2, kmax+1), sil, marker='o')
 
 # Insert the labels and title.
-plt.title(&quot;The Silhouette Method&quot;)
-plt.xlabel(&quot;Number of clusters&quot;)
-plt.ylabel(&quot;Sil&quot;)
-plt.savefig(&#x27;silouehette_method.png&#x27;,dpi=300)
+plt.title("The Silhouette Method")
+plt.xlabel("Number of clusters")
+plt.ylabel("Sil")
+plt.savefig('silouehette_method.png',dpi=300)
 plt.show()
 
 # #### Findings:
@@ -1205,64 +1146,64 @@ plt.show()
 # Use five clusters as per 
 kmeans = KMeans(n_clusters = 5, 
                max_iter=15000,
-               init=&#x27;k-means++&#x27;, 
+               init='k-means++', 
                random_state=0).fit(x)
 clusters= kmeans.labels_
-x[&#x27;K-Means Predicted&#x27;] = clusters
+x['K-Means Predicted'] = clusters
 
 # Plot the predicted.
-sns.pairplot(x, hue=&#x27;K-Means Predicted&#x27;, diag_kind=&#x27;kde&#x27;)
+sns.pairplot(x, hue='K-Means Predicted', diag_kind='kde')
 
 # Check the number of observations per predicted class
-x[&#x27;K-Means Predicted&#x27;].value_counts()
+x['K-Means Predicted'].value_counts()
 
 # View the K-Means predicted
 print(x.head())
 
 # Visualising the clusters.
 # Set the plot size
-sns.set(rc = {&#x27;figure.figsize&#x27;:(12, 8)})
+sns.set(rc = {'figure.figsize':(12, 8)})
 
 # Create a scatterplot
-sns.scatterplot(x=&#x27;annual_income (k£)&#x27;, y=&#x27;customer_score (1-100)&#x27;, 
+sns.scatterplot(x='annual_income (k£)', y='customer_score (1-100)', 
                 data=x, 
-                hue=&#x27;K-Means Predicted&#x27;,
-                palette=[&#x27;red&#x27;, &#x27;green&#x27;, &#x27;blue&#x27;,&#x27;orange&#x27;, &#x27;black&#x27;])
+                hue='K-Means Predicted',
+                palette=['red', 'green', 'blue','orange', 'black'])
 
 # #### Four clusters
 
 # Use five clusters as per 
-x4= df3[[&#x27;annual_income (k£)&#x27;, &#x27;customer_score (1-100)&#x27;]]
+x4= df3[['annual_income (k£)', 'customer_score (1-100)']]
 kmeans_4 = KMeans(n_clusters = 4, 
                max_iter=15000,
-               init=&#x27;k-means++&#x27;, 
+               init='k-means++', 
                random_state=0).fit(x4)
 clusters_4= kmeans_4.labels_
-x4[&#x27;K-Means Predicted&#x27;] = clusters_4
+x4['K-Means Predicted'] = clusters_4
 
 # Plot the predicted.
-sns.pairplot(x4, hue=&#x27;K-Means Predicted&#x27;, diag_kind=&#x27;kde&#x27;)
+sns.pairplot(x4, hue='K-Means Predicted', diag_kind='kde')
 
 # Check the number of observations per predicted class
-x4[&#x27;K-Means Predicted&#x27;].value_counts()
+x4['K-Means Predicted'].value_counts()
 
 # View the K-Means predicted.
 print(x4.head())
 
 # Visualising the clusters.
 # Set the plot size
-sns.set(rc = {&#x27;figure.figsize&#x27;:(12, 8)})
+sns.set(rc = {'figure.figsize':(12, 8)})
 
 # Create a scatterplot
-sns.scatterplot(x=&#x27;annual_income (k£)&#x27;, y=&#x27;customer_score (1-100)&#x27;, 
+sns.scatterplot(x='annual_income (k£)', y='customer_score (1-100)', 
                 data=x4, 
-                hue=&#x27;K-Means Predicted&#x27;,
-                palette=[&#x27;red&#x27;, &#x27;green&#x27;, &#x27;blue&#x27;, &#x27;black&#x27;])
+                hue='K-Means Predicted',
+                palette=['red', 'green', 'blue', 'black'])
 
 # #### Decision about choosing which number of clusters to go:
 
-# Number of customers in group 2,1,3 are similar when using k=5 or k=4
-# When using k=5, the group 0 in k=4 were divided to group 0 and group 4. Creating 2 new distint groups clearly defined the distinction between each customers groups.
+# The number of customers in groups 2, 1 and 3 is similar when using k=5 or k=4
+# When using k=5, the group 0 in k=4 were divided to group 0 and group 4. Creating 2 new distinct groups clearly defined the distinction between each customers groups.
 # -&gt; Final decision: choosing k=5 -&gt; divide customers into 5 groups
 
 # ## 5. Fit final model and justify your choice
@@ -1270,41 +1211,40 @@ sns.scatterplot(x=&#x27;annual_income (k£)&#x27;, y=&#x27;customer_score (1-100
 # Use five clusters as per 
 kmeans = KMeans(n_clusters = 5, 
                max_iter=15000,
-               init=&#x27;k-means++&#x27;, 
+               init='k-means++', 
                random_state=0).fit(x)
 clusters= kmeans.labels_
-x[&#x27;K-Means Predicted&#x27;] = clusters
+x['K-Means Predicted'] = clusters
 
 # Plot the predicted.
-sns.pairplot(x, hue=&#x27;K-Means Predicted&#x27;, diag_kind=&#x27;kde&#x27;)
+sns.pairplot(x, hue='K-Means Predicted', diag_kind='kde')
 
 # Check the number of observations per predicted class
-x[&#x27;K-Means Predicted&#x27;].value_counts()
+x['K-Means Predicted'].value_counts()
 
 # ## 6. Plot and interpret the clusters
 
 # Visualising the clusters.
 # Set the plot size
-sns.set(rc = {&#x27;figure.figsize&#x27;:(12, 8)})
+sns.set(rc = {'figure.figsize':(12, 8)})
 
 # Create a scatterplot
-sns.scatterplot(x=&#x27;annual_income (k£)&#x27;, y=&#x27;customer_score (1-100)&#x27;, 
+sns.scatterplot(x='annual_income (k£)', y='customer_score (1-100)', 
                 data=x, 
-                hue=&#x27;K-Means Predicted&#x27;,
-                palette=[&#x27;red&#x27;, &#x27;green&#x27;, &#x27;blue&#x27;,&#x27;orange&#x27;, &#x27;black&#x27;])
+                hue='K-Means Predicted',
+                palette=['red', 'green', 'blue','orange', 'black'])
 
 # View the K-Means predicted
-plt.savefig(&#x27;scatterplot_kmeans_5.png&#x27;, dpi=300)
+plt.savefig('scatterplot_kmeans_5.png', dpi=300)
 print(x.head())
 
-# ## 7. Discuss: Insights and observations
-# ***Your observations here...***
+# ## 7. Insights and observations
 
 # &gt; By using k-means clusterings methods, I have managed to identify different customer groups with similar customer behaviour based on their annual income and customer score.
 # &gt; In particular:
 # - Cluster 0 — Middle Income, Average Score (Red, n=774 — largest group)
 # Income: ~£40–65k, Score: ~40–60
-# The &quot;average&quot; customer — moderate spender, moderate engagement
+# The "average" customer — moderate spender, moderate engagement
 # - Cluster 2 — High Income, High Score (Blue, n=356)
 # Income: ~£55–100k+, Score: ~70–97
 # - Cluster 1 — High Income, Low Score (Green, n=330)
@@ -1319,32 +1259,7 @@ print(x.head())
 
 # #
 
-# # Week 4 assignment: NLP using Python
-# Customer reviews were downloaded from the website of Turtle Games. This data will be used to steer the marketing department on how to approach future campaigns. Therefore, the marketing department asked you to identify the 15 most common words used in online product reviews. They also want to have a list of the top 20 positive and negative reviews received from the website. Therefore, you need to apply NLP on the data set.
-# ## Instructions
-# 1. Load and explore the data.
-# 1. Sense-check the DataFrame.
-# 2. You only need to retain the `review` and `summary` columns.
-# 3. Determine if there are any missing values.
-# 2. Prepare the data for NLP
-# 1. Change to lower case and join the elements in each of the columns respectively (`review` and `summary`).
-# 2. Replace punctuation in each of the columns respectively (`review` and `summary`).
-# 3. Drop duplicates in both columns (`review` and `summary`).
-# 3. Tokenise and create wordclouds for the respective columns (separately).
-# 1. Create a copy of the DataFrame.
-# 2. Apply tokenisation on both columns.
-# 3. Create and plot a wordcloud image.
-# 4. Frequency distribution and polarity.
-# 1. Create frequency distribution.
-# 2. Remove alphanumeric characters and stopwords.
-# 3. Create wordcloud without stopwords.
-# 4. Identify 15 most common words and polarity.
-# 5. Review polarity and sentiment.
-# 1. Plot histograms of polarity (use 15 bins) for both columns.
-# 2. Review the sentiment scores for the respective columns.
-# 6. Identify and print the top 20 positive and negative reviews and summaries respectively.
-# 7. Include your insights and observations.
-
+# # Part 4: Sentiment analysis of customer reviews (NLP)
 # ## 1. Load and explore the data
 
 # Import all the necessary packages.
@@ -1355,8 +1270,8 @@ import os
 import matplotlib.pyplot as plt
 
 # Import the required tokenisation model
-nltk.download (&#x27;punkt&#x27;)
-nltk.download (&#x27;stopwords&#x27;)
+nltk.download ('punkt')
+nltk.download ('stopwords')
 
 from wordcloud import WordCloud
 from nltk.tokenize import word_tokenize
@@ -1369,7 +1284,7 @@ from scipy.stats import norm
 from collections import Counter
 
 import warnings
-warnings.filterwarnings(&#x27;ignore&#x27;)
+warnings.filterwarnings('ignore')
 
 # View DataFrame.
 reviews_new
@@ -1378,7 +1293,7 @@ reviews_new
 reviews_new.isnull().sum()
 
 # Keep necessary columns. Drop unnecessary columns.
-survey = reviews_new[[&#x27;review&#x27;, &#x27;summary&#x27;]]
+survey = reviews_new[['review', 'summary']]
 
 # View DataFrame.
 survey
@@ -1390,10 +1305,10 @@ survey.isnull().sum()
 # ### 2a) Change to lower case and join the elements in each of the columns respectively (review and summary)
 
 # Review: Change all to lower case and join with a space.
-survey[&#x27;review&#x27;] = survey[&#x27;review&#x27;].apply(lambda x: &quot; &quot;.join(x.lower() for x in x.split()))
+survey['review'] = survey['review'].apply(lambda x: " ".join(x.lower() for x in x.split()))
 
 # Summary: Change all to lower case and join with a space.
-survey[&#x27;summary&#x27;] = survey[&#x27;summary&#x27;].apply(lambda x: &quot; &quot;.join(x.lower() for x in x.split()))
+survey['summary'] = survey['summary'].apply(lambda x: " ".join(x.lower() for x in x.split()))
 
 # View the DataFrame after the change
 survey
@@ -1401,21 +1316,21 @@ survey
 # ### 2b) Replace punctuation in each of the columns respectively (review and summary)
 
 # Replace all the punctuation in the review column.
-survey[&#x27;review&#x27;] = survey[&#x27;review&#x27;].str.replace(&#x27;[^\w\s]&#x27;, &#x27;&#x27;, regex=True)
+survey['review'] = survey['review'].str.replace('[^\w\s]', '', regex=True)
 
 # View output.
-survey[&#x27;review&#x27;]
+survey['review']
 
 # Replace all the punctuation in the summary column.
-survey[&#x27;summary&#x27;] = survey[&#x27;summary&#x27;].str.replace(&#x27;[^\w\s]&#x27;, &#x27;&#x27;, regex=True)
+survey['summary'] = survey['summary'].str.replace('[^\w\s]', '', regex=True)
 
 # View output.
-survey[&#x27;summary&#x27;]
+survey['summary']
 
 # ### 2c) Drop duplicates in both columns
 
 # Drop duplicates in both columns.
-survey = survey.drop_duplicates(subset=[&#x27;review&#x27;, &#x27;summary&#x27;])
+survey = survey.drop_duplicates(subset=['review', 'summary'])
 # View DataFrame.
 survey
 
@@ -1432,8 +1347,8 @@ from nltk.tokenize import sent_tokenize
 from nltk.tokenize import word_tokenize
 
 # Apply tokenisation to both columns.
-survey1[&#x27;review&#x27;] = survey1[&#x27;review&#x27;].apply(word_tokenize)
-survey1[&#x27;summary&#x27;]= survey1[&#x27;summary&#x27;].apply(word_tokenize)
+survey1['review'] = survey1['review'].apply(word_tokenize)
+survey1['summary']= survey1['summary'].apply(word_tokenize)
 
 # View DataFrame.
 survey1.reset_index(inplace=True)
@@ -1446,13 +1361,13 @@ all_tokens_review = []
 
 for i in range(survey1.shape[0]):
     # Add each token to the list.
-    all_tokens_review = all_tokens_review + survey1[&#x27;review&#x27;][i]
+    all_tokens_review = all_tokens_review + survey1['review'][i]
 
 # Import the FreqDist class.
 
 from nltk.probability import FreqDist
 
-# Calculate the frequency distibution
+# Calculate the frequency distribution
 
 fdist_review = FreqDist(all_tokens_review)
 
@@ -1465,35 +1380,35 @@ tokens_review = [word for word in all_tokens_review if word.isalnum()]
 # #### Eliminate stopwords in review column
 
 # Download the stopword list.
-nltk.download (&#x27;stopwords&#x27;)
+nltk.download ('stopwords')
 from nltk.corpus import stopwords
 
 # Create a set of English stopwords.
-english_stopwords = set(stopwords.words(&#x27;english&#x27;))
+english_stopwords = set(stopwords.words('english'))
 
 # Create a filtered list of tokens without stopwords.
 tokens_review_2 = [x for x in tokens_review if x.lower() not in english_stopwords]
 
 # Define an empty string variable.
-tokens2_string_review = &#x27;&#x27;
+tokens2_string_review = ''
 
 for value in tokens_review_2:
     # Add each filtered token word to the string.
-    tokens2_string_review = tokens2_string_review + value + &#x27; &#x27;
+    tokens2_string_review = tokens2_string_review + value + ' '
 
 # #### Create a word cloud
 
 wordcloud = WordCloud(width = 1600, height = 900, 
-                background_color =&#x27;white&#x27;, 
-                colormap=&#x27;plasma&#x27;, 
+                background_color ='white', 
+                colormap='plasma', 
                 min_font_size = 10).generate(tokens2_string_review) 
 
 # Plot the WordCloud image.                        
 plt.figure(figsize = (16, 9), facecolor = None) 
 plt.imshow(wordcloud) 
-plt.axis(&#x27;off&#x27;) 
+plt.axis('off') 
 plt.tight_layout(pad = 0) 
-plt.savefig(&#x27;wordcloud_review.png&#x27;, dpi=300)
+plt.savefig('wordcloud_review.png', dpi=300)
 plt.show()
 
 # ### Analyse Summary column
@@ -1503,13 +1418,13 @@ all_tokens_summary = []
 
 for i in range(survey1.shape[0]):
     # Add each token to the list.
-    all_tokens_summary = all_tokens_summary + survey1[&#x27;summary&#x27;][i]
+    all_tokens_summary = all_tokens_summary + survey1['summary'][i]
 
 # Import the FreqDist class.
 
 from nltk.probability import FreqDist
 
-# Calculate the frequency distibution
+# Calculate the frequency distribution
 
 fdist_summary = FreqDist(all_tokens_summary)
 
@@ -1522,35 +1437,35 @@ summary_review = [word for word in all_tokens_summary if word.isalnum()]
 # #### Eliminate stopwords in the summary column
 
 # Download the stopword list.
-nltk.download (&#x27;stopwords&#x27;)
+nltk.download ('stopwords')
 from nltk.corpus import stopwords
 
 # Create a set of English stopwords.
-english_stopwords = set(stopwords.words(&#x27;english&#x27;))
+english_stopwords = set(stopwords.words('english'))
 
 # Create a filtered list of tokens without stopwords.
 summary_review_2 = [x for x in summary_review if x.lower() not in english_stopwords]
 
 # Define an empty string variable.
-tokens2_string_summary = &#x27;&#x27;
+tokens2_string_summary = ''
 
 for value in summary_review_2:
     # Add each filtered token word to the string.
-    tokens2_string_summary = tokens2_string_summary + value + &#x27; &#x27;
+    tokens2_string_summary = tokens2_string_summary + value + ' '
 
 # #### Create a word cloud
 
 wordcloud = WordCloud(width = 1600, height = 900, 
-                background_color =&#x27;white&#x27;, 
-                colormap=&#x27;plasma&#x27;, 
+                background_color ='white', 
+                colormap='plasma', 
                 min_font_size = 10).generate(tokens2_string_summary) 
 
 # Plot the WordCloud image.                        
 plt.figure(figsize = (16, 9), facecolor = None) 
 plt.imshow(wordcloud) 
-plt.axis(&#x27;off&#x27;) 
+plt.axis('off') 
 plt.tight_layout(pad = 0) 
-plt.savefig(&#x27;wordcloud_summary.png&#x27;, dpi=300)
+plt.savefig('wordcloud_summary.png', dpi=300)
 plt.show()
 
 # ## 4. Frequency distribution and polarity
@@ -1570,7 +1485,7 @@ print(all_tokens_final)
 
 from nltk.probability import FreqDist
 
-# Calculate the frequency distibution
+# Calculate the frequency distribution
 
 fdist_final = FreqDist(all_tokens_final)
 
@@ -1584,36 +1499,36 @@ tokens_final = [word for word in all_tokens_final if word.isalnum()]
 
 # Remove all the stopwords
 
-nltk.download (&#x27;stopwords&#x27;)
+nltk.download ('stopwords')
 from nltk.corpus import stopwords
 
 # Create a set of English stopwords.
-english_stopwords = set(stopwords.words(&#x27;english&#x27;))
+english_stopwords = set(stopwords.words('english'))
 
 # Create a filtered list of tokens without stopwords.
 tokens_final_2 = [x for x in tokens_final if x.lower() not in english_stopwords]
 
 # Define an empty string variable.
-tokens2_final = &#x27;&#x27;
+tokens2_final = ''
 
 for value in tokens_final_2:
     # Add each filtered token word to the string.
-    tokens2_final = tokens2_final + value + &#x27; &#x27;
+    tokens2_final = tokens2_final + value + ' '
 
 # ### 4c) Create wordcloud without stopwords
 
 # Create a wordcloud without stop words.
 wordcloud = WordCloud(width = 1600, height = 900, 
-                background_color =&#x27;white&#x27;, 
-                colormap=&#x27;plasma&#x27;, 
+                background_color ='white', 
+                colormap='plasma', 
                 min_font_size = 10).generate(tokens2_final) 
 
 # Plot the WordCloud image.                        
 plt.figure(figsize = (16, 9), facecolor = None) 
 plt.imshow(wordcloud) 
-plt.axis(&#x27;off&#x27;) 
+plt.axis('off') 
 plt.tight_layout(pad = 0) 
-plt.savefig(&#x27;wordcloud_combined_summary_review.png&#x27;, dpi=300)
+plt.savefig('wordcloud_combined_summary_review.png', dpi=300)
 plt.show()
 
 # ### 4d) Identify 15 most common words and polarity
@@ -1627,7 +1542,7 @@ from collections import Counter
 
 # Generate a DataFrame from Counter.
 counts_review = pd.DataFrame(Counter(tokens_review_2).most_common(15),
-                      columns=[&#x27;Word&#x27;, &#x27;Frequency&#x27;]).set_index(&#x27;Word&#x27;)
+                      columns=['Word', 'Frequency']).set_index('Word')
 
 # Preview data.
 counts_review
@@ -1641,7 +1556,7 @@ from collections import Counter
 
 # Generate a DataFrame from Counter.
 counts_summary = pd.DataFrame(Counter(summary_review_2).most_common(15),
-                      columns=[&#x27;Word&#x27;, &#x27;Frequency&#x27;]).set_index(&#x27;Word&#x27;)
+                      columns=['Word', 'Frequency']).set_index('Word')
 
 # Preview data.
 counts_summary
@@ -1655,7 +1570,7 @@ from collections import Counter
 
 # Generate a DataFrame from Counter.
 counts_final = pd.DataFrame(Counter(tokens_final_2).most_common(15),
-                      columns=[&#x27;Word&#x27;, &#x27;Frequency&#x27;]).set_index(&#x27;Word&#x27;)
+                      columns=['Word', 'Frequency']).set_index('Word')
 
 # Preview data.
 counts_final
@@ -1665,30 +1580,29 @@ counts_final
 # #### Determine Sentiment Polarity columns
 
 # Install TextBlob.
-!pip install textblob
+# Requires: pip install textblob
 
 # Import the necessary package.
 from textblob import TextBlob
 
-# Provided function.
 def generate_polarity(comment):
-    &#x27;&#x27;&#x27;Extract polarity score (-1 to +1) for each comment&#x27;&#x27;&#x27;
+    '''Extract polarity score (-1 to +1) for each comment'''
     return TextBlob(comment).sentiment[0]
 
 # Determine a new DataFrame
 survey2 = survey1.copy()
 
 # Rejoin tokens back into strings for both columns
-survey2[&#x27;review&#x27;] = survey2[&#x27;review&#x27;].apply(lambda x: &#x27; &#x27;.join(x))
-survey2[&#x27;summary&#x27;] = survey2[&#x27;summary&#x27;].apply(lambda x: &#x27; &#x27;.join(x))
+survey2['review'] = survey2['review'].apply(lambda x: ' '.join(x))
+survey2['summary'] = survey2['summary'].apply(lambda x: ' '.join(x))
 
 # View the DataFrame
 survey2
 
 # Determine sentiment polarity of both columns. 
-survey2[&#x27;review_polarity&#x27;] = survey2[&#x27;review&#x27;].apply(generate_polarity)
-survey2[&#x27;summary_polarity&#x27;]= survey2[&#x27;summary&#x27;].apply(generate_polarity)
-survey2[&#x27;combined_polarity&#x27;] = (survey2[&#x27;review_polarity&#x27;] + survey2[&#x27;summary_polarity&#x27;])/2
+survey2['review_polarity'] = survey2['review'].apply(generate_polarity)
+survey2['summary_polarity']= survey2['summary'].apply(generate_polarity)
+survey2['combined_polarity'] = (survey2['review_polarity'] + survey2['summary_polarity'])/2
 # View output.
 survey2
 
@@ -1699,9 +1613,9 @@ def generate_subjectivity(comment):
     return TextBlob(comment).sentiment[1]
 
 # Determine subjectivity of both columns.  
-survey2[&#x27;review_subjectivity&#x27;] = survey2[&#x27;review&#x27;].apply(generate_subjectivity)
-survey2[&#x27;summary_subjectivity&#x27;]= survey2[&#x27;summary&#x27;].apply(generate_subjectivity)
-survey2[&#x27;combined_subjectivity&#x27;] = (survey2[&#x27;review_subjectivity&#x27;] + survey2[&#x27;summary_subjectivity&#x27;])/2
+survey2['review_subjectivity'] = survey2['review'].apply(generate_subjectivity)
+survey2['summary_subjectivity']= survey2['summary'].apply(generate_subjectivity)
+survey2['combined_subjectivity'] = (survey2['review_subjectivity'] + survey2['summary_subjectivity'])/2
 # View output.
 survey2
 
@@ -1718,47 +1632,47 @@ num_bins = 15
 plt.figure(figsize=(16,9))
 
 # Define the bars.
-n, bins, patches = plt.hist(survey2[&#x27;review_polarity&#x27;], num_bins, facecolor=&#x27;red&#x27;, alpha=0.6)
+n, bins, patches = plt.hist(survey2['review_polarity'], num_bins, facecolor='red', alpha=0.6)
 
 # Set the labels.
-plt.xlabel(&#x27;Polarity&#x27;, fontsize=12)
-plt.ylabel(&#x27;Count&#x27;, fontsize=12)
-plt.title(&#x27;Histogram of Review Sentiment Polarity&#x27;, fontsize=20)
+plt.xlabel('Polarity', fontsize=12)
+plt.ylabel('Count', fontsize=12)
+plt.title('Histogram of Review Sentiment Polarity', fontsize=20)
 
 plt.show()
 
 fig, axes = plt.subplots(1, 3, figsize=(24, 8))
 
 # Review Polarity
-axes[0].hist(survey2[&#x27;review_polarity&#x27;], bins=15, facecolor=&#x27;#E74C3C&#x27;, alpha=0.7, edgecolor=&#x27;black&#x27;, linewidth=0.5)
-axes[0].set_title(&#x27;Review&#x27;, fontsize=14, fontweight=&#x27;bold&#x27;)
-axes[0].set_xlabel(&#x27;Polarity Score&#x27;, fontsize=12,fontweight=&#x27;bold&#x27;)
-axes[0].set_ylabel(&#x27;Count&#x27;, fontsize=12, fontweight=&#x27;bold&#x27;)
-axes[0].axvline(x=0, color=&#x27;black&#x27;, linestyle=&#x27;--&#x27;, linewidth=1.5, label=&#x27;Neutral&#x27;)
-axes[0].axvline(survey2[&#x27;review_polarity&#x27;].mean(), color=&#x27;#E74C3C&#x27;, linestyle=&#x27;-&#x27;, linewidth=1.5, label=&#x27;Mean&#x27;)
+axes[0].hist(survey2['review_polarity'], bins=15, facecolor='#E74C3C', alpha=0.7, edgecolor='black', linewidth=0.5)
+axes[0].set_title('Review', fontsize=14, fontweight='bold')
+axes[0].set_xlabel('Polarity Score', fontsize=12,fontweight='bold')
+axes[0].set_ylabel('Count', fontsize=12, fontweight='bold')
+axes[0].axvline(x=0, color='black', linestyle='--', linewidth=1.5, label='Neutral')
+axes[0].axvline(survey2['review_polarity'].mean(), color='#E74C3C', linestyle='-', linewidth=1.5, label='Mean')
 axes[0].legend(fontsize=10)
 
 # Summary Polarity
-axes[1].hist(survey2[&#x27;summary_polarity&#x27;], bins=15, facecolor=&#x27;#3498DB&#x27;, alpha=0.7, edgecolor=&#x27;black&#x27;, linewidth=0.5)
-axes[1].set_title(&#x27;Summary&#x27;, fontsize=14, fontweight=&#x27;bold&#x27;)
-axes[1].set_xlabel(&#x27;Polarity Score&#x27;, fontsize=12, fontweight=&#x27;bold&#x27;)
-axes[1].set_ylabel(&#x27;Count&#x27;, fontsize=12, fontweight=&#x27;bold&#x27;)
-axes[1].axvline(x=0, color=&#x27;black&#x27;, linestyle=&#x27;--&#x27;, linewidth=1.5, label=&#x27;Neutral&#x27;)
-axes[1].axvline(survey2[&#x27;summary_polarity&#x27;].mean(), color=&#x27;#3498DB&#x27;, linestyle=&#x27;-&#x27;, linewidth=1.5, label=&#x27;Mean&#x27;)
+axes[1].hist(survey2['summary_polarity'], bins=15, facecolor='#3498DB', alpha=0.7, edgecolor='black', linewidth=0.5)
+axes[1].set_title('Summary', fontsize=14, fontweight='bold')
+axes[1].set_xlabel('Polarity Score', fontsize=12, fontweight='bold')
+axes[1].set_ylabel('Count', fontsize=12, fontweight='bold')
+axes[1].axvline(x=0, color='black', linestyle='--', linewidth=1.5, label='Neutral')
+axes[1].axvline(survey2['summary_polarity'].mean(), color='#3498DB', linestyle='-', linewidth=1.5, label='Mean')
 axes[1].legend(fontsize=10)
 
 # Combined Polarity
-axes[2].hist(survey2[&#x27;combined_polarity&#x27;], bins=15, facecolor=&#x27;#2ECC71&#x27;, alpha=0.7, edgecolor=&#x27;black&#x27;, linewidth=0.5)
-axes[2].set_title(&#x27;Combined&#x27;, fontsize=14, fontweight=&#x27;bold&#x27;)
-axes[2].set_xlabel(&#x27;Polarity Score&#x27;, fontsize=12, fontweight=&#x27;bold&#x27;)
-axes[2].set_ylabel(&#x27;Count&#x27;, fontsize=12,fontweight=&#x27;bold&#x27; )
-axes[2].axvline(x=0, color=&#x27;black&#x27;, linestyle=&#x27;--&#x27;, linewidth=1.5, label=&#x27;Neutral&#x27;)
-axes[2].axvline(survey2[&#x27;combined_polarity&#x27;].mean(), color=&#x27;#2ECC71&#x27;, linestyle=&#x27;-&#x27;, linewidth=1.5, label=&#x27;Mean&#x27;)
+axes[2].hist(survey2['combined_polarity'], bins=15, facecolor='#2ECC71', alpha=0.7, edgecolor='black', linewidth=0.5)
+axes[2].set_title('Combined', fontsize=14, fontweight='bold')
+axes[2].set_xlabel('Polarity Score', fontsize=12, fontweight='bold')
+axes[2].set_ylabel('Count', fontsize=12,fontweight='bold' )
+axes[2].axvline(x=0, color='black', linestyle='--', linewidth=1.5, label='Neutral')
+axes[2].axvline(survey2['combined_polarity'].mean(), color='#2ECC71', linestyle='-', linewidth=1.5, label='Mean')
 axes[2].legend(fontsize=10)
 
-plt.suptitle(&#x27;Sentiment Polarity Scores&#x27;, fontsize=20, fontweight=&#x27;bold&#x27;, y=1.02)
+plt.suptitle('Sentiment Polarity Scores', fontsize=20, fontweight='bold', y=1.02)
 plt.tight_layout()
-plt.savefig(&#x27;sentiment_polarity_scores.png&#x27;, dpi=300)
+plt.savefig('sentiment_polarity_scores.png', dpi=300)
 plt.show()
 
 # #### Visualisation with subjectivity columns
@@ -1766,35 +1680,35 @@ plt.show()
 fig, axes = plt.subplots(1, 3, figsize=(24, 8))
 
 # Review Polarity
-axes[0].hist(survey2[&#x27;review_subjectivity&#x27;], bins=15, facecolor=&#x27;#E74C3C&#x27;, alpha=0.7, edgecolor=&#x27;black&#x27;, linewidth=0.5)
-axes[0].set_title(&#x27;Review&#x27;, fontsize=14, fontweight=&#x27;bold&#x27;)
-axes[0].set_xlabel(&#x27;Subjectivity Score&#x27;, fontsize=12,fontweight=&#x27;bold&#x27;)
-axes[0].set_ylabel(&#x27;Count&#x27;, fontsize=12, fontweight=&#x27;bold&#x27;)
-axes[0].axvline(x=0, color=&#x27;black&#x27;, linestyle=&#x27;--&#x27;, linewidth=1.5, label=&#x27;Neutral&#x27;)
-axes[0].axvline(survey2[&#x27;review_subjectivity&#x27;].mean(), color=&#x27;#E74C3C&#x27;, linestyle=&#x27;-&#x27;, linewidth=1.5, label=&#x27;Mean&#x27;)
+axes[0].hist(survey2['review_subjectivity'], bins=15, facecolor='#E74C3C', alpha=0.7, edgecolor='black', linewidth=0.5)
+axes[0].set_title('Review', fontsize=14, fontweight='bold')
+axes[0].set_xlabel('Subjectivity Score', fontsize=12,fontweight='bold')
+axes[0].set_ylabel('Count', fontsize=12, fontweight='bold')
+axes[0].axvline(x=0, color='black', linestyle='--', linewidth=1.5, label='Neutral')
+axes[0].axvline(survey2['review_subjectivity'].mean(), color='#E74C3C', linestyle='-', linewidth=1.5, label='Mean')
 axes[0].legend(fontsize=10)
 
 # Summary Polarity
-axes[1].hist(survey2[&#x27;summary_subjectivity&#x27;], bins=15, facecolor=&#x27;#3498DB&#x27;, alpha=0.7, edgecolor=&#x27;black&#x27;, linewidth=0.5)
-axes[1].set_title(&#x27;Summary&#x27;, fontsize=14, fontweight=&#x27;bold&#x27;)
-axes[1].set_xlabel(&#x27;Subjectivity Score&#x27;, fontsize=12, fontweight=&#x27;bold&#x27;)
-axes[1].set_ylabel(&#x27;Count&#x27;, fontsize=12, fontweight=&#x27;bold&#x27;)
-axes[1].axvline(x=0, color=&#x27;black&#x27;, linestyle=&#x27;--&#x27;, linewidth=1.5, label=&#x27;Neutral&#x27;)
-axes[1].axvline(survey2[&#x27;summary_subjectivity&#x27;].mean(), color=&#x27;#3498DB&#x27;, linestyle=&#x27;-&#x27;, linewidth=1.5, label=&#x27;Mean&#x27;)
+axes[1].hist(survey2['summary_subjectivity'], bins=15, facecolor='#3498DB', alpha=0.7, edgecolor='black', linewidth=0.5)
+axes[1].set_title('Summary', fontsize=14, fontweight='bold')
+axes[1].set_xlabel('Subjectivity Score', fontsize=12, fontweight='bold')
+axes[1].set_ylabel('Count', fontsize=12, fontweight='bold')
+axes[1].axvline(x=0, color='black', linestyle='--', linewidth=1.5, label='Neutral')
+axes[1].axvline(survey2['summary_subjectivity'].mean(), color='#3498DB', linestyle='-', linewidth=1.5, label='Mean')
 axes[1].legend(fontsize=10)
 
 # Combined Polarity
-axes[2].hist(survey2[&#x27;combined_subjectivity&#x27;], bins=15, facecolor=&#x27;#2ECC71&#x27;, alpha=0.7, edgecolor=&#x27;black&#x27;, linewidth=0.5)
-axes[2].set_title(&#x27;Combined&#x27;, fontsize=14, fontweight=&#x27;bold&#x27;)
-axes[2].set_xlabel(&#x27;Subjectivity Score&#x27;, fontsize=12, fontweight=&#x27;bold&#x27;)
-axes[2].set_ylabel(&#x27;Count&#x27;, fontsize=12,fontweight=&#x27;bold&#x27; )
-axes[2].axvline(x=0, color=&#x27;black&#x27;, linestyle=&#x27;--&#x27;, linewidth=1.5, label=&#x27;Neutral&#x27;)
-axes[2].axvline(survey2[&#x27;combined_subjectivity&#x27;].mean(), color=&#x27;#2ECC71&#x27;, linestyle=&#x27;-&#x27;, linewidth=1.5, label=&#x27;Mean&#x27;)
+axes[2].hist(survey2['combined_subjectivity'], bins=15, facecolor='#2ECC71', alpha=0.7, edgecolor='black', linewidth=0.5)
+axes[2].set_title('Combined', fontsize=14, fontweight='bold')
+axes[2].set_xlabel('Subjectivity Score', fontsize=12, fontweight='bold')
+axes[2].set_ylabel('Count', fontsize=12,fontweight='bold' )
+axes[2].axvline(x=0, color='black', linestyle='--', linewidth=1.5, label='Neutral')
+axes[2].axvline(survey2['combined_subjectivity'].mean(), color='#2ECC71', linestyle='-', linewidth=1.5, label='Mean')
 axes[2].legend(fontsize=10)
 
-plt.suptitle(&#x27;Subjectivity Scores&#x27;, fontsize=20, fontweight=&#x27;bold&#x27;, y=1.02)
+plt.suptitle('Subjectivity Scores', fontsize=20, fontweight='bold', y=1.02)
 plt.tight_layout()
-plt.savefig(&#x27;subjectivity_scores.png&#x27;, dpi=300)
+plt.savefig('subjectivity_scores.png', dpi=300)
 plt.show()
 
 # ## 6. Identify top 20 positive and negative reviews and summaries respectively
@@ -1805,63 +1719,62 @@ survey2.columns.tolist()
 
 # Top 20 negative reviews.
 
-negative_sentiment_review = survey2.nsmallest(20, &#x27;review_polarity&#x27;)
+negative_sentiment_review = survey2.nsmallest(20, 'review_polarity')
 
 # Eliminate unnecessary columns.
-negative_sentiment_review = negative_sentiment_review[[&#x27;review&#x27;,
- &#x27;review_polarity&#x27;,
- &#x27;review_subjectivity&#x27;]]
+negative_sentiment_review = negative_sentiment_review[['review',
+ 'review_polarity',
+ 'review_subjectivity']]
 
 # Adjust the column width.
-negative_sentiment_review.style.set_properties(subset=[&#x27;review&#x27;], **{&#x27;width&#x27;: &#x27;1200px&#x27;})
+negative_sentiment_review.style.set_properties(subset=['review'], **{'width': '1200px'})
 
 # Top 20 positive reviews.
 
-positive_sentiment_review = survey2.nlargest(20, &#x27;review_polarity&#x27;)
+positive_sentiment_review = survey2.nlargest(20, 'review_polarity')
 
 # Eliminate unnecessary columns.
-positive_sentiment_review = positive_sentiment_review[[&#x27;review&#x27;,
- &#x27;review_polarity&#x27;,
- &#x27;review_subjectivity&#x27;]]
+positive_sentiment_review = positive_sentiment_review[['review',
+ 'review_polarity',
+ 'review_subjectivity']]
 
 # Adjust the column width.
-positive_sentiment_review.style.set_properties(subset=[&#x27;review&#x27;], **{&#x27;width&#x27;: &#x27;1200px&#x27;})
+positive_sentiment_review.style.set_properties(subset=['review'], **{'width': '1200px'})
 
 # #### Summary columns
 
 # Top 20 negative summary.
 
-negative_sentiment_summary = survey2.nsmallest(20, &#x27;summary_polarity&#x27;)
+negative_sentiment_summary = survey2.nsmallest(20, 'summary_polarity')
 
 # Eliminate unnecessary columns.
-negative_sentiment_summary= negative_sentiment_summary[[&#x27;summary&#x27;,
- &#x27;summary_polarity&#x27;,
- &#x27;summary_subjectivity&#x27;]]
+negative_sentiment_summary= negative_sentiment_summary[['summary',
+ 'summary_polarity',
+ 'summary_subjectivity']]
 
 # Adjust the column width.
-negative_sentiment_summary.style.set_properties(subset=[&#x27;summary&#x27;], **{&#x27;width&#x27;: &#x27;1200px&#x27;})
+negative_sentiment_summary.style.set_properties(subset=['summary'], **{'width': '1200px'})
 
 # Top 20 positive summary.
 
-positive_sentiment_summary = survey2.nlargest(20, &#x27;summary_polarity&#x27;)
+positive_sentiment_summary = survey2.nlargest(20, 'summary_polarity')
 
 # Eliminate unnecessary columns.
-positive_sentiment_summary= positive_sentiment_summary[[&#x27;summary&#x27;,
- &#x27;summary_polarity&#x27;,
- &#x27;summary_subjectivity&#x27;]]
+positive_sentiment_summary= positive_sentiment_summary[['summary',
+ 'summary_polarity',
+ 'summary_subjectivity']]
 
 # Adjust the column width.
-positive_sentiment_summary.style.set_properties(subset=[&#x27;summary&#x27;], **{&#x27;width&#x27;: &#x27;1200px&#x27;})
+positive_sentiment_summary.style.set_properties(subset=['summary'], **{'width': '1200px'})
 
-# ## 7. Discuss: Insights and observations
-# ***Your observations here...***
+# ## 7. Insights and observations
 # Sentiment polarity scores are assigned on a range, where -1 is the lowest negative sentiment, and +1 is the highest possible positive sentiment.
 # Subjectivity ranges from 0 to 1, where 0 means fact-based and objective, while 1 means opinion-based and subjective.
 
 # ### 1. Sentiment Polarity Scores
 # Review polarity:
 # - Overall reviews are mildly positive.
-# - The scores spreadly range between -1 and 1: mixed opinions across the dataset
+# - The scores range widely between -1 and 1: mixed opinions across the dataset
 # - Most reviews fall between -0.25 and 0.5
 # Summary polarity:
 # - Heavily concentrated at 0 (neutral)
@@ -1869,46 +1782,46 @@ positive_sentiment_summary.style.set_properties(subset=[&#x27;summary&#x27;], **
 # -&gt; The result is not entirely reliable as the model might not capture the real picture.
 # Combined polarity:
 # - combined score leans positive overall
-# - mean line sits to the right of neutral -&gt; customer are slightly more positive and negative.
+# - mean line sits to the right of neutral -&gt; customer are slightly more positive than negative.
 # ### 2. Subjectivity Scores
 # Review subjectivity:
 # + peaking around 0.4-0.5
 # + most reviews are moderately subjective - a mix of opinion and fact
 # + very few reviews are fact-based or purely objective (near 0)
 # Summary subjectivity:
-# + Massive spike at 0 - most summaries are completely objective: this pose a big question: does it actually true that TextBlob could detect the subjectivity reliably?
+# + Massive spike at 0 - most summaries are completely objective: this raises a question: can TextBlob detect subjectivity reliably on very short text?
 # + The rest of distribution spreads fairly evenly from 0.2 to 1.0
 # Combined subjectivity:
 # + More balanced and normally distributed
 # + Peak around 0.4 - 0.6: moderate subjectivity overall
 # ### 3. Top 20 Negative Reviews
-# - Difficult instructions: product usability issue: &quot;instructions are complicated&quot;, &quot;difficult directions&quot;: very common
-# - Not age-appropriate: misleading product description: &quot;not for a young child&quot;, &quot;8 year old frustrated&quot;: common
-# - Poor value for money: pricing concern: &quot;expensive for what you get&quot;: moderate
-# - Product defects: quality control issue: &quot;incomplete kit&quot;, &quot;both parts were the same&quot;: moderate
-# - Gift disappointment:&quot;bought as christmas gift&quot;, &quot;gift for daughter&quot;: not arrive at expected: common
-# Special note: Reviews 421, 490, 795, 798, 814 have clearly positive text (&quot;my son loves this game&quot;, &quot;this game is a blast&quot;) but show -0.4 polarity — TextBlob is misclassifying these, likely because of negative words like &quot;kids&quot; or sentence structure confusing the model.
-# ### 4. Top 20 Postive Reviews
-# - Single word reviews: &quot;awesome&quot;, &quot;perfect&quot;: Very high subjectivity (1.0) but low informational value: TextBlob might give short and positive words with max scoren -&gt; the positive pictures might be inflated.
-# - Gift satisfaction: &quot;my daughter loves her stickers&quot;: Strong positive gifting experience
-# - Educational value: &quot;excellent activity for teaching selfmanagement&quot;: Product seen as educational tool: common
-# - Age appropriate products: &quot;perfect for preschooler&quot;, &quot;well designed for 9 year olds&quot;: common
-# - Overall product quality: &quot;came in perfect condition&quot;, &quot;wonderful product&quot;: very common
+# - Difficult instructions: product usability issue: "instructions are complicated", "difficult directions": very common
+# - Not age-appropriate: misleading product description: "not for a young child", "8 year old frustrated": common
+# - Poor value for money: pricing concern: "expensive for what you get": moderate
+# - Product defects: quality control issue: "incomplete kit", "both parts were the same": moderate
+# - Gift disappointment:"bought as christmas gift", "gift for daughter": not arrive at expected: common
+# Special note: Reviews 421, 490, 795, 798, 814 have clearly positive text ("my son loves this game", "this game is a blast") but show -0.4 polarity — TextBlob is misclassifying these, likely because of negative words like "kids" or sentence structure confusing the model.
+# ### 4. Top 20 Positive Reviews
+# - Single word reviews: "awesome", "perfect": Very high subjectivity (1.0) but low informational value: TextBlob might give short and positive words with maximum scores -&gt; the positive pictures might be inflated.
+# - Gift satisfaction: "my daughter loves her stickers": Strong positive gifting experience
+# - Educational value: "excellent activity for teaching selfmanagement": Product seen as educational tool: common
+# - Age appropriate products: "perfect for preschooler", "well designed for 9 year olds": common
+# - Overall product quality: "came in perfect condition", "wonderful product": very common
 
 # ### 5. Top 20 Negative Summary
-# - Not interested: boring&quot;, &quot;small and boring&quot;, &quot;dumb and boring: Most common complaint
-# - Disappointment: &quot;disappointed&quot; appears 4 times: Repeated single-word summaries
-# - Quality issues: &quot;bad quality all made of paper&quot;: Material quality concern
-# - Wrong expectations: &quot;not what I was expecting&quot;: Product description mismatch
-# - Age/difficulty: &quot;at age 31 found these very difficult&quot;: difficulty beyond just children
+# - Not interested: boring", "small and boring", "dumb and boring: Most common complaint
+# - Disappointment: "disappointed" appears 4 times: Repeated single-word summaries
+# - Quality issues: "bad quality all made of paper": Material quality concern
+# - Wrong expectations: "not what I was expecting": Product description mismatch
+# - Age/difficulty: "at age 31 found these very difficult": difficulty beyond just children
 # ### 6. Top 20 Positive Summary
-# - Single words: &quot;perfect&quot;, &quot;awesome&quot;, &quot;excellent&quot;: positive summary but quite short
-# - Educational angle: &quot;excellent therapy tool&quot;, &quot;best easter teaching tool&quot;: Strong educational positioning
-# - Age specific praise: &quot;perfect for preschooler&quot;, &quot;awesome and well designed for 9 year olds&quot;: Age-appropriate products well received
+# - Single words: "perfect", "awesome", "excellent": positive summary but quite short
+# - Educational angle: "excellent therapy tool", "best easter teaching tool": Strong educational positioning
+# - Age specific praise: "perfect for preschooler", "awesome and well designed for 9 year olds": Age-appropriate products well received
 # ### Limitations of Analysis:
-# - TextBlob struggles with short text: Summary scores less reliable — single words like &quot;boring&quot; or &quot;awesome&quot; get maximum scores
+# - TextBlob struggles with short text: Summary scores less reliable — single words like "boring" or "awesome" get maximum scores
 # - Some misclassifications detected: Positive reviews in rows 421, 490, 795 incorrectly scored as negative (-0.4)
-# - Stopword removal may remove context: Words like &quot;not&quot; can be removed, flipping the actual meaning
+# - Stopword removal may remove context: Words like "not" can be removed, flipping the actual meaning
 # - Use other types of sentiment analysis for comparison
 # ### Recommendations
 # - Improve product instructions:
@@ -1919,13 +1832,13 @@ positive_sentiment_summary.style.set_properties(subset=[&#x27;summary&#x27;], **
 # Defective products such as incomplete kits and mismatched parts appeared in the most negative reviews. Stronger pre-shipment quality checks would directly reduce the volume of 1-star reviews.
 # - Highlight educational value: Reviewers who mentioned therapeutic or educational use were consistently positive. Positioning the product range more explicitly as educational or therapeutic tools could attract a wider, more engaged customer base.
 
-# # Extra anaysis: Using VaderSentiment for better understanding of reviews and summary
+# # Part 4b: VADER sentiment analysis as a cross-check on TextBlob
 
 survey2
 
 # Create a new DataFrame for VaderSentiment analysis
-survey3 = survey2[[&#x27;review&#x27;, &#x27;summary&#x27;]]
-survey3.style.set_properties(subset=[&#x27;review&#x27;, &#x27;summary&#x27;], **{&#x27;width&#x27;: &#x27;1200px&#x27;})
+survey3 = survey2[['review', 'summary']]
+survey3.style.set_properties(subset=['review', 'summary'], **{'width': '1200px'})
 
 survey3.shape
 
@@ -1935,35 +1848,35 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 analyzer = SentimentIntensityAnalyzer()
 
 # Test on row 1 — negative review
-test1 = &quot;a beautiful and sentimental gift i plan to order 2 more sets for gifts&quot;
+test1 = "a beautiful and sentimental gift i plan to order 2 more sets for gifts"
 print(analyzer.polarity_scores(test1))
 
 # Test on row 3 — positive review
-test2 = &quot;amazing buy bought it as a gift for our new dm and its perfect&quot;
+test2 = "amazing buy bought it as a gift for our new dm and its perfect"
 print(analyzer.polarity_scores(test2))
 
 # #### Apply VADER to survey3
 
 # Compound score (main metric -1 to 1)
-survey3[&#x27;review_vader_compound&#x27;] = survey3[&#x27;review&#x27;].apply(
-    lambda x: analyzer.polarity_scores(x)[&#x27;compound&#x27;])
+survey3['review_vader_compound'] = survey3['review'].apply(
+    lambda x: analyzer.polarity_scores(x)['compound'])
 
-survey3[&#x27;summary_vader_compound&#x27;] = survey3[&#x27;summary&#x27;].apply(
-    lambda x: analyzer.polarity_scores(x)[&#x27;compound&#x27;])
+survey3['summary_vader_compound'] = survey3['summary'].apply(
+    lambda x: analyzer.polarity_scores(x)['compound'])
 
 # Positive, negative, neutral scores
-survey3[&#x27;review_vader_pos&#x27;] = survey3[&#x27;review&#x27;].apply(
-    lambda x: analyzer.polarity_scores(x)[&#x27;pos&#x27;])
+survey3['review_vader_pos'] = survey3['review'].apply(
+    lambda x: analyzer.polarity_scores(x)['pos'])
 
-survey3[&#x27;review_vader_neg&#x27;] = survey3[&#x27;review&#x27;].apply(
-    lambda x: analyzer.polarity_scores(x)[&#x27;neg&#x27;])
+survey3['review_vader_neg'] = survey3['review'].apply(
+    lambda x: analyzer.polarity_scores(x)['neg'])
 
-survey3[&#x27;review_vader_neu&#x27;] = survey3[&#x27;review&#x27;].apply(
-    lambda x: analyzer.polarity_scores(x)[&#x27;neu&#x27;])
+survey3['review_vader_neu'] = survey3['review'].apply(
+    lambda x: analyzer.polarity_scores(x)['neu'])
 
 # Combined compound score
-survey3[&#x27;combined_vader_compound&#x27;] = (
-    survey3[&#x27;review_vader_compound&#x27;] + survey3[&#x27;summary_vader_compound&#x27;]
+survey3['combined_vader_compound'] = (
+    survey3['review_vader_compound'] + survey3['summary_vader_compound']
 ) / 2
 
 # View result
@@ -1971,106 +1884,106 @@ survey3
 
 def get_vader_label(score):
     if score &gt;= 0.05:
-        return &#x27;Positive&#x27;
+        return 'Positive'
     elif score &lt;= -0.05:
-        return &#x27;Negative&#x27;
+        return 'Negative'
     else:
-        return &#x27;Neutral&#x27;
+        return 'Neutral'
 
-survey3[&#x27;review_vader_label&#x27;] = survey3[&#x27;review_vader_compound&#x27;].apply(get_vader_label)
-survey3[&#x27;summary_vader_label&#x27;] = survey3[&#x27;summary_vader_compound&#x27;].apply(get_vader_label)
-survey3[&#x27;combined_vader_label&#x27;] = survey3[&#x27;combined_vader_compound&#x27;].apply(get_vader_label)
+survey3['review_vader_label'] = survey3['review_vader_compound'].apply(get_vader_label)
+survey3['summary_vader_label'] = survey3['summary_vader_compound'].apply(get_vader_label)
+survey3['combined_vader_label'] = survey3['combined_vader_compound'].apply(get_vader_label)
 
 # View label counts
-print(survey3[&#x27;review_vader_label&#x27;].value_counts())
-print(survey3[&#x27;summary_vader_label&#x27;].value_counts())
-print(survey3[&#x27;combined_vader_label&#x27;].value_counts())
+print(survey3['review_vader_label'].value_counts())
+print(survey3['summary_vader_label'].value_counts())
+print(survey3['combined_vader_label'].value_counts())
 
 # #### Visualise the compound scores
 
 fig, axes = plt.subplots(1, 3, figsize=(28, 10))
 
 # Review compound
-axes[0].hist(survey3[&#x27;review_vader_compound&#x27;], bins=15,
-             facecolor=&#x27;#E74C3C&#x27;, alpha=0.7, edgecolor=&#x27;black&#x27;, linewidth=0.5)
-axes[0].set_title(&#x27;Review VADER Compound&#x27;, fontsize=16, fontweight=&#x27;bold&#x27;)
-axes[0].set_xlabel(&#x27;Compound Score&#x27;, fontsize=16,fontweight=&#x27;bold&#x27;)
-axes[0].set_ylabel(&#x27;Count&#x27;, fontsize=16, fontweight=&#x27;bold&#x27;)
-axes[0].axvline(x=0, color=&#x27;black&#x27;, linestyle=&#x27;--&#x27;, linewidth=1.5, label=&#x27;Neutral&#x27;)
-axes[0].axvline(survey3[&#x27;review_vader_compound&#x27;].mean(), 
-                color=&#x27;#E74C3C&#x27;, linestyle=&#x27;-&#x27;, linewidth=1.5, label=&#x27;Mean&#x27;)
+axes[0].hist(survey3['review_vader_compound'], bins=15,
+             facecolor='#E74C3C', alpha=0.7, edgecolor='black', linewidth=0.5)
+axes[0].set_title('Review VADER Compound', fontsize=16, fontweight='bold')
+axes[0].set_xlabel('Compound Score', fontsize=16,fontweight='bold')
+axes[0].set_ylabel('Count', fontsize=16, fontweight='bold')
+axes[0].axvline(x=0, color='black', linestyle='--', linewidth=1.5, label='Neutral')
+axes[0].axvline(survey3['review_vader_compound'].mean(), 
+                color='#E74C3C', linestyle='-', linewidth=1.5, label='Mean')
 axes[0].legend()
 
 # Summary compound
-axes[1].hist(survey3[&#x27;summary_vader_compound&#x27;], bins=15,
-             facecolor=&#x27;#3498DB&#x27;, alpha=0.7, edgecolor=&#x27;black&#x27;, linewidth=0.5)
-axes[1].set_title(&#x27;Summary VADER Compound&#x27;, fontsize=16, fontweight=&#x27;bold&#x27;)
-axes[1].set_xlabel(&#x27;Compound Score&#x27;, fontsize=16, fontweight=&#x27;bold&#x27;)
-axes[1].set_ylabel(&#x27;Count&#x27;, fontsize=16, fontweight=&#x27;bold&#x27;)
-axes[1].axvline(x=0, color=&#x27;black&#x27;, linestyle=&#x27;--&#x27;, linewidth=1.5, label=&#x27;Neutral&#x27;)
-axes[1].axvline(survey3[&#x27;summary_vader_compound&#x27;].mean(), 
-                color=&#x27;#3498DB&#x27;, linestyle=&#x27;-&#x27;, linewidth=1.5, label=&#x27;Mean&#x27;)
+axes[1].hist(survey3['summary_vader_compound'], bins=15,
+             facecolor='#3498DB', alpha=0.7, edgecolor='black', linewidth=0.5)
+axes[1].set_title('Summary VADER Compound', fontsize=16, fontweight='bold')
+axes[1].set_xlabel('Compound Score', fontsize=16, fontweight='bold')
+axes[1].set_ylabel('Count', fontsize=16, fontweight='bold')
+axes[1].axvline(x=0, color='black', linestyle='--', linewidth=1.5, label='Neutral')
+axes[1].axvline(survey3['summary_vader_compound'].mean(), 
+                color='#3498DB', linestyle='-', linewidth=1.5, label='Mean')
 axes[1].legend()
 
 # Combined compound
-axes[2].hist(survey3[&#x27;combined_vader_compound&#x27;], bins=15,
-             facecolor=&#x27;#2ECC71&#x27;, alpha=0.7, edgecolor=&#x27;black&#x27;, linewidth=0.5)
-axes[2].set_title(&#x27;Combined VADER Compound&#x27;, fontsize=16, fontweight=&#x27;bold&#x27;)
-axes[2].set_xlabel(&#x27;Compound Score&#x27;, fontsize=16, fontweight=&#x27;bold&#x27;)
-axes[2].set_ylabel(&#x27;Count&#x27;, fontsize=16, fontweight=&#x27;bold&#x27;)
-axes[2].axvline(x=0, color=&#x27;black&#x27;, linestyle=&#x27;--&#x27;, linewidth=1.5, label=&#x27;Neutral&#x27;)
-axes[2].axvline(survey3[&#x27;combined_vader_compound&#x27;].mean(), 
-                color=&#x27;#2ECC71&#x27;, linestyle=&#x27;-&#x27;, linewidth=1.5, label=&#x27;Mean&#x27;)
+axes[2].hist(survey3['combined_vader_compound'], bins=15,
+             facecolor='#2ECC71', alpha=0.7, edgecolor='black', linewidth=0.5)
+axes[2].set_title('Combined VADER Compound', fontsize=16, fontweight='bold')
+axes[2].set_xlabel('Compound Score', fontsize=16, fontweight='bold')
+axes[2].set_ylabel('Count', fontsize=16, fontweight='bold')
+axes[2].axvline(x=0, color='black', linestyle='--', linewidth=1.5, label='Neutral')
+axes[2].axvline(survey3['combined_vader_compound'].mean(), 
+                color='#2ECC71', linestyle='-', linewidth=1.5, label='Mean')
 axes[2].legend()
 
-plt.suptitle(&#x27;VADER Sentiment Compound Scores&#x27;, fontsize=24, fontweight=&#x27;bold&#x27;)
+plt.suptitle('VADER Sentiment Compound Scores', fontsize=24, fontweight='bold')
 plt.tight_layout()
-plt.savefig(&#x27;vader_sentiment_analysis.png&#x27;, dpi=300)
+plt.savefig('vader_sentiment_analysis.png', dpi=300)
 plt.show()
 
 # #### Visualise sentiment label distribution
 
 fig, axes = plt.subplots(1, 3, figsize=(28, 10))
 
-colors = [&#x27;#2ECC71&#x27;, &#x27;#95A5A6&#x27;, &#x27;#E74C3C&#x27;]  # positive, neutral, negative
+colors = ['#2ECC71', '#95A5A6', '#E74C3C']  # positive, neutral, negative
 
 for ax, col, title in zip(axes, 
-                           [&#x27;review_vader_label&#x27;, &#x27;summary_vader_label&#x27;, &#x27;combined_vader_label&#x27;],
-                           [&#x27;Review&#x27;, &#x27;Summary&#x27;, &#x27;Combined&#x27;]):
+                           ['review_vader_label', 'summary_vader_label', 'combined_vader_label'],
+                           ['Review', 'Summary', 'Combined']):
     counts = survey3[col].value_counts()
-    bars = ax.bar(counts.index, counts.values, color=colors, edgecolor=&#x27;black&#x27;, alpha=0.7)
-    ax.set_title(f&#x27;{title} Sentiment Distribution&#x27;, fontsize=16, fontweight=&#x27;bold&#x27;)
-    ax.set_xlabel(&#x27;Sentiment&#x27;, fontsize=16, fontweight=&#x27;bold&#x27;)
-    ax.set_ylabel(&#x27;Count&#x27;, fontsize=16, fontweight=&#x27;bold&#x27;)
+    bars = ax.bar(counts.index, counts.values, color=colors, edgecolor='black', alpha=0.7)
+    ax.set_title(f'{title} Sentiment Distribution', fontsize=16, fontweight='bold')
+    ax.set_xlabel('Sentiment', fontsize=16, fontweight='bold')
+    ax.set_ylabel('Count', fontsize=16, fontweight='bold')
     # Add count labels on top of bars
     for bar in bars:
         ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 10,
-                str(int(bar.get_height())), ha=&#x27;center&#x27;, fontsize=12, fontweight=&#x27;bold&#x27;)
+                str(int(bar.get_height())), ha='center', fontsize=12, fontweight='bold')
 
-plt.suptitle(&#x27;VADER Sentiment Label Distribution&#x27;, fontsize=24, fontweight=&#x27;bold&#x27;)
+plt.suptitle('VADER Sentiment Label Distribution', fontsize=24, fontweight='bold')
 plt.tight_layout()
-plt.savefig(&#x27;vader_sentiment_label_distribution.png&#x27;, dpi=300)
+plt.savefig('vader_sentiment_label_distribution.png', dpi=300)
 plt.show()
 
 # Top 20 most negative reviews
-negative_vader = survey3.nsmallest(20, &#x27;combined_vader_compound&#x27;)[[
-     &#x27;summary&#x27;,&#x27;review&#x27;, 
-     &#x27;combined_vader_compound&#x27;,
-     &#x27;combined_vader_label&#x27;]]
+negative_vader = survey3.nsmallest(20, 'combined_vader_compound')[[
+     'summary','review', 
+     'combined_vader_compound',
+     'combined_vader_label']]
 
 # View with wider columns
 negative_vader.style.set_properties(
-    subset=[&#x27;review&#x27;,&#x27;summary&#x27;], **{&#x27;width&#x27;: &#x27;1200px&#x27;})
+    subset=['review','summary'], **{'width': '1200px'})
 
 # Top 20 most positive reviews
-positive_vader = survey3.nlargest(20, &#x27;combined_vader_compound&#x27;)[
-    [&#x27;summary&#x27;, &#x27;review&#x27;,
-     &#x27;combined_vader_compound&#x27;,
-     &#x27;combined_vader_label&#x27;]]
+positive_vader = survey3.nlargest(20, 'combined_vader_compound')[
+    ['summary', 'review',
+     'combined_vader_compound',
+     'combined_vader_label']]
 
 # View with wider columns
 positive_vader.style.set_properties(
-    subset=[&#x27;review&#x27;, &#x27;summary&#x27;], **{&#x27;width&#x27;: &#x27;1200px&#x27;})
+    subset=['review', 'summary'], **{'width': '1200px'})
 
 # #### Insights from Vader Sentiment Analysis
 # - The results of 20 negative and 20 positive reviews using VaderSentiment and TextBlob are slightly different, however the overall theme from findings are quite similar.
@@ -2079,15 +1992,15 @@ positive_vader.style.set_properties(
 # + gift purchases:  major purchase purpose
 # + fun and enjoyment: entertainment value is high
 # + age inclusivity
-# + educational/therapeutic: &quot;great for playing great for creative workshops&quot;
+# + educational/therapeutic: "great for playing great for creative workshops"
 # - Top 20 most negative reviews: 129 reviews: 6.6%
-# + Product quality: &quot;&quot;crappy cardboard&quot;, &quot;bad quality all made of paper&quot;, &quot;defective product&quot;: Material quality is top complaint
-# + Disappointment: &quot;a disappointing coop game&quot;
-# + Poor value: &quot;money trap&quot;, &quot;not worth the money&quot;
+# + Product quality: ""crappy cardboard", "bad quality all made of paper", "defective product": Material quality is top complaint
+# + Disappointment: "a disappointing coop game"
+# + Poor value: "money trap", "not worth the money"
 # + Not interested enough
 # -&gt; VADER captured better those reviews with stronger negativity and short summaries
-# + Review 872 scored -0.905 — the most negative in the dataset — contained multiple strong negative words (&quot;crappy&quot;, &quot;disgusting&quot;, &quot;shame&quot;) which VADER detected very accurately
-# + Some cases where miclassification might appear such as review 1766 &quot;ball of whacks very useful for pain management&quot; - might suggest a therapeutic product but flagged as &quot;negative&quot;
+# + Review 872 scored -0.905 — the most negative in the dataset — contained multiple strong negative words ("crappy", "disgusting", "shame") which VADER detected very accurately
+# + Some cases where misclassification might appear such as review 1766 "ball of whacks very useful for pain management" - might suggest a therapeutic product but flagged as "negative"
 # - Findings:
 # + Value for money is the biggest positive driver — appearing consistently across top positive reviews.
 # + Quality and disappointment are the biggest negative drivers - particularly material quality and unmet expectations.
@@ -2095,21 +2008,20 @@ positive_vader.style.set_properties(
       </details>
       <details class="full-script">
         <summary>View full R script</summary>
-        <pre><code>## LSE Data Analytics Online Career Accelerator 
-# DA301:  Advanced Analytics for Organisational Impact
+        <pre><code># Turtle Games: exploratory analysis and multiple linear regression in R
+# Author: Lan Ngoc Mau
+# Tools: R (tidyverse, ggplot2, plotly, skimr, DataExplorer, psych, moments, car)
+#
+# Part 5  Exploratory analysis: how do loyalty points relate to income,
+#         spending score, age, gender and education?
+# Part 6  Multiple linear regression to predict loyalty points, with
+#         normality checks, multicollinearity (VIF) and model diagnostics.
+#
+# Data file expected in the working directory (not included in this repo):
+#   turtle_reviews.csv
 
-###############################################################################
-
-# Assignment 5 scenario
-## Turtle Games&#x27;s sales department has historically preferred to use R when performing 
-## sales analyses due to existing workflow systems. As you&#x27;re able to perform data analysis 
-## in R, you will perform exploratory data analysis and present your findings by utilising 
-## basic statistics and plots. You&#x27;ll explore and prepare the data set to analyse sales per 
-## product. The sales department is hoping to use the findings of this exploratory analysis 
-## to inform changes and improvements in the team. (Note that you will use basic summary 
-## statistics in Module 5 and will continue to go into more detail with descriptive 
-## statistics in Module 6.)
-
+################################################################################
+# Part 5: Exploratory data analysis
 ################################################################################
 
 ##  Import all the required libraries for the analysis and view the data. 
@@ -2118,23 +2030,15 @@ library(skimr)
 library(scales)
 library(ggplot2)
 library(DataExplorer)
-## 4. Load and explore the data.
-setwd(&#x27;/Users/lanngoc/Documents/Study/LSE Data Analytics Career Accelerator/Course 3/LSE_DA301_assignment_files_new&#x27;)
-review &lt;- read.csv(file.choose(), header=TRUE)
-##    - View the head the data.
+## Load and explore the data.
+review &lt;- read.csv('turtle_reviews.csv', header = TRUE)
+## View the first rows of the data.
 head(review)
-## Perform exploratory data analysis by creating tables and visualisations to better understand 
-##      groupings and different perspectives into customer behaviour and specifically how loyalty 
-##      points are accumulated. Example questions could include:
-##    - Can you comment on distributions, patterns or outliers based on the visual exploration of the data?
-##    - Are there any insights based on the basic observations that may require further investigation?
-##    - Are there any groupings that may be useful in gaining deeper insights into customer behaviour?
-##    - Are there any specific patterns that you want to investigate
-## Create
-##    - Create scatterplots, histograms, and boxplots to visually explore the loyalty_points data.
+## Explore how loyalty points relate to income, spending score and demographics
+## with scatterplots, histograms and boxplots.
 # View the columns of dataframe
 colnames(review)
-# Change columns&#x27; name
+# Change columns' name
 review &lt;- review %&gt;% rename(annual_income = annual_income..k..,
                             customer_score = customer_score..1.100.)
 # View the columns name after the change
@@ -2144,25 +2048,25 @@ summary(review)
 ## Create scatterplot to understand relationship between loyalty_points and annual income
 plot1 &lt;- ggplot(data = review,
        mapping = aes(x = loyalty_points, y = annual_income)) +
-  geom_point(alpha = 0.5, size = 1.5, color = &#x27;orange&#x27;) +
-  geom_smooth(method = &#x27;lm&#x27;, se = FALSE, size = 1.5) + 
+  geom_point(alpha = 0.5, size = 1.5, color = 'orange') +
+  geom_smooth(method = 'lm', se = FALSE, size = 1.5) + 
   scale_x_continuous(breaks = seq(0, 8000, 2000)) +
   scale_y_continuous(breaks = seq(0, 120, 20),
-                     labels = label_number(suffix = &quot;k£&quot;)) +
-  labs(title = &quot;Relationship between Annual Income and Loyalty Points&quot;,
-       subtitle = &quot;Customers with more loyalty points tend to have bigger annual income&quot; ,
+                     labels = label_number(suffix = "k£")) +
+  labs(title = "Relationship between Annual Income and Loyalty Points",
+       subtitle = "Customers with more loyalty points tend to have bigger annual income" ,
        #  Add labels to labs function.
-       caption = &quot;Source: Turtle Games Sales Data&quot;,
-       x = &quot;Loyalty Points&quot;,
-       y = &quot;Annual Income of Customers (k£)&quot;) +
+       caption = "Source: Turtle Games Sales Data",
+       x = "Loyalty Points",
+       y = "Annual Income of Customers (k£)") +
   
   # Add a theme layer. 
   theme_bw() + 
-  theme(plot.title = element_text(face = &quot;bold&quot;),
-        plot.subtitle = element_text(face = &quot;italic&quot;),
-        plot.caption = element_text (face= &#x27;italic&#x27;),
-        axis.title.x = element_text( face= &#x27;bold&#x27;),
-        axis.title.y = element_text( face= &#x27;bold&#x27;))
+  theme(plot.title = element_text(face = "bold"),
+        plot.subtitle = element_text(face = "italic"),
+        plot.caption = element_text (face= 'italic'),
+        axis.title.x = element_text( face= 'bold'),
+        axis.title.y = element_text( face= 'bold'))
   # Adding interactive visualisations 
 library(plotly)
 ggplotly(plot1)
@@ -2171,28 +2075,28 @@ ggplotly(plot1)
 plot2 &lt;- ggplot(data = review,
        mapping = aes(x = loyalty_points, y = annual_income, color = gender)) +
   geom_point(alpha = 0.5, size = 1.5) +
-  geom_smooth(method = &#x27;lm&#x27;, se = FALSE, size = 1.5) + 
+  geom_smooth(method = 'lm', se = FALSE, size = 1.5) + 
   scale_x_continuous(breaks = seq(0, 8000, 2000)) +
   scale_y_continuous(breaks = seq(0, 120, 20),
-                     labels = label_number(suffix = &quot;k£&quot;)) +
-  scale_color_manual(values = c( Male = &#x27;#00BFC4&#x27;, Female = &#x27;#F8766D&#x27;), labels = c(&#x27;Male&#x27;, &#x27;Female&#x27;)) +
+                     labels = label_number(suffix = "k£")) +
+  scale_color_manual(values = c( Male = '#00BFC4', Female = '#F8766D'), labels = c('Male', 'Female')) +
   facet_wrap(~gender)+
-  labs(title = &quot;Relationship between Annual Income and Loyalty Points based on Gender&quot;,
-       subtitle = &quot;Higher Loyalty Points are associated with greater Annual Income - a consistent pattern for both genders&quot;,
+  labs(title = "Relationship between Annual Income and Loyalty Points based on Gender",
+       subtitle = "Higher Loyalty Points are associated with greater Annual Income - a consistent pattern for both genders",
        #  Add labels to labs function.
-       caption = &quot;Source: Turtle Games Sales Data&quot;,
-       x = &quot;Loyalty Points&quot;,
-       y = &quot;Annual Income of Customers (k£)&quot;,
-       color = &quot;Gender&quot;) +
+       caption = "Source: Turtle Games Sales Data",
+       x = "Loyalty Points",
+       y = "Annual Income of Customers (k£)",
+       color = "Gender") +
   
   # Add a theme layer. 
   theme_bw() + 
-  theme(plot.title = element_text(face = &quot;bold&quot;),
-        plot.subtitle = element_text(face = &quot;italic&quot;),
-        plot.caption = element_text (face= &#x27;italic&#x27;),
-        axis.title.x = element_text( face= &#x27;bold&#x27;),
-        axis.title.y = element_text( face= &#x27;bold&#x27;),
-        strip.text = element_text(face = &quot;bold&quot;))
+  theme(plot.title = element_text(face = "bold"),
+        plot.subtitle = element_text(face = "italic"),
+        plot.caption = element_text (face= 'italic'),
+        axis.title.x = element_text( face= 'bold'),
+        axis.title.y = element_text( face= 'bold'),
+        strip.text = element_text(face = "bold"))
 
 ## Adding visualisations
 ggplotly(plot2)
@@ -2203,34 +2107,34 @@ levels(factor(review$education))
 plot3 &lt;- ggplot(data = review,
        mapping = aes(x = loyalty_points, y = annual_income, color = education)) +
   geom_point(alpha = 0.5, size = 1.5) +
-  geom_smooth(method = &#x27;lm&#x27;, se = FALSE, size = 1.5) + 
+  geom_smooth(method = 'lm', se = FALSE, size = 1.5) + 
   scale_x_continuous(breaks = seq(0, 8000, 2000)) +
   scale_y_continuous(breaks = seq(0, 120, 20),
-                     labels = label_number(suffix = &quot;k£&quot;)) +
-  scale_color_manual(values = c( graduate = &#x27;#00BFC4&#x27;, postgraduate = &#x27;#F8766D&#x27;, diploma = &#x27;#C77CFF&#x27;, Basic = &#x27;#7CAE00&#x27;, PhD = &#x27;#00B0F6&#x27;),
-                     labels = c(graduate = &#x27;Graduate&#x27;, 
-                                PhD = &#x27;PhD&#x27;, 
-                                diploma = &#x27;Diploma&#x27;, 
-                                postgraduate = &#x27;Postgraduate&#x27;, 
-                                Basic = &#x27;Basic&#x27;))  +
-  facet_wrap(~education,labeller = as_labeller(c(graduate = &quot;Graduate&quot;, PhD= &quot;PhD&quot;,
-                                                 diploma = &quot;Diploma&quot;, postgraduate = &quot;Postgraduate&quot;, Basic = &quot;Basic&quot;))) +
-  labs(title = &quot;Relationship between Annual Income and Loyalty Points based on Education Level&quot;,
-       subtitle = &quot;Loyalty Points rise with Annual Income across all education levels with the majority of customers are university-educated&quot;,
+                     labels = label_number(suffix = "k£")) +
+  scale_color_manual(values = c( graduate = '#00BFC4', postgraduate = '#F8766D', diploma = '#C77CFF', Basic = '#7CAE00', PhD = '#00B0F6'),
+                     labels = c(graduate = 'Graduate', 
+                                PhD = 'PhD', 
+                                diploma = 'Diploma', 
+                                postgraduate = 'Postgraduate', 
+                                Basic = 'Basic'))  +
+  facet_wrap(~education,labeller = as_labeller(c(graduate = "Graduate", PhD= "PhD",
+                                                 diploma = "Diploma", postgraduate = "Postgraduate", Basic = "Basic"))) +
+  labs(title = "Relationship between Annual Income and Loyalty Points based on Education Level",
+       subtitle = "Loyalty Points rise with Annual Income across all education levels with the majority of customers are university-educated",
        #  Add labels to labs function.
-       caption = &quot;Source: Turtle Games Sales Data&quot;,
-       x = &quot;Loyalty Points&quot;,
-       y = &quot;Annual Income of Customers (k£)&quot;,
-       color = &quot;Education Level&quot;) +
+       caption = "Source: Turtle Games Sales Data",
+       x = "Loyalty Points",
+       y = "Annual Income of Customers (k£)",
+       color = "Education Level") +
   
   # Add a theme layer. 
   theme_bw() + 
-  theme(plot.title = element_text(face = &quot;bold&quot;),
-        plot.subtitle = element_text(face = &quot;italic&quot;),
-        plot.caption = element_text (face= &#x27;italic&#x27;),
-        axis.title.x = element_text( face= &#x27;bold&#x27;),
-        axis.title.y = element_text( face= &#x27;bold&#x27;),
-        strip.text = element_text(face = &quot;bold&quot;))
+  theme(plot.title = element_text(face = "bold"),
+        plot.subtitle = element_text(face = "italic"),
+        plot.caption = element_text (face= 'italic'),
+        axis.title.x = element_text( face= 'bold'),
+        axis.title.y = element_text( face= 'bold'),
+        strip.text = element_text(face = "bold"))
 
 # Adding interactive visualisations
 ggplotly(plot3)
@@ -2238,24 +2142,24 @@ ggplotly(plot3)
 ## Create scatterplot to understand relationship between loyalty_points and customer score
 plot4 &lt;- ggplot(data = review,
        mapping = aes(x = loyalty_points, y = customer_score)) +
-  geom_point(alpha = 0.5, size = 1.5, color = &#x27;darkgreen&#x27;) +
-  geom_smooth(method = &#x27;lm&#x27;, se = FALSE, size = 1.5) + 
+  geom_point(alpha = 0.5, size = 1.5, color = 'darkgreen') +
+  geom_smooth(method = 'lm', se = FALSE, size = 1.5) + 
   scale_x_continuous(breaks = seq(0, 8000, 2000)) +
   scale_y_continuous(breaks = seq(0, 120, 20)) +
-  labs(title = &quot;Relationship between Customer Score and Loyalty Points&quot;,
-       subtitle = &quot;Customer Score and Loyalty Points show a strong positive correlation, however lower-engagement customers show inconsistent scores&quot; ,
+  labs(title = "Relationship between Customer Score and Loyalty Points",
+       subtitle = "Customer Score and Loyalty Points show a strong positive correlation, however lower-engagement customers show inconsistent scores" ,
        #  Add labels to labs function.
-       caption = &quot;Source: Turtle Games Sales Data&quot;,
-       x = &quot;Loyalty Points&quot;,
-       y = &quot;Customer Score&quot;) +
+       caption = "Source: Turtle Games Sales Data",
+       x = "Loyalty Points",
+       y = "Customer Score") +
 
   # Add a theme layer. 
   theme_bw() + 
-  theme(plot.title = element_text(face = &quot;bold&quot;),
-        plot.subtitle = element_text(face = &quot;italic&quot;),
-        plot.caption = element_text (face= &#x27;italic&#x27;),
-        axis.title.x = element_text( face= &#x27;bold&#x27;),
-        axis.title.y = element_text( face= &#x27;bold&#x27;))
+  theme(plot.title = element_text(face = "bold"),
+        plot.subtitle = element_text(face = "italic"),
+        plot.caption = element_text (face= 'italic'),
+        axis.title.x = element_text( face= 'bold'),
+        axis.title.y = element_text( face= 'bold'))
 # Adding interactive visualisations
 ggplotly(plot4)
 
@@ -2263,98 +2167,96 @@ ggplotly(plot4)
 plot5 &lt;- ggplot(data = review,
        mapping = aes(x = loyalty_points, y = customer_score, color = gender)) +
   geom_point(alpha = 0.5, size = 1.5) +
-  geom_smooth(method = &#x27;lm&#x27;, se = FALSE, size = 1.5) + 
+  geom_smooth(method = 'lm', se = FALSE, size = 1.5) + 
   scale_x_continuous(breaks = seq(0, 8000, 2000)) +
   scale_y_continuous(breaks = seq(0, 100, 20))+
-  scale_color_manual(values = c( Male = &#x27;#5C6BC0&#x27;, Female = &#x27;#FF8A65&#x27;), labels = c(&#x27;Male&#x27;, &#x27;Female&#x27;)) +
+  scale_color_manual(values = c( Male = '#5C6BC0', Female = '#FF8A65'), labels = c('Male', 'Female')) +
   facet_wrap(~gender)+
-  labs(title = &quot;Relationship between Customer Score and Loyalty Points based on Gender&quot;,
-       subtitle = &quot;Loyalty Points rise with Customer Score similarly for both genders&quot;,
+  labs(title = "Relationship between Customer Score and Loyalty Points based on Gender",
+       subtitle = "Loyalty Points rise with Customer Score similarly for both genders",
        #  Add labels to labs function.
-       caption = &quot;Source: Turtle Games Sales Data&quot;,
-       x = &quot;Loyalty Points&quot;,
-       y = &quot;Customer Score&quot;,
-       color = &quot;Gender&quot;) +
+       caption = "Source: Turtle Games Sales Data",
+       x = "Loyalty Points",
+       y = "Customer Score",
+       color = "Gender") +
   
   # Add a theme layer. 
   theme_bw() + 
-  theme(plot.title = element_text(face = &quot;bold&quot;),
-        plot.subtitle = element_text(face = &quot;italic&quot;),
-        plot.caption = element_text (face= &#x27;italic&#x27;),
-        axis.title.x = element_text( face= &#x27;bold&#x27;),
-        axis.title.y = element_text( face= &#x27;bold&#x27;),
-        strip.text = element_text(face = &quot;bold&quot;))
+  theme(plot.title = element_text(face = "bold"),
+        plot.subtitle = element_text(face = "italic"),
+        plot.caption = element_text (face= 'italic'),
+        axis.title.x = element_text( face= 'bold'),
+        axis.title.y = element_text( face= 'bold'),
+        strip.text = element_text(face = "bold"))
 ## Adding interactive visualisations
 ggplotly(plot5)
 
 ## Create histogram to understand loyalty points by gender
 plot6 &lt;- ggplot(data = review, mapping = aes(x = loyalty_points, fill = gender)) +
-  geom_histogram(binwidth = 500, alpha = 0.6, position = &quot;identity&quot;) +
-  scale_fill_manual(values = c(Male = &#x27;#5C6BC0&#x27;, Female = &#x27;#FF8A65&#x27;)) +
+  geom_histogram(binwidth = 500, alpha = 0.6, position = "identity") +
+  scale_fill_manual(values = c(Male = '#5C6BC0', Female = '#FF8A65')) +
   facet_wrap(~gender) +
-  labs(title = &quot;Distribution of Loyalty Points by Gender&quot;,
-       subtitle = &quot;Loyalty points are heavily concentrated at lower values for both genders&quot;,
-       x = &quot;Loyalty Points&quot;, y = &quot;Number of Customers&quot;, fill = &quot;Gender&quot;,
-       caption = &quot;Source: Turtle Games Sales Data&quot;) +
+  labs(title = "Distribution of Loyalty Points by Gender",
+       subtitle = "Loyalty points are heavily concentrated at lower values for both genders",
+       x = "Loyalty Points", y = "Number of Customers", fill = "Gender",
+       caption = "Source: Turtle Games Sales Data") +
   theme_bw() +
-  theme(plot.title = element_text(face = &quot;bold&quot;),
-        plot.subtitle = element_text(face = &quot;italic&quot;),
-        strip.text = element_text(face = &quot;bold&quot;),
-        plot.caption = element_text (face= &#x27;italic&#x27;),
-        axis.title.x = element_text( face= &#x27;bold&#x27;),
-        axis.title.y = element_text( face= &#x27;bold&#x27;))
+  theme(plot.title = element_text(face = "bold"),
+        plot.subtitle = element_text(face = "italic"),
+        strip.text = element_text(face = "bold"),
+        plot.caption = element_text (face= 'italic'),
+        axis.title.x = element_text( face= 'bold'),
+        axis.title.y = element_text( face= 'bold'))
 
 # Adding interactive visualisations
 ggplotly(plot6)
 
-
 ## Create histogram to understand loyalty points by education
 plot7 &lt;- ggplot(data = review, mapping = aes(x = loyalty_points, fill = education)) +
-  geom_histogram(binwidth = 500, alpha = 0.6, position = &quot;identity&quot;) +
-  scale_fill_manual(values = c(graduate = &#x27;#00BFC4&#x27;, PhD = &#x27;#F8766D&#x27;, diploma = &#x27;#C77CFF&#x27;, 
-                               postgraduate = &#x27;#7CAE00&#x27;, Basic = &#x27;#00B0F6&#x27;),
-                    labels = c(graduate = &#x27;Graduate&#x27;, PhD = &#x27;PhD&#x27;, diploma = &#x27;Diploma&#x27;,
-                               postgraduate = &#x27;Postgraduate&#x27;, Basic = &#x27;Basic&#x27;)) +
-  facet_wrap(~education, labeller = as_labeller(c(graduate = &quot;Graduate&quot;, PhD = &quot;PhD&quot;,
-                                                  diploma = &quot;Diploma&quot;, postgraduate = &quot;Postgraduate&quot;, 
-                                                  Basic = &quot;Basic&quot;))) +
-  labs(title = &quot;Distribution of Loyalty Points by Education Level&quot;,
-       subtitle = &quot;Graduate customers make up the majority number of overall customers&quot;,
-       x = &quot;Loyalty Points&quot;, y = &quot;Number of Customers&quot;, fill = &quot;Education Level&quot;,
-       caption = &quot;Source: Turtle Games Sales Data&quot;) +
+  geom_histogram(binwidth = 500, alpha = 0.6, position = "identity") +
+  scale_fill_manual(values = c(graduate = '#00BFC4', PhD = '#F8766D', diploma = '#C77CFF', 
+                               postgraduate = '#7CAE00', Basic = '#00B0F6'),
+                    labels = c(graduate = 'Graduate', PhD = 'PhD', diploma = 'Diploma',
+                               postgraduate = 'Postgraduate', Basic = 'Basic')) +
+  facet_wrap(~education, labeller = as_labeller(c(graduate = "Graduate", PhD = "PhD",
+                                                  diploma = "Diploma", postgraduate = "Postgraduate", 
+                                                  Basic = "Basic"))) +
+  labs(title = "Distribution of Loyalty Points by Education Level",
+       subtitle = "Graduate customers make up the majority number of overall customers",
+       x = "Loyalty Points", y = "Number of Customers", fill = "Education Level",
+       caption = "Source: Turtle Games Sales Data") +
   theme_bw() +
-  theme(plot.title = element_text(face = &quot;bold&quot;),
-        plot.subtitle = element_text(face = &quot;italic&quot;),
-        strip.text = element_text(face = &quot;bold&quot;),
-        plot.caption = element_text(face = &#x27;italic&#x27;),
-        axis.title.x = element_text(face = &#x27;bold&#x27;),
-        axis.title.y = element_text(face = &#x27;bold&#x27;))
+  theme(plot.title = element_text(face = "bold"),
+        plot.subtitle = element_text(face = "italic"),
+        strip.text = element_text(face = "bold"),
+        plot.caption = element_text(face = 'italic'),
+        axis.title.x = element_text(face = 'bold'),
+        axis.title.y = element_text(face = 'bold'))
 
 # Adding interactive visualistions
 ggplotly(plot7)
 
-
 ## Understanding the age range in customer base and their education level:
 plot8 &lt;- ggplot(data = review, mapping = aes(x = education, y = age, fill = education)) +
   geom_boxplot(alpha = 0.6) +
-  scale_fill_manual(values = c(graduate = &#x27;#00BFC4&#x27;, PhD = &#x27;#F8766D&#x27;, diploma = &#x27;#C77CFF&#x27;, 
-                               postgraduate = &#x27;#7CAE00&#x27;, Basic = &#x27;#00B0F6&#x27;),
-                    labels = c(graduate = &#x27;Graduate&#x27;, PhD = &#x27;PhD&#x27;, diploma = &#x27;Diploma&#x27;,
-                               postgraduate = &#x27;Postgraduate&#x27;, Basic = &#x27;Basic&#x27;)) +
-  scale_x_discrete(labels = c(Basic = &quot;Basic&quot;, diploma = &quot;Diploma&quot;, graduate = &quot;Graduate&quot;, 
-                              PhD = &quot;PhD&quot;, postgraduate = &quot;Postgraduate&quot;))+ 
+  scale_fill_manual(values = c(graduate = '#00BFC4', PhD = '#F8766D', diploma = '#C77CFF', 
+                               postgraduate = '#7CAE00', Basic = '#00B0F6'),
+                    labels = c(graduate = 'Graduate', PhD = 'PhD', diploma = 'Diploma',
+                               postgraduate = 'Postgraduate', Basic = 'Basic')) +
+  scale_x_discrete(labels = c(Basic = "Basic", diploma = "Diploma", graduate = "Graduate", 
+                              PhD = "PhD", postgraduate = "Postgraduate"))+ 
   scale_y_continuous(breaks = seq(0, 70, 10)) + 
-  labs(title = &quot;Distribution of Age by Education Level&quot;,
-       sustitle = &quot;Customers of Turtle Games are mostly above 30s&quot;,
-       x = &quot;Education Level&quot;, y = &quot;Age&quot;, fill = &quot;Education Level&quot;,
-       caption = &quot;Source: Turtle Games Sales Data&quot;) +
+  labs(title = "Distribution of Age by Education Level",
+       sustitle = "Customers of Turtle Games are mostly above 30s",
+       x = "Education Level", y = "Age", fill = "Education Level",
+       caption = "Source: Turtle Games Sales Data") +
   theme_bw() +
-  theme(plot.title = element_text(face = &quot;bold&quot;),
-        plot.subtitle = element_text(face = &quot;italic&quot;),
-        strip.text = element_text(face = &quot;bold&quot;),
-        plot.caption = element_text(face = &#x27;italic&#x27;),
-        axis.title.x = element_text(face = &#x27;bold&#x27;),
-        axis.title.y = element_text(face = &#x27;bold&#x27;))
+  theme(plot.title = element_text(face = "bold"),
+        plot.subtitle = element_text(face = "italic"),
+        strip.text = element_text(face = "bold"),
+        plot.caption = element_text(face = 'italic'),
+        axis.title.x = element_text(face = 'bold'),
+        axis.title.y = element_text(face = 'bold'))
 
 # Adding interactive visualisations
 ggplotly(plot8)
@@ -2362,36 +2264,30 @@ ggplotly(plot8)
 ## Understanding the relationship between income and gender:
 plot9 &lt;- ggplot(data = review, mapping = aes(x = gender, y = annual_income, fill = gender)) +
   geom_boxplot(alpha = 0.6) +
-  scale_y_continuous(labels = label_number( suffix = &quot;k£&quot;)) +
-  scale_fill_manual(values = c(Male = &#x27;#5C6BC0&#x27;, Female = &#x27;#FF8A65&#x27;)) +
-  labs(title = &quot;Distribution of Annual Income by Gender&quot;,
-       subtitle = &quot;Gender does not reflect strongly the differentiator of annual income&quot;,
-       x = &quot;Gender&quot;, y = &quot;Annual Income (k£)&quot;, fill = &quot;Gender&quot;,
-       caption = &quot;Source: Turtle Games Sales Data&quot;) +
+  scale_y_continuous(labels = label_number( suffix = "k£")) +
+  scale_fill_manual(values = c(Male = '#5C6BC0', Female = '#FF8A65')) +
+  labs(title = "Distribution of Annual Income by Gender",
+       subtitle = "Gender does not reflect strongly the differentiator of annual income",
+       x = "Gender", y = "Annual Income (k£)", fill = "Gender",
+       caption = "Source: Turtle Games Sales Data") +
   theme_bw() +
-  theme(plot.title = element_text(face = &quot;bold&quot;),
-        plot.subtitle = element_text(face = &quot;italic&quot;),
-        strip.text = element_text(face = &quot;bold&quot;),
-        plot.caption = element_text(face = &#x27;italic&#x27;),
-        axis.title.x = element_text(face = &#x27;bold&#x27;),
-        axis.title.y = element_text(face = &#x27;bold&#x27;))
+  theme(plot.title = element_text(face = "bold"),
+        plot.subtitle = element_text(face = "italic"),
+        strip.text = element_text(face = "bold"),
+        plot.caption = element_text(face = 'italic'),
+        axis.title.x = element_text(face = 'bold'),
+        axis.title.y = element_text(face = 'bold'))
 
 # Adding interactive visualisations
 ggplotly(plot9)
 
-
-##    - Select appropriate visualisations to communicate relevant findings and insights to the business.
-## 7. Note your observations and recommendations to the technical and business users.
-
-
 ###############################################################################
 
-# Your code here.
 # 1. Demographic Patterns:
 
-# - Gender shows minimal differentiation: by plotting and understanding the relationsip of 
+# - Gender shows minimal differentiation: by plotting and understanding the relationship of 
 # annual income/customer score to loyalty points
-# it is suggested that genders barely has any influence on annual income/customer score/loyalty points
+# it is suggested that gender barely has any influence on annual income/customer score/loyalty points
 # -&gt; This is also the same conclusion in previous findings about what factors might need to consider
 # in understanding how customer accumulate loyalty points.
 # - Majority of customers are above 30s, rarely under 30s, with graduate customers made up the largest segment.
@@ -2413,86 +2309,59 @@ ggplotly(plot9)
 # 3.3 Most customers have at least university-degree
 # 3.4 A noticeable amount of customers, across all segments, sit in the lower loyalty point range (0-2,000 points) 
 
-
 # 4. Recommendations
 # 4.1 Using the reviews and feedback received from customers, understanding about
 # what needs to be improved and suggested to move customers from low-engagement tier (0-2000)
 # to higher tiers
 
-# 4.2 Should be targetting more between customers score and annual income relationship
+# 4.2 Should be targeting more between customers score and annual income relationship
 # to loyalty points given their consistent correlation
 
-
-
-###############################################################################
 ###############################################################################
 
-# Assignment 6 scenario
-
-## In Module 5, you were requested to redo components of the analysis using Turtle Games&#x27;s preferred 
-## language, R, in order to make it easier for them to implement your analysis internally. As a final 
-## task the team asked you to perform a statistical analysis and create a multiple linear regression 
-## model using R to predict loyalty points using the available features in a multiple linear model. 
-## They did not prescribe which features to use and you can therefore use insights from previous modules 
-## as well as your statistical analysis to make recommendations regarding suitability of this model type,
-## the specifics of the model you created and alternative solutions. As a final task they also requested 
-## your observations and recommendations regarding the current loyalty programme and how this could be 
-## improved. 
-
 ################################################################################
-
-## Assignment 6 objective
-## You need to investigate customer behaviour and the effectiveness of the current loyalty program based 
-## on the work completed in modules 1-5 as well as the statistical analysis and modelling efforts of module 6.
-##  - Can we predict loyalty points given the existing features using a relatively simple MLR model?
-##  - Do you have confidence in the model results (Goodness of fit evaluation)
-##  - Where should the business focus their marketing efforts?
-##  - How could the loyalty program be improved?
-##  - How could the analysis be improved?
-
+# Part 6: Multiple linear regression to predict loyalty points
+# Questions:
+#  - Can a relatively simple MLR model predict loyalty points from the existing features?
+#  - How good is the fit, and can the results be trusted?
+#  - Where should the business focus its marketing, and how could the loyalty programme improve?
 ################################################################################
-
-## Assignment 6 assignment: Making recommendations to the business.
-
-## 1. Continue with your R script in RStudio from Assignment Activity 5: Cleaning, manipulating, and 
-##     visualising the data.
 
 # Load the dataframe
 head(review)
 
-## 2. Load and explore the data, and continue to use the data frame you prepared in Module 5.
+## Continue with the data frame prepared in Part 5.
 dim(review)
 
-## 3. Perform a statistical analysis and comment on the descriptive statistics in the context of the 
-##     review of how customers accumulate loyalty points.
+## Descriptive statistics: how are loyalty points distributed?
 summary(review)
 dev.off()
 # Check the Normal Distribution of loyalty points
-# Specify the qnorm fucntion
+# Specify the qnorm function
 # Draw a qqplot using the loyalty_points
 qqnorm(review$loyalty_points,
-       col= &#x27;darkgreen&#x27;,
-       main = &quot;Normal Distribution of Loyalty Points&quot;,
-       xlab= expression(italic(&quot;Theoretical Quantiles&quot;)),
-       ylab= expression(italic(&#x27;Customer Loyalty Points&#x27;)))
+       col= 'darkgreen',
+       main = "Normal Distribution of Loyalty Points",
+       xlab= expression(italic("Theoretical Quantiles")),
+       ylab= expression(italic('Customer Loyalty Points')))
 
 # Add a reference line to the qqplot.
 qqline(review$loyalty_points,
-       col=&#x27;red&#x27;,
+       col='red',
        lwd=2) 
 
 # Run a Shapiro-Wilk test
 shapiro.test(review$loyalty_points)
 
 # Install required packages
-install.packages(&quot;moments&quot;)
+install.packages("moments")
 library(moments)
 
 # Specify the skewness and kurtosis functions.
 skewness(review$loyalty_points) 
 kurtosis(review$loyalty_points)
 
-##  - Comment on distributions and patterns observed in the data.
+## Distribution and patterns:
 ## Shapiro-Wilk: W = 0.843, p &lt; 2.2e-16 — strongly rejects the null hypothesis of normality (p far below 0.05). 
 ## loyalty_points is not normally distributed.
 ## Skewness = 1.46 — positive/right skew (values &gt; 1 is considered highly skewed).
@@ -2507,25 +2376,23 @@ cor(review$customer_score, review$loyalty_points)
 # Check the correlation of age vs loyalty points
 cor(review$age, review$loyalty_points)
 
-##  - Determine and justify the features to be used in a multiple linear regression model and potential
-##.    concerns and corrective actions.
+## Feature selection, concerns and corrective actions:
 ## The correlation score between annual income and loyalty points is 0.61 -&gt; good feature of linear regression model
 ## The correlation score between customer score and loyalty points is 0.67 -&gt; good feature of linear regression model
-## The correlation score between age and loyalty points is -0.04 -&gt; no correlation, this feature should not be inclued in the linear regression model
+## The correlation score between age and loyalty points is -0.04 -&gt; no correlation, this feature should not be included in the linear regression model
 ## Above findings also suggest gender is not a meaningful feature to be used for model.
 ## Concerns and corrective actions:
 ### Loyalty points is not normally distributed -&gt; worth investigating
-### Check for possible multicollineary in case exist between customer score and annual income
+### Check for possible multicollinearity in case exist between customer score and annual income
 
-## 4. Create a Multiple linear regression model using your selected (numeric) features.
+## Multiple linear regression models
 
 # Visualise the correlation
 # Install the psych package.
-install.packages(&#x27;psych&#x27;)
+install.packages('psych')
 
 # Import the psych package.
 library(psych)
-
 
 # Create a linear regression model between annual income and loyalty points
 # specify the lm function and the variables
@@ -2560,7 +2427,7 @@ model5 = lm(loyalty_points~customer_score + annual_income + education+ gender + 
 # Print the summary statistics.
 summary(model5)
 
-##  - Evaluate the goodness of fit and interpret the model summary statistics.
+## Goodness of fit:
 ## Result of R-squared in different models:
 ## + annual_income only: model1 - 0.3795
 ## + customer_score only: model2 - 0.452
@@ -2575,7 +2442,6 @@ summary(model5)
 ## explainable variance (adding other variables such as age, gender or education
 ## did not generate much difference in the prediction power)
 
-
 # Check the summary of model3
 summary(model3)
 
@@ -2585,7 +2451,7 @@ par(mfrow= c(2,2))
 plot(model3)
 
 # Check multicollinearity
-install.packages(&quot;car&quot;)
+install.packages("car")
 library(car)
 vif(model3)
 
@@ -2604,7 +2470,7 @@ colnames(review_test)
 
 # Create a new object and specify the predict function.
 predictTest = predict(model3, newdata=review_test,
-                      interval=&#x27;confidence&#x27;)
+                      interval='confidence')
 
 # Print the object
 predictTest
@@ -2631,31 +2497,29 @@ plot(model3)
 ##  Create a visual demonstration of the model
 
 ggplot(comparison, aes(x = actual_loyalty_points, y = fit)) +
-  geom_point(alpha = 0.4, color = &#x27;darkgreen&#x27;) +
-  geom_abline(intercept = 0, slope = 1, color = &#x27;coral&#x27;) +
-  labs(title = &quot;Predicted vs Actual Loyalty Points&quot;, 
-       subtitle = &quot; Model predicted Loyalty Points using Annual Income and Customer Score&quot;,
-       caption = &quot; Variance in Loyalty Points can be explained around 83% by using Annual Income and Customer Score &quot;,
-       x = &quot;Actual Loyalty Points&quot;,
-       y = &quot;Predicted Loyalty Points&quot;) +
+  geom_point(alpha = 0.4, color = 'darkgreen') +
+  geom_abline(intercept = 0, slope = 1, color = 'coral') +
+  labs(title = "Predicted vs Actual Loyalty Points", 
+       subtitle = " Model predicted Loyalty Points using Annual Income and Customer Score",
+       caption = " Variance in Loyalty Points can be explained around 83% by using Annual Income and Customer Score ",
+       x = "Actual Loyalty Points",
+       y = "Predicted Loyalty Points") +
       
   # Add a theme layer. 
        theme_bw() + 
-         theme(plot.title = element_text(face = &quot;bold&quot;),
-               plot.subtitle = element_text(face = &quot;italic&quot;),
-               plot.caption = element_text (face= &#x27;italic&#x27;),
-               axis.title.x = element_text( face= &#x27;bold&#x27;),
-               axis.title.y = element_text( face= &#x27;bold&#x27;))
+         theme(plot.title = element_text(face = "bold"),
+               plot.subtitle = element_text(face = "italic"),
+               plot.caption = element_text (face= 'italic'),
+               axis.title.x = element_text( face= 'bold'),
+               axis.title.y = element_text( face= 'bold'))
 
-
-##  - Comment on the usefulness of the model, potential improvements and alternate suggestions that could 
-##     be considered.
+## Usefulness of the model and possible improvements:
 
 ## The mean loyalty points: 1578
 ## The range of loyalty points: 25 to 6847
-## Mean average error: 414.83/ 1578.03 = 26.3% average error
+## Mean absolute error: 414.83/ 1578.03 = 26.3% average error
 ## Root mean square error (showing how far off on average the model differs from actual values): 
-## 533.74/1578.03 = 33/*% average error
+## 533.74/1578.03 = 33.8% average error
 
 ## This could be interpreted as:
 ## - Loyalty range is huge (from 25 to 6847) 
@@ -2680,15 +2544,13 @@ ggplot(comparison, aes(x = actual_loyalty_points, y = fit)) +
 ### -&gt; Actual loyalty points were actually beyond the predicted points by the model,
 ## which means something beyond income and customer also contribute to this.
 
-
 ## Business Recommendations:
 ### 1. The model can be used for mid-tier customer forecasting/ general narratives
 ### for low-engagement and high-value customers - the model might give misleading results.
-### 2. Expand further variables beuyond current dataset for example purchsse frequency/preference/
+### 2. Expand further variables beyond current dataset for example purchase frequency/preference/
 ### or any gift program that might help the model generate higher prediction power.
 ### 3. Revisit and validate the model to see if the model might perform better once the dataset
 ### is getting bigger.
-
 
 ###############################################################################
 ###############################################################################
