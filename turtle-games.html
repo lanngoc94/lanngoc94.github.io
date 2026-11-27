@@ -756,7 +756,7 @@ plt.xlim(0)
 plt.ylim(0)
 
 # Adding more information to the plot
-plt.xlabel('Age (k£)', fontsize=14, fontweight='bold')
+plt.xlabel('Age (years)', fontsize=14, fontweight='bold')
 plt.ylabel('Loyalty_Points', fontsize=14, fontweight='bold')
 plt.title('Age vs Loyalty Points', fontsize= 18, fontweight='bold')
 
@@ -889,8 +889,8 @@ y_pred = reg.predict(X_test)
 # Scatter plot for predicted and tested value
 plt.scatter(y_test, y_pred)
 plt.xlabel("True loyalty points from test set")
-plt.ylabel("Predicted prices from trained model")
-plt.title(" Predicted vs Tested Royalty Points")
+plt.ylabel("Predicted loyalty points")
+plt.title("Predicted vs Actual Loyalty Points")
 plt.savefig('decision_tree_regression_1.png', dpi=300)
 plt.show()
 
@@ -948,8 +948,8 @@ y1_pred = reg_1.predict(X1_test)
 # Scatter plot for predicted and tested value
 plt.scatter(y1_test, y1_pred)
 plt.xlabel("True loyalty points from test set")
-plt.ylabel("Predicted prices from trained model")
-plt.title(" Predicted vs Tested Royalty Points")
+plt.ylabel("Predicted loyalty points")
+plt.title("Predicted vs Actual Loyalty Points")
 plt.savefig('decision_tree_regression_3.png', dpi=300)
 plt.show()
 
@@ -1000,8 +1000,8 @@ y2_pred = reg_2.predict(X2_test)
 # Scatter plot for predicted and tested value
 plt.scatter(y2_test, y2_pred)
 plt.xlabel("True loyalty points from test set")
-plt.ylabel("Predicted prices from trained model")
-plt.title(" Predicted vs Tested Royalty Points")
+plt.ylabel("Predicted loyalty points")
+plt.title("Predicted vs Actual Loyalty Points")
 plt.savefig('decision_tree_regression_5.png', dpi=300)
 plt.show()
 
@@ -1074,8 +1074,8 @@ y_pred_final = reg.predict(X_test_final)
 # Scatter plot for predicted and tested value
 plt.scatter(y_test_final, y_pred_final)
 plt.xlabel("True loyalty points from test set")
-plt.ylabel("Predicted prices from trained model")
-plt.title(" Predicted vs Tested Royalty Points")
+plt.ylabel("Predicted loyalty points")
+plt.title("Predicted vs Actual Loyalty Points")
 plt.savefig('decision_tree_regression_3.png', dpi=300)
 plt.show()
 
