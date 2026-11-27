@@ -331,6 +331,14 @@
   .insight-theme{font-family:'Fraunces', serif; font-size:1.05rem; font-weight:600; color:var(--ink); margin:18px 0 8px;}
   .insight-theme:first-of-type{margin-top:6px;}
   .insight-theme .n{font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--warm); margin-right:6px;}
+  .more-insights{margin-top:14px; border-top:1px solid var(--line); padding-top:6px;}
+  .more-insights > summary{cursor:pointer; list-style:none; display:inline-flex; align-items:center; gap:8px; min-height:44px; font-family:'IBM Plex Mono', monospace; font-size:12.5px; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--accent);}
+  .more-insights > summary::-webkit-details-marker{display:none;}
+  .more-insights > summary::before{content:'+'; font-size:16px; width:16px; text-align:center;}
+  .more-insights[open] > summary::before{content:'\2212';}
+  .more-insights > summary:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:4px;}
+  .more-insights .when-open, .more-insights[open] .when-closed{display:none;}
+  .more-insights[open] .when-open{display:inline;}
 </style>
 </head>
 <body>
@@ -363,42 +371,49 @@
       </div>
       <div class="case-block">
         <p class="case-label">Key Insights</p>
-        <h3 class="insight-theme"><span class="n">01</span>National demand: a clear seasonal cycle</h3>
-        <ul class="case-list">
-          <li><b>Peak in November:</b> November 2021 was the busiest month (30.4M appointments), just ahead of October (30.3M). The quietest were August 2021 and April 2022, at about 23.9M each.</li>
-          <li><b>Same shape everywhere:</b> most appointment categories rose from August to a November peak, dropped sharply in December, climbed again to March, then fell sharply in April 2022.</li>
-          <li><b>Never back to peak:</b> in November 2021 daily appointments reached about 90% of the NHS planning guideline of 1.2M a day. Usage never returned to that level, and April 2022 was the low point.</li>
-          <li><b>Scale:</b> the data covers 106 sub-ICB locations. The five busiest were North West London (6.98M), North East London (5.34M), Kent and Medway (5.21M), Hampshire and Isle of Wight (4.71M) and South East London (4.36M).</li>
-        </ul>
-        <h3 class="insight-theme"><span class="n">02</span>Where appointments concentrate</h3>
-        <ul class="case-list">
-          <li><b>Planned procedures sit in six ICBs:</b> the top 6 ICBs account for 80% of Planned Clinical Procedures nationally, so a policy change there would be felt across England.</li>
-          <li><b>One ICB drives Planned Clinics:</b> North West London accounts for almost 31% of all Planned Clinics. Checking against registered patients showed this is real, not duplicate rows: it has the largest patient base.</li>
-          <li><b>Care Home Rounds rising everywhere:</b> the only category with a steady upward trend, and spread thinly (the top ICB holds just 4.34%, the top five about 18%, across 103 ICBs). A national rise like this may reflect a change in how activity is recorded.</li>
-          <li><b>Unmapped is a big category:</b> in North West London (Jan&ndash;Jun 2022) General Practice led with 4.80M appointments, but &ldquo;Unmapped&rdquo; came second with 391K, a clear data-quality signal.</li>
-        </ul>
-        <h3 class="insight-theme"><span class="n">03</span>BOB ICB deep dive</h3>
+        <h3 class="insight-theme">Top 5 of 21 findings</h3>
         <ul class="case-list">
           <li><b>Steepest decline:</b> BOB ICB&rsquo;s 23.4% drop from November 2021 to April 2022 was the largest among the ten highest-volume ICBs, about 3 points worse than peers, whose drops averaged around 20%.</li>
-          <li><b>Lost capacity share:</b> measured against the 1.2M-a-day guideline, BOB ICB lost about 0.61% of national daily capacity, more than similar-sized peers E54000051 and E54000052 (0.54% and 0.53%).</li>
           <li><b>Where the drop happened:</b> same-day telephone appointments fell from about 210K to 180K, same-day face-to-face from 165K to 140K, and appointments booked 2&ndash;7 days ahead fell by around 30%.</li>
-          <li><b>Different service mix:</b> BOB ICB records far fewer Planned Clinics than England (4.83% vs 9.46%) but more Planned Clinical Procedures (12.31% vs 8.68%).</li>
-          <li><b>Below the national rate:</b> BOB ICB records 4.6% fewer appointments per registered patient than the national average.</li>
-        </ul>
-        <h3 class="insight-theme"><span class="n">04</span>Supply, not demand</h3>
-        <ul class="case-list">
           <li><b>Staff capacity fell together:</b> GP appointments fell 22.8% and Other Practice Staff 25.2% between November and April, while their share of the total barely moved, so patient behaviour did not change.</li>
-          <li><b>Stable booking pattern:</b> same-day appointments held at about 46% of the total in every month, so the booking system stayed reactive by design rather than breaking down.</li>
-          <li><b>Timing points to funding:</b> the drop followed the end of the 2021&ndash;22 financial year in March, which suggests a funding effect rather than lower need. This is a hypothesis the data cannot confirm.</li>
           <li><b>Cuts may not have been needed:</b> national appointments rose again in May 2022, so reducing capacity may not suit demand over the longer term.</li>
+          <li><b>Planned procedures sit in six ICBs:</b> the top 6 ICBs account for 80% of Planned Clinical Procedures nationally, so a policy change there would be felt across England.</li>
         </ul>
-        <h3 class="insight-theme"><span class="n">05</span>Social media as a data source</h3>
-        <ul class="case-list">
-          <li><b>Very low engagement:</b> 526 tweets in the sample had no retweets and 1,027 had no likes; most had fewer than 5 reactions.</li>
-          <li><b>Generic hashtags dominate:</b> #healthcare appeared 716 times. After grouping similar tags, health-related tags led with 1,180 uses, far ahead of #tech (179) and #pharma (105).</li>
-          <li><b>Mildly positive, mostly opinion:</b> average polarity was 0.17 and subjectivity 0.33. 208 tweets were highly emotional or personal, against only 13 factual complaints.</li>
-          <li><b>Barely about the NHS:</b> only one tweet in the sample was about the NHS, so this data cannot work as an early-warning signal.</li>
-        </ul>
+        <details class="more-insights">
+          <summary><span class="when-closed">See all insights (16 more)</span><span class="when-open">Hide extra insights</span></summary>
+          <h3 class="insight-theme"><span class="n">01</span>National demand: a clear seasonal cycle</h3>
+          <ul class="case-list">
+            <li><b>Peak in November:</b> November 2021 was the busiest month (30.4M appointments), just ahead of October (30.3M). The quietest were August 2021 and April 2022, at about 23.9M each.</li>
+            <li><b>Same shape everywhere:</b> most appointment categories rose from August to a November peak, dropped sharply in December, climbed again to March, then fell sharply in April 2022.</li>
+            <li><b>Never back to peak:</b> in November 2021 daily appointments reached about 90% of the NHS planning guideline of 1.2M a day. Usage never returned to that level, and April 2022 was the low point.</li>
+            <li><b>Scale:</b> the data covers 106 sub-ICB locations. The five busiest were North West London (6.98M), North East London (5.34M), Kent and Medway (5.21M), Hampshire and Isle of Wight (4.71M) and South East London (4.36M).</li>
+          </ul>
+          <h3 class="insight-theme"><span class="n">02</span>Where appointments concentrate</h3>
+          <ul class="case-list">
+            <li><b>One ICB drives Planned Clinics:</b> North West London accounts for almost 31% of all Planned Clinics. Checking against registered patients showed this is real, not duplicate rows: it has the largest patient base.</li>
+            <li><b>Care Home Rounds rising everywhere:</b> the only category with a steady upward trend, and spread thinly (the top ICB holds just 4.34%, the top five about 18%, across 103 ICBs). A national rise like this may reflect a change in how activity is recorded.</li>
+            <li><b>Unmapped is a big category:</b> in North West London (Jan&ndash;Jun 2022) General Practice led with 4.80M appointments, but &ldquo;Unmapped&rdquo; came second with 391K, a clear data-quality signal.</li>
+          </ul>
+          <h3 class="insight-theme"><span class="n">03</span>BOB ICB deep dive</h3>
+          <ul class="case-list">
+            <li><b>Lost capacity share:</b> measured against the 1.2M-a-day guideline, BOB ICB lost about 0.61% of national daily capacity, more than similar-sized peers E54000051 and E54000052 (0.54% and 0.53%).</li>
+            <li><b>Different service mix:</b> BOB ICB records far fewer Planned Clinics than England (4.83% vs 9.46%) but more Planned Clinical Procedures (12.31% vs 8.68%).</li>
+            <li><b>Below the national rate:</b> BOB ICB records 4.6% fewer appointments per registered patient than the national average.</li>
+          </ul>
+          <h3 class="insight-theme"><span class="n">04</span>Supply, not demand</h3>
+          <ul class="case-list">
+            <li><b>Stable booking pattern:</b> same-day appointments held at about 46% of the total in every month, so the booking system stayed reactive by design rather than breaking down.</li>
+            <li><b>Timing points to funding:</b> the drop followed the end of the 2021&ndash;22 financial year in March, which suggests a funding effect rather than lower need. This is a hypothesis the data cannot confirm.</li>
+          </ul>
+          <h3 class="insight-theme"><span class="n">05</span>Social media as a data source</h3>
+          <ul class="case-list">
+            <li><b>Very low engagement:</b> 526 tweets in the sample had no retweets and 1,027 had no likes; most had fewer than 5 reactions.</li>
+            <li><b>Generic hashtags dominate:</b> #healthcare appeared 716 times. After grouping similar tags, health-related tags led with 1,180 uses, far ahead of #tech (179) and #pharma (105).</li>
+            <li><b>Mildly positive, mostly opinion:</b> average polarity was 0.17 and subjectivity 0.33. 208 tweets were highly emotional or personal, against only 13 factual complaints.</li>
+            <li><b>Barely about the NHS:</b> only one tweet in the sample was about the NHS, so this data cannot work as an early-warning signal.</li>
+          </ul>
+      
+        </details>
       </div>
       
       <figure class="dashboard-shot">
