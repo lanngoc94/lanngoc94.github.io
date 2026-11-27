@@ -7,6 +7,9 @@
 # Part 6  Multiple linear regression to predict loyalty points, with
 #         normality checks, multicollinearity (VIF) and model diagnostics.
 #
+# Packages needed (install once with install.packages()):
+#   tidyverse, skimr, scales, ggplot2, DataExplorer, plotly, moments, psych, car
+#
 # Data file expected in the working directory (not included in this repo):
 #   turtle_reviews.csv
 
@@ -237,7 +240,7 @@ plot8 <- ggplot(data = review, mapping = aes(x = education, y = age, fill = educ
                               PhD = "PhD", postgraduate = "Postgraduate"))+ 
   scale_y_continuous(breaks = seq(0, 70, 10)) + 
   labs(title = "Distribution of Age by Education Level",
-       sustitle = "Customers of Turtle Games are mostly above 30s",
+       subtitle = "Customers of Turtle Games are mostly above 30s",
        x = "Education Level", y = "Age", fill = "Education Level",
        caption = "Source: Turtle Games Sales Data") +
   theme_bw() +
@@ -343,8 +346,6 @@ qqline(review$loyalty_points,
 # Run a Shapiro-Wilk test
 shapiro.test(review$loyalty_points)
 
-# Install required packages
-install.packages("moments")
 library(moments)
 
 # Specify the skewness and kurtosis functions.
@@ -378,8 +379,6 @@ cor(review$age, review$loyalty_points)
 ## Multiple linear regression models
 
 # Visualise the correlation
-# Install the psych package.
-install.packages('psych')
 
 # Import the psych package.
 library(psych)
@@ -441,7 +440,6 @@ par(mfrow= c(2,2))
 plot(model3)
 
 # Check multicollinearity
-install.packages("car")
 library(car)
 vif(model3)
 
@@ -520,8 +518,8 @@ ggplot(comparison, aes(x = actual_loyalty_points, y = fit)) +
 ## + low end where actual loyalty points near 0: model predicted several negative values
 ## + high end where actual loyalty points around 4000 upward: predicted values fall below the reference line
 ## which mean the predicted values failed to capture the actual loyalty points 
-## Model underestimated lower loyalty points for highest value customers also failed to 
-## understand how many points these top customers accumulate.
+## In short, the model overestimates customers at the low end (even predicting negative points)
+## and underestimates the highest-value customers, missing how many points they accumulate.
 ## -> This could be explained as why this model suggested 26-33% average error in individual loyalty points prediction as above
 
 ## Business Interpretations:

@@ -38,12 +38,12 @@ Does the NHS need more staff, or can it make better use of the capacity it alrea
 
 | File | Contents |
 |---|---|
-| `nhs_appointments_analysis.py` | Full analysis, exported from a Jupyter notebook (lines starting `# ` were markdown cells) |
+| [`nhs_appointments_analysis.ipynb`](nhs_appointments_analysis.ipynb) | Full analysis as a Jupyter notebook, with all charts and outputs |
 | `images/` | Key charts used in the case study |
 
 ## Data
 
-The datasets are not included in this repository. The analysis used `actual_duration.csv`, `appointments_regional.csv`, `national_categories.xlsx` and `tweets.csv` (NHS England appointments in general practice data and a tweet sample), plus `gp-reg-pat-prac-all.csv` (NHS Digital registered patients). Place the files in the same folder as the script to run it.
+The datasets are not included in this repository. The analysis used `actual_duration.csv`, `appointments_regional.csv`, `national_categories.xlsx` and `tweets.csv` (NHS England appointments in general practice data and a tweet sample), plus `gp-reg-pat-prac-all.csv` (NHS Digital registered patients). Place the files in the same folder as the notebook to run it.
 
 ---
 Completed as part of the LSE Data Analytics Career Accelerator (2026). Lan Ngoc Mau · [Portfolio](https://lanngoc94.github.io) · [LinkedIn](https://www.linkedin.com/in/lan-ngoc-mau-a2000316b/)
