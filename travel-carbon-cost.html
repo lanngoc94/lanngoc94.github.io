@@ -327,6 +327,8 @@
   .recs li::before{content:counter(rec); position:absolute; left:0; top:1px; width:26px; height:26px; border-radius:50%; background:var(--accent); color:var(--paper-raised); font-family:'IBM Plex Mono', monospace; font-size:12.5px; font-weight:600; display:flex; align-items:center; justify-content:center;}
   .recs li b{display:block; color:var(--ink); font-weight:600;}
   .case-block.after-figs{margin-top:28px;}
+  @media (max-width:700px){ .live-embed iframe{display:none;} .live-embed .mobile-note{display:block;} }
+  .live-embed .mobile-note{display:none; padding:10px 14px; font-size:13px; color:var(--ink-soft);}
 </style>
 </head>
 <body>
@@ -373,13 +375,11 @@
           <li><b>Route spotlight — Kinshasa to Kigali:</b> most of the 121 trips on this route lay over in Addis Ababa; only 15 stopped in Nairobi. Choosing Nairobi as the layover airport on this one route would cut total emissions by approximately 41 tonnes of CO2.</li>
         </ul>
       </div>
-      
-      <!-- Live dashboard slot: paste the Power BI "Publish to web" link (https://app.powerbi.com/view?r=...) into data-src below, then remove the hidden attribute. -->
-      <div class="live-embed" id="co2-live" data-src="" hidden>
-        <div class="live-embed-head"><span><span class="live-dot"></span>Live dashboard: click, filter and explore</span><a href="#" target="_blank" rel="noopener">Open full screen ↗</a></div>
-        <iframe title="CO2 Emissions: interactive Power BI dashboard" loading="lazy" allowfullscreen></iframe>
+      <div class="live-embed">
+        <div class="live-embed-head"><span><span class="live-dot"></span>Live dashboard: click, filter and explore</span><a href="https://app.powerbi.com/view?r=eyJrIjoiNDQ4YWM0OTUtNmFiZi00YTNmLTgwODMtNmFmYTRiNTk1NGY2IiwidCI6ImY4MjdhMjdkLWFjY2QtNDhjMi05YTMxLTU4MmNjODk0Y2NkNCJ9" target="_blank" rel="noopener">View interactive report ↗</a></div>
+        <iframe title="CO2 Emissions: interactive Power BI dashboard" src="https://app.powerbi.com/view?r=eyJrIjoiNDQ4YWM0OTUtNmFiZi00YTNmLTgwODMtNmFmYTRiNTk1NGY2IiwidCI6ImY4MjdhMjdkLWFjY2QtNDhjMi05YTMxLTU4MmNjODk0Y2NkNCJ9" loading="lazy" allowfullscreen></iframe>
+        <p class="mobile-note">The interactive report works best on a larger screen. Tap &ldquo;View interactive report&rdquo; to open it, or see the static view below.</p>
       </div>
-      <script>(function(){var b=document.getElementById('co2-live');if(!b)return;var u=b.getAttribute('data-src');if(!u)return;b.querySelector('iframe').src=u;b.querySelector('a').href=u;b.hidden=false;})();</script>
       <figure class="dashboard-shot">
         <img src="travel-executive-summary.png" alt="Executive summary view across the full extended dataset — total spend, CO2 emissions, distance, and agency-fee-cap KPIs alongside trip volume, route-level emissions, journey-type comparisons, and exchange-cost analysis.">
         <figcaption>Executive summary view across the full extended dataset — total spend, CO2 emissions, distance, and agency-fee-cap KPIs alongside trip volume, route-level emissions, journey-type comparisons, and exchange-cost analysis.</figcaption>

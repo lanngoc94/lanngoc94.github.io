@@ -328,6 +328,8 @@
   .recs li::before{content:counter(rec); position:absolute; left:0; top:1px; width:26px; height:26px; border-radius:50%; background:var(--accent); color:var(--paper-raised); font-family:'IBM Plex Mono', monospace; font-size:12.5px; font-weight:600; display:flex; align-items:center; justify-content:center;}
   .recs li b{display:block; color:var(--ink); font-weight:600;}
   .case-block.after-figs{margin-top:28px;}
+  @media (max-width:700px){ .live-embed iframe{display:none;} .live-embed .mobile-note{display:block;} }
+  .live-embed .mobile-note{display:none; padding:10px 14px; font-size:13px; color:var(--ink-soft);}
 </style>
 </head>
 <body>
@@ -368,6 +370,11 @@
         </ul>
       </div>
       
+      <div class="live-embed">
+        <div class="live-embed-head"><span><span class="live-dot"></span>Live dashboard: click, filter and explore</span><a href="https://app.powerbi.com/view?r=eyJrIjoiNGFkNzQxODMtZTExZS00ZjM1LWJhMWQtN2U3MWRhYzE2YWRmIiwidCI6ImY4MjdhMjdkLWFjY2QtNDhjMi05YTMxLTU4MmNjODk0Y2NkNCJ9" target="_blank" rel="noopener">View interactive report ↗</a></div>
+        <iframe title="Sales Performance Dashboard: interactive Power BI dashboard" src="https://app.powerbi.com/view?r=eyJrIjoiNGFkNzQxODMtZTExZS00ZjM1LWJhMWQtN2U3MWRhYzE2YWRmIiwidCI6ImY4MjdhMjdkLWFjY2QtNDhjMi05YTMxLTU4MmNjODk0Y2NkNCJ9" loading="lazy" allowfullscreen></iframe>
+        <p class="mobile-note">The interactive report works best on a larger screen. Tap &ldquo;View interactive report&rdquo; to open it, or see the static view below.</p>
+      </div>
       <figure class="dashboard-shot">
         <img src="sales_dashboard.png" alt="Power BI Sales Performance Dashboard: KPI cards for total sales, transactions, average sales per store and per transaction with year-on-year change; monthly sales by store; sales growth by store and by product category; transaction volume versus average spend by store and by category; and a product category share matrix by store." loading="lazy">
         <figcaption>Sales Performance Dashboard: year-on-year KPIs, store and category growth, transaction volume versus average spend, and category share by store.</figcaption>
