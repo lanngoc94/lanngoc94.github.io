@@ -37,8 +37,8 @@ Turtle Games, a games manufacturer and retailer, wants to improve sales by under
 
 | File | Contents |
 |---|---|
-| `turtle_games_analysis.py` | Python: data cleaning, OLS regression, decision tree (pruning and feature comparison), k-means clustering, NLP with TextBlob and VADER. Exported from a Jupyter notebook (lines starting `# ` were markdown cells) |
-| `turtle_games_regression.R` | R: exploratory analysis with ggplot2/plotly, normality checks, multiple linear regression, VIF and model diagnostics |
+| [`turtle_games_analysis.ipynb`](turtle_games_analysis.ipynb) | Python notebook with all charts and outputs: data cleaning, OLS regression, decision tree (pruning and feature comparison), k-means clustering, NLP with TextBlob and VADER |
+| [`turtle_games_regression.R`](turtle_games_regression.R) | R: exploratory analysis with ggplot2/plotly, normality checks, multiple linear regression, VIF and model diagnostics |
 | `images/` | Key charts used in the case study |
 
 ## Data
