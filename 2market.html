@@ -328,6 +328,8 @@
   .recs li::before{content:counter(rec); position:absolute; left:0; top:1px; width:26px; height:26px; border-radius:50%; background:var(--accent); color:var(--paper-raised); font-family:'IBM Plex Mono', monospace; font-size:12.5px; font-weight:600; display:flex; align-items:center; justify-content:center;}
   .recs li b{display:block; color:var(--ink); font-weight:600;}
   .case-block.after-figs{margin-top:28px;}
+  @media (max-width:700px){ .live-embed iframe{display:none;} .live-embed .mobile-note{display:block;} }
+  .live-embed .mobile-note{display:none; padding:10px 14px; font-size:13px; color:var(--ink-soft);}
 </style>
 </head>
 <body>
@@ -371,6 +373,11 @@
         </ul>
       </div>
       
+      <div class="live-embed">
+        <div class="live-embed-head"><span><span class="live-dot"></span>Live dashboard: click, filter and explore</span><a href="https://app.powerbi.com/view?r=eyJrIjoiMGNlMmExNGMtZGZiZC00MmExLWJjNTAtYTk2YWM1YTI4MjA3IiwidCI6ImY4MjdhMjdkLWFjY2QtNDhjMi05YTMxLTU4MmNjODk0Y2NkNCJ9" target="_blank" rel="noopener">View interactive report ↗</a></div>
+        <iframe title="2Market: interactive Power BI dashboard" src="https://app.powerbi.com/view?r=eyJrIjoiMGNlMmExNGMtZGZiZC00MmExLWJjNTAtYTk2YWM1YTI4MjA3IiwidCI6ImY4MjdhMjdkLWFjY2QtNDhjMi05YTMxLTU4MmNjODk0Y2NkNCJ9" loading="lazy" allowfullscreen></iframe>
+        <p class="mobile-note">The interactive report works best on a larger screen. Tap &ldquo;View interactive report&rdquo; to open it, or see the static view below.</p>
+      </div>
       <figure class="dashboard-shot">
         <img src="2market-dashboard.png" alt="2Market Customer and Marketing Channels Analysis Power BI dashboard: headline KPI cards (largest customer base, highest ROI age group, highest spending income bracket, category and channel), spend by income bracket and education, spend by product category, customers by age group and marital status, in-store versus online purchases by age, lead conversion and website visits by marketing channel, and customers and spend by country.">
         <figcaption>Final Power BI dashboard: headline findings in the KPI cards, with income bracket and age group slicers across spend, customer, channel and country views.</figcaption>
