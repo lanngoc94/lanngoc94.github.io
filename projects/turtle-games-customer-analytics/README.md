@@ -46,4 +46,4 @@ Turtle Games, a games manufacturer and retailer, wants to improve sales by under
 The dataset (`turtle_reviews.csv`, about 2,000 customers with age, gender, education, income, spending score, loyalty points and review text) was provided for the course and is not included here.
 
 ---
-Completed as part of the LSE Data Analytics Career Accelerator (2026). Lan Ngoc Mau · [Portfolio](https://lanngoc94.github.io) · [LinkedIn](https://www.linkedin.com/in/lan-ngoc-mau-a2000316b/)
+Lan Ngoc Mau · [Portfolio](https://lanngoc94.github.io) · [LinkedIn](https://www.linkedin.com/in/lan-ngoc-mau-a2000316b/)
