@@ -328,6 +328,10 @@
   .recs li::before{content:counter(rec); position:absolute; left:0; top:1px; width:26px; height:26px; border-radius:50%; background:var(--accent); color:var(--paper-raised); font-family:'IBM Plex Mono', monospace; font-size:12.5px; font-weight:600; display:flex; align-items:center; justify-content:center;}
   .recs li b{display:block; color:var(--ink); font-weight:600;}
   .case-block.after-figs{margin-top:28px;}
+  .insight-theme{font-family:'Fraunces', serif; font-size:1.05rem; font-weight:600; color:var(--ink); margin:18px 0 8px;}
+  .insight-theme:first-of-type{margin-top:6px;}
+  @media (max-width:480px){ .segment-table th, .segment-table td{padding:8px 6px; font-size:12.5px;} }
+  .insight-theme .n{font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--warm); margin-right:6px;}
 </style>
 </head>
 <body>
@@ -359,13 +363,38 @@
         </ul>
       </div>
       <div class="case-block">
-        <p class="case-label">Key Business Insights &amp; Impact</p>
+        <p class="case-label">Key Insights</p>
+        <h3 class="insight-theme"><span class="n">01</span>Who the customers are</h3>
         <ul class="case-list">
-          <li><b>Loyalty drivers:</b> on their own, Customer Score explained 45% of the variance in loyalty points and Annual Income 38%. Combining both in a multiple linear regression raised this to 83% (R&sup2; 0.83).</li>
-          <li><b>Best model:</b> the Decision Tree Regressor reached an R&sup2; of 0.977 on the test set, against 0.827 for the linear model. It split on income (52.5% importance) and customer score (47.5%); gender and age added nothing.</li>
-          <li><b>High-engagement customers:</b> customers with a score above 67 earn about 2.5x the loyalty points of the rest (2,767 vs 1,081 on average), and those who also earn over &pound;74k average around 4,849 points.</li>
-          <li><b>Five segments:</b> K-Means split customers into five groups by income and score (table below), including 330 well-paid but disengaged customers.</li>
-          <li><b>Customer sentiment:</b> VADER scored 88.8% of reviews as positive and 6.6% as negative. Praise centred on value, fun and educational use; the main complaints were unclear instructions, products not suiting the advertised age, and quality control.</li>
+          <li><b>Highly educated:</b> of 2,000 customers, 900 are graduates, 460 hold a PhD and 400 are postgraduates; only 190 have a diploma and 50 basic education.</li>
+          <li><b>Mostly over 30:</b> few customers are under 30, and gender makes no meaningful difference to income, customer score or loyalty points.</li>
+          <li><b>Loyalty points are skewed:</b> points range from 25 to 6,847 with a mean of 1,578. They are strongly right-skewed (skewness 1.46) and not normally distributed (Shapiro-Wilk W = 0.843, p &lt; 0.001).</li>
+        </ul>
+        <h3 class="insight-theme"><span class="n">02</span>What drives loyalty points</h3>
+        <ul class="case-list">
+          <li><b>Two strong drivers:</b> loyalty points correlate with customer score (0.67) and annual income (0.61), but not with age (&minus;0.04).</li>
+          <li><b>Better together:</b> on their own, customer score explains 45% of the variance and income 38%. Together they explain 83% (R&sup2; 0.827). Adding education, gender and age only lifts this to 0.844.</li>
+          <li><b>Income alone is not loyalty:</b> above &pound;60k, customers split into one group with high points and one with low points. Customer score also has a sharper effect above about 70.</li>
+          <li><b>A mixed low tier:</b> in the 0&ndash;2,000 points range, scores run from 0&ndash;20 to 80&ndash;100 and include customers earning over &pound;60k. Above 2,000 points the pattern is much more consistent.</li>
+        </ul>
+        <h3 class="insight-theme"><span class="n">03</span>Predictive models</h3>
+        <ul class="case-list">
+          <li><b>Decision tree:</b> pruning from depth 7 to depth 3 (8 leaves) kept the R&sup2; at 0.977 on the test set, with an average error of about 119 points. Annual income carries 52.5% of the importance and customer score 47.5%; gender and age add nothing.</li>
+          <li><b>High scorers earn 2.5x:</b> the tree&rsquo;s first split is a customer score of 67. Customers above it average 2,767 points against 1,081 below, about 2.5x. Those who also earn over &pound;74k average around 4,849 points, the most valuable group.</li>
+          <li><b>Linear model limits:</b> the R model&rsquo;s average error is about 415 points (26% of the mean), and its RMSE is 534 points (33%). It predicts negative points near zero and underestimates customers above about 4,000 points.</li>
+        </ul>
+        <h3 class="insight-theme"><span class="n">04</span>Customer segments</h3>
+        <ul class="case-list">
+          <li><b>Five segments:</b> the Elbow curve flattens and the Silhouette score peaks at k=5. With k=4, two distinct groups merge into one of 1,045 customers, so k=5 separates customers more clearly (table below).</li>
+          <li><b>A disengaged high earner group:</b> 330 customers earn &pound;55k&ndash;&pound;105k+ but score only 1&ndash;40, spending power the loyalty programme is not reaching.</li>
+        </ul>
+        <h3 class="insight-theme"><span class="n">05</span>What customers say in reviews</h3>
+        <ul class="case-list">
+          <li><b>Overwhelmingly positive:</b> VADER scored 1,741 reviews (88.8%) as positive, 129 (6.6%) as negative and 91 as neutral. Short summaries read more neutral (685 neutral).</li>
+          <li><b>Most common words:</b> after removing stopwords, &ldquo;game&rdquo; (1,990), &ldquo;great&rdquo; (875), &ldquo;fun&rdquo; (770), &ldquo;play&rdquo; (528) and &ldquo;love&rdquo; (416) lead.</li>
+          <li><b>What customers like:</b> value for money is the biggest positive driver, followed by gifts that landed well, fun, educational or therapeutic use, and products that suit the stated age.</li>
+          <li><b>What customers dislike:</b> complicated instructions, products that do not suit the advertised age, poor value, defects such as incomplete kits, and &ldquo;boring&rdquo; or &ldquo;disappointed&rdquo; verdicts. Material quality and unmet expectations are the biggest negative drivers.</li>
+          <li><b>Tools disagree on short text:</b> TextBlob put most reviews between &minus;0.25 and 0.5 and most summaries at exactly 0. VADER handled strong negativity better, scoring review 872 (&ldquo;crappy&rdquo;, &ldquo;disgusting&rdquo;) at &minus;0.905.</li>
         </ul>
       </div>
       <table class="segment-table">
@@ -446,7 +475,8 @@ def get_vader_label(score):
     return 'Neutral'
 
 survey3['combined_vader_label'] = survey3['combined_vader_compound'].apply(get_vader_label)
-# -&gt; 88.8% of reviews positive, 6.6% negative</code></pre>
+survey3['review_vader_label'] = survey3['review_vader_compound'].apply(get_vader_label)
+# -&gt; reviews: 1,741 positive (88.8%), 129 negative (6.6%), 91 neutral</code></pre>
       </div>
       <div class="case-block after-figs">
         <p class="case-label">Recommendations</p>
@@ -455,7 +485,7 @@ survey3['combined_vader_label'] = survey3['combined_vader_compound'].apply(get_v
           <li><b>Move customers out of the 0&ndash;2,000 points tier.</b> A noticeable share of customers in every segment sits in this low tier, including some on incomes above &pound;60k, and review feedback can show what would move them up.</li>
           <li><b>Re-engage the well-paid but disengaged segment.</b> 330 customers earn &pound;55k&ndash;&pound;105k+ but score only 1&ndash;40, so they have spending power the programme is not capturing.</li>
           <li><b>Use the regression for mid-tier forecasting only.</b> It predicts typical customers well but goes negative near zero points and underestimates customers above about 4,000 points.</li>
-          <li><b>Collect richer customer data.</b> Purchase frequency, product preferences and gift purchases would help explain the points that income and score cannot.</li>
+          <li><b>Highlight educational and therapeutic value.</b> Reviewers who mentioned educational or therapeutic use were consistently positive, so positioning products that way could attract a wider, more engaged audience.</li>
           <li><b>Improve product instructions.</b> &ldquo;Complicated instructions&rdquo; was one of the most common complaints, and visual step-by-step guides, ideally with images or video links, would address it.</li>
           <li><b>Review age-range labelling.</b> Several reviewers said products did not suit the advertised age, a direct cause of disappointment and returns.</li>
           <li><b>Tighten quality checks before shipping.</b> Incomplete kits and mismatched parts appear in the most negative reviews, so pre-shipment checks would directly cut 1-star reviews.</li>

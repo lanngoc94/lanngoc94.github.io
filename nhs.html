@@ -328,6 +328,9 @@
   .recs li::before{content:counter(rec); position:absolute; left:0; top:1px; width:26px; height:26px; border-radius:50%; background:var(--accent); color:var(--paper-raised); font-family:'IBM Plex Mono', monospace; font-size:12.5px; font-weight:600; display:flex; align-items:center; justify-content:center;}
   .recs li b{display:block; color:var(--ink); font-weight:600;}
   .case-block.after-figs{margin-top:28px;}
+  .insight-theme{font-family:'Fraunces', serif; font-size:1.05rem; font-weight:600; color:var(--ink); margin:18px 0 8px;}
+  .insight-theme:first-of-type{margin-top:6px;}
+  .insight-theme .n{font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--warm); margin-right:6px;}
 </style>
 </head>
 <body>
@@ -359,13 +362,42 @@
         </ul>
       </div>
       <div class="case-block">
-        <p class="case-label">Key Business Insights &amp; Impact</p>
+        <p class="case-label">Key Insights</p>
+        <h3 class="insight-theme"><span class="n">01</span>National demand: a clear seasonal cycle</h3>
         <ul class="case-list">
-          <li><b>Steepest decline:</b> BOB ICB&rsquo;s 23.4% drop was the largest among the ten highest-volume ICBs, roughly 3 points worse than similar-sized peers, which mostly fell 16&ndash;22%. It is now 4.6% below the national average of appointments per 1,000 patients.</li>
-          <li><b>Lost capacity share:</b> measured against the NHS planning guideline of 1.2M appointments a day, BOB ICB lost about 0.61% of national daily capacity between November and April, more than similar-sized peers (0.53&ndash;0.54%).</li>
-          <li><b>Supply, not demand:</b> GP and Other Practice Staff appointments fell 22.8% and 25.2% between the November peak and the April trough, while the split between the two groups barely shifted. This points to a cut in capacity, not a change in patient behaviour.</li>
-          <li><b>Stable booking pattern:</b> same-day appointments held steady at about 46% of the total in every month, so the booking system was reactive by design rather than destabilised.</li>
-          <li><b>Social media signal:</b> the tweet sample was too sparse and mostly unrelated to the NHS to work as an early-warning indicator.</li>
+          <li><b>Peak in November:</b> November 2021 was the busiest month (30.4M appointments), just ahead of October (30.3M). The quietest were August 2021 and April 2022, at about 23.9M each.</li>
+          <li><b>Same shape everywhere:</b> most appointment categories rose from August to a November peak, dropped sharply in December, climbed again to March, then fell sharply in April 2022.</li>
+          <li><b>Never back to peak:</b> in November 2021 daily appointments reached about 90% of the NHS planning guideline of 1.2M a day. Usage never returned to that level, and April 2022 was the low point.</li>
+          <li><b>Scale:</b> the data covers 106 sub-ICB locations. The five busiest were North West London (6.98M), North East London (5.34M), Kent and Medway (5.21M), Hampshire and Isle of Wight (4.71M) and South East London (4.36M).</li>
+        </ul>
+        <h3 class="insight-theme"><span class="n">02</span>Where appointments concentrate</h3>
+        <ul class="case-list">
+          <li><b>Planned procedures sit in six ICBs:</b> the top 6 ICBs account for 80% of Planned Clinical Procedures nationally, so a policy change there would be felt across England.</li>
+          <li><b>One ICB drives Planned Clinics:</b> North West London accounts for almost 31% of all Planned Clinics. Checking against registered patients showed this is real, not duplicate rows: it has the largest patient base.</li>
+          <li><b>Care Home Rounds rising everywhere:</b> the only category with a steady upward trend, and spread thinly (the top ICB holds just 4.34%, the top five about 18%, across 103 ICBs). A national rise like this may reflect a change in how activity is recorded.</li>
+          <li><b>Unmapped is a big category:</b> in North West London (Jan&ndash;Jun 2022) General Practice led with 4.80M appointments, but &ldquo;Unmapped&rdquo; came second with 391K, a clear data-quality signal.</li>
+        </ul>
+        <h3 class="insight-theme"><span class="n">03</span>BOB ICB deep dive</h3>
+        <ul class="case-list">
+          <li><b>Steepest decline:</b> BOB ICB&rsquo;s 23.4% drop from November 2021 to April 2022 was the largest among the ten highest-volume ICBs, about 3 points worse than peers, whose drops averaged around 20%.</li>
+          <li><b>Lost capacity share:</b> measured against the 1.2M-a-day guideline, BOB ICB lost about 0.61% of national daily capacity, more than similar-sized peers E54000051 and E54000052 (0.54% and 0.53%).</li>
+          <li><b>Where the drop happened:</b> same-day telephone appointments fell from about 210K to 180K, same-day face-to-face from 165K to 140K, and appointments booked 2&ndash;7 days ahead fell by around 30%.</li>
+          <li><b>Different service mix:</b> BOB ICB records far fewer Planned Clinics than England (4.83% vs 9.46%) but more Planned Clinical Procedures (12.31% vs 8.68%).</li>
+          <li><b>Below the national rate:</b> BOB ICB records 4.6% fewer appointments per registered patient than the national average.</li>
+        </ul>
+        <h3 class="insight-theme"><span class="n">04</span>Supply, not demand</h3>
+        <ul class="case-list">
+          <li><b>Staff capacity fell together:</b> GP appointments fell 22.8% and Other Practice Staff 25.2% between November and April, while their share of the total barely moved, so patient behaviour did not change.</li>
+          <li><b>Stable booking pattern:</b> same-day appointments held at about 46% of the total in every month, so the booking system stayed reactive by design rather than breaking down.</li>
+          <li><b>Timing points to funding:</b> the drop followed the end of the 2021&ndash;22 financial year in March, which suggests a funding effect rather than lower need. This is a hypothesis the data cannot confirm.</li>
+          <li><b>Cuts may not have been needed:</b> national appointments rose again in May 2022, so reducing capacity may not suit demand over the longer term.</li>
+        </ul>
+        <h3 class="insight-theme"><span class="n">05</span>Social media as a data source</h3>
+        <ul class="case-list">
+          <li><b>Very low engagement:</b> 526 tweets in the sample had no retweets and 1,027 had no likes; most had fewer than 5 reactions.</li>
+          <li><b>Generic hashtags dominate:</b> #healthcare appeared 716 times. After grouping similar tags, health-related tags led with 1,180 uses, far ahead of #tech (179) and #pharma (105).</li>
+          <li><b>Mildly positive, mostly opinion:</b> average polarity was 0.17 and subjectivity 0.33. 208 tweets were highly emotional or personal, against only 13 factual complaints.</li>
+          <li><b>Barely about the NHS:</b> only one tweet in the sample was about the NHS, so this data cannot work as an early-warning signal.</li>
         </ul>
       </div>
       
@@ -438,7 +470,7 @@ gap_pct = round((bob_rate - national_rate) / national_rate * 100, 1)
           <li><b>Send automated appointment reminders.</b> Reminders are a low-cost way to cut non-attendance and get more out of appointments that already exist.</li>
           <li><b>Benchmark against similar-sized peers.</b> E54000051 and E54000052 had similar capacity to BOB ICB in November but lost less of the national share by April, so they are the first places to compare working practices.</li>
           <li><b>Check the low share of Planned Clinics.</b> BOB ICB records 4.83% of appointments as Planned Clinics against 9.46% nationally, and more Planned Clinical Procedures (12.31% vs 8.68%), which may be a recording difference rather than a service one.</li>
-          <li><b>Do not rely on Twitter as an early-warning signal.</b> The tweet sample was too sparse and mostly unrelated to the NHS, so monitoring effort is better spent on the appointment data itself.</li>
+          <li><b>Move to longer, more flexible contracts.</b> The drop came across almost all ICBs after the financial year ended, so planning capacity on longer, flexible contracts rather than short fixed-term ones would be more sustainable.</li>
         </ol>
       </div>
       <div class="case-block after-figs">
